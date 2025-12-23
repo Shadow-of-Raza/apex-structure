@@ -2,9 +2,11 @@
 // The Head component should come from 'next/head' but in Next.js 13+, we use Metadata API
 // Let's update this component:
 
+'use client'
+
 interface SeoHeadProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   canonicalUrl?: string;
   ogImage?: string;
   keywords?: string;
@@ -24,12 +26,6 @@ export default function SeoHead({
   
   return (
     <>
-      {/* Canonical URL */}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      
-      {/* Keywords meta tag */}
-      <meta name="keywords" content={keywords} />
-      
       {/* Structured Data */}
       {structuredData && (
         <script

@@ -59,7 +59,10 @@ export default function Footer() {
                 <Link href="/gallery" className="text-gray-400 hover:text-white transition">Gallery</Link>
               </li>
               <li>
-                <Link href="/career" className="text-gray400 hover:text-white transition">Careers</Link>
+                <Link href="/career" className="text-gray-400 hover:text-white transition">Careers</Link>
+              </li>
+              <li>
+                <Link href="/contact-us" className="text-gray-400 hover:text-white transition">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -121,6 +124,9 @@ export default function Footer() {
               </p>
             </div>
             <div className="flex space-x-6">
+              <Link href="/career" className="text-gray-400 hover:text-white transition text-sm">
+                Career
+              </Link>
               <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition text-sm">
                 Privacy Policy
               </Link>

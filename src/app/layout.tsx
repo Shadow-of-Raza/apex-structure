@@ -46,7 +46,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-gray-50" suppressHydrationWarning>
+      <body className="min-h-screen bg-gray-50" suppressHydrationWarning >          
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
