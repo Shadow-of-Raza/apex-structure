@@ -1,0 +1,159 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --foreground-rgb: 0, 0, 0;
+    --background-rgb: 255, 255, 255;
+    --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  }
+/* 
+  * {
+    @apply border;
+  }
+  
+  body {
+    @apply text bg-background antialiased;
+  } */
+
+  /* Image loading animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+  
+  .image-loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  /* Smooth image transitions */
+  .image-transition {
+    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+  }
+  
+  /* Gallery hover effects */
+  .gallery-item {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@layer components {
+  .gradient-primary {
+    @apply bg-gradient-to-br from-primary-500 to-primary-700;
+  }
+  
+  .gradient-secondary {
+    @apply bg-gradient-to-br from-secondary-500 to-secondary-700;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+  
+  .image-container {
+    @apply relative overflow-hidden rounded-lg;
+  }
+  
+  .image-overlay {
+    @apply absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300;
+  }
+  
+  /* Project status badges */
+  .status-badge {
+    @apply px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-sm border;
+  }
+  
+  .status-planning {
+    @apply bg-blue-100 text-blue-800 border-blue-200;
+  }
+  
+  .status-ongoing {
+    @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  }
+  
+  .status-completed {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+  
+  .status-upcoming {
+    @apply bg-purple-100 text-purple-800 border-purple-200;
+  }
+  
+  /* Project type badges */
+  .type-badge {
+    @apply px-3 py-1.5 rounded-full text-sm font-medium;
+  }
+  
+  .type-residential {
+    @apply bg-indigo-100 text-indigo-800;
+  }
+  
+  .type-commercial {
+    @apply bg-cyan-100 text-cyan-800;
+  }
+  
+  .type-industrial {
+    @apply bg-orange-100 text-orange-800;
+  }
+  
+  .type-mixed-use {
+    @apply bg-pink-100 text-pink-800;
+  }
+  
+  .type-hospitality {
+    @apply bg-teal-100 text-teal-800;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-sm bg-white/10 border border-white/20;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Aspect ratio utilities */
+  .aspect-photo {
+    aspect-ratio: 3/2;
+  }
+  
+  .aspect-square {
+    aspect-ratio: 1/1;
+  }
+  
+  .aspect-video {
+    aspect-ratio: 16/9;
+  }
+  
+  .aspect-portrait {
+    aspect-ratio: 3/4;
+  }
+}
