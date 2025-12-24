@@ -32,12 +32,12 @@ export default function HomePage() {
   return (
     <>
       <SeoHead 
-        title="Apex Structure"
+        title="Home"
         description="Apex Structure is a leading real estate development company delivering exceptional residential and commercial projects with innovation and quality."
         canonicalUrl="https://apex-structure.com"
         structuredData={{
           "@context": "https://schema.org",
-          "@type": "Organization",
+          "@type": "Home",
           "name": "Apex Structure",
           "description": "Leading real estate development company",
           "url": "https://apex-structure.com",

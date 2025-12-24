@@ -6,6 +6,7 @@ import { Menu, X, Phone, Mail } from 'lucide-react'
 import Navigation from './Navigation'
 import MobileMenu from './MobileMenu'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -37,15 +38,8 @@ export default function Header() {
       {/* Main header */}
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">AS</span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Apex Structure</h1>
-              <p className="text-sm text-gray-600">Building Excellence Since 2005</p>
-            </div>
+          <Link href="/">
+            <Image src="/images/logo/logo.png" alt="Apex Structure Logo" width={220} height={48} />
           </Link>
 
           {/* Desktop Navigation */}

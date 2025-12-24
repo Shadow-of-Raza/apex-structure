@@ -1,7 +1,7 @@
 import Container from '@/components/common/Layout/Container'
 import PageHeader from '@/components/common/Layout/PageHeader'
-import ContactForm from '../../components/contact-us/ContactForm'
-import ContactInfo from '../../components/contact-us/ContactInfo'
+import ContactForm from '@/components/contact-us/ContactForm'
+import ContactInfo from '@/components/contact-us/ContactInfo'
 import Section from '@/components/common/Layout/Section'
 
 export default function ContactUsPage() {
