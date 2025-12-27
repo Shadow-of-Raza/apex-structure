@@ -5,12 +5,11 @@ export interface Project {
   title: string
   description: string
   fullDescription: string
-  location: string
   type: 'residential' | 'commercial' | 'industrial' | 'mixed-use' | 'hospitality'
   status: 'planning' | 'ongoing' | 'completed' | 'upcoming'
   startDate: string
   completionDate: string
-  area: string // in square feet
+  area: string
   budget: string
   client: string
   architect: string
@@ -28,10 +27,7 @@ export interface Project {
     state: string
     zipCode: string
   }
-  coordinates?: {
-    lat: number
-    lng: number
-  }
+  isFeatured: boolean
   createdAt: string
   updatedAt: string
 }
@@ -47,7 +43,20 @@ export interface ProjectCategory {
 export interface ProjectFilter {
   type?: string[]
   status?: string[]
-  location?: string[]
+  city?: string[] // city names
   minArea?: number
   maxArea?: number
+}
+
+// Status with color configuration
+export interface ProjectStatus {
+  id: 'planning' | 'ongoing' | 'completed' | 'upcoming'
+  name: string
+  color: string
+  count: number
+}
+
+// For consistent type colors across the app
+export type ProjectTypeColor = {
+  [key in Project['type']]: string
 }

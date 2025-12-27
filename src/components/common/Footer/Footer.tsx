@@ -15,20 +15,20 @@ export default function Footer() {
             <Link href="/" className="items-start mb-4 inline-block">
               <Image src="/images/logo/logo.png" alt="Apex Structure Logo" width={300} height={48} />
             </Link>
-            <p className="text-gray-600 mb-6">
+            <p className="text-black-400 font-medium mb-6 font-sans">
               Leading real estate developers creating sustainable and innovative spaces for a better tomorrow.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 text-gray-600 bg-gray-300 rounded-full flex items-center justify-center hover:bg-primary-600 hover:text-white transition">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-gray-600 bg-gray-300 rounded-full flex items-center justify-center hover:bg-primary-600 hover:text-white transition">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-gray-600 bg-gray-300 rounded-full flex items-center justify-center hover:bg-primary-600 hover:text-white transition">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-gray-600 bg-gray-300 rounded-full flex items-center justify-center hover:bg-primary-600 hover:text-white transition">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
                 <Instagram size={20} />
               </a>
             </div>
@@ -36,100 +36,194 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl text-gray-700 font-bold mb-6">Quick Links</h3>
+            <h3 className="text-xl text-blue_shade_1 font-bold mb-6 font-sans">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/" className="text-gray-600 hover:text-primary-600 transition">Home</Link>
+                <Link 
+                  href="/about-us" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  About Us
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/about-us" className="text-gray-600 hover:text-primary-600 transition">About Us</Link>
+                <Link 
+                  href="/projects" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Projects
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/projects" className="text-gray-600 hover:text-primary-600 transition">Projects</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Services
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Services</Link>
+                <Link 
+                  href="/our-business" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Our Buisness
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/gallery" className="text-gray-600 hover:text-primary-600 transition">Gallery</Link>
+                <Link 
+                  href="/equipments" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Equipments
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/career" className="text-gray-600 hover:text-primary-600 transition">Careers</Link>
+                <Link 
+                  href="/blogs" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Blogs
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/contact-us" className="text-gray-600 hover:text-primary-600 transition">Contact Us</Link>
+                <Link 
+                  href="/contact-us" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Contact Us
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Services */}
           <div>
-            <h3 className="text-xl text-gray-700 font-bold mb-6">Our Services</h3>
+            <h3 className="text-xl text-blue_shade_1 font-bold mb-6 font-sans">Our Services</h3>
             <ul className="space-y-3">
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Commercial Construction</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Commercial Construction
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Residential Projects</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Residential Projects
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Industrial Construction</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Industrial Construction
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Renovation & Interior</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Renovation & Interior
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Project Management</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Project Management
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
               <li>
-                <Link href="/services" className="text-gray-600 hover:text-primary-600 transition">Consultation</Link>
+                <Link 
+                  href="/services" 
+                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                >
+                  Consultation
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl text-gray-700 font-bold mb-6">Contact Us</h3>
+            <h3 className="text-xl text-blue_shade_1 font-bold mb-6 font-sans">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin className="text-primary-500 mr-3 mt-1" size={20} />
-                <span className="text-gray-600">
+                <MapPin className="text-royal_gold-400 mr-3 mt-1" size={20} />
+                <span className="text-black-400 font-medium font-sans">
                   123 Construction Avenue,<br />
                   Business District,<br />
                   City, State 12345
                 </span>
               </li>
               <li className="flex items-center">
-                <Phone className="text-primary-500 mr-3" size={20} />
-                <span className="text-gray-600">+1 (555) 123-4567</span>
+                <Phone className="text-royal_gold-400 mr-3" size={20} />
+                <span className="text-black-400 font-medium font-sans">+1 (555) 123-4567</span>
               </li>
               <li className="flex items-center">
-                <Mail className="text-primary-500 mr-3" size={20} />
-                <span className="text-gray-600">info@apexstructure.com</span>
+                <Mail className="text-royal_gold-400 mr-3" size={20} />
+                <span className="text-black-400 font-medium font-sans">info@apexstructure.com</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8">
+        <div className="border-t border-platinum-500 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
-              <p className="text-gray-600">
+              <p className="text-black-400 font-medium font-sans">
                 © {currentYear} Apex Structure. All rights reserved.
               </p>
             </div>
             <div className="flex space-x-6">
-              <Link href="/career" className="text-gray-600 hover:text-primary-600 transition text-sm">
+              <Link 
+                href="/career" 
+                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+              >
                 Career
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/privacy-policy" className="text-gray-600 hover:text-primary-600 transition text-sm">
+              <Link 
+                href="/privacy-policy" 
+                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+              >
                 Privacy Policy
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/terms-and-conditions" className="text-gray-600 hover:text-primary-600 transition text-sm">
+              <Link 
+                href="/terms-and-conditions" 
+                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+              >
                 Terms & Conditions
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/sitemap.xml" className="text-gray-600 hover:text-primary-600 transition text-sm">
+              <Link 
+                href="/sitemap.xml" 
+                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+              >
                 Sitemap
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
           </div>

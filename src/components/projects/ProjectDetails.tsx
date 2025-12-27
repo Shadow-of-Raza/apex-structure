@@ -1,14 +1,32 @@
-// src/components/projects/ProjectDetails.tsx
-// src/components/projects/ProjectDetails.tsx
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { MapPin, Calendar, Building2, Users, Award, CheckCircle, ArrowLeft, Share2, Download, Maximize2, ChevronLeft, ChevronRight, Heart, Bookmark, Printer, Mail, Facebook, Twitter, Linkedin, Globe, Navigation, Phone, Clock } from 'lucide-react'
+import { 
+  MapPin, Calendar, Building2, Award, CheckCircle, 
+  ArrowLeft, Share2, Download, Maximize2, ChevronLeft, 
+  ChevronRight, Navigation, Phone, Globe, ImageIcon
+} from 'lucide-react'
 import { Project } from '@/lib/types'
 import Link from 'next/link'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
 import ImageModal from '@/app/gallery/components/ImageModal'
 import { cleanImageUrl, isDirectImageUrl, getImageAltText } from '@/lib/utils/images'
+import Notification from '@/components/common/UI/Notification'
+
+// Import utility functions
+import {
+  getFormattedAddress,
+  getFormattedLocation,
+  getStatusConfig,
+  getSimilarProjects,
+  getProjectTypeColor
+} from '@/lib/utils/projects'
+
+// Import constants
+import { 
+  GALLERY_CONFIG, 
+  NAVIGATION_LINKS 
+} from '@/lib/constants/projects'
 
 interface ProjectDetailsProps {
   project: Project
@@ -18,11 +36,14 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   const [activeImage, setActiveImage] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
-  const [showShareOptions, setShowShareOptions] = useState(false)
+  const [showNotification, setShowNotification] = useState(false)
 
-  // Process all images
+  // Get dynamic data
+  const statusConfig = getStatusConfig(project.status)
+  const formattedAddress = getFormattedAddress(project)
+  const similarProjects = getSimilarProjects(project, 2)
+  
+  // Process images
   const processedImages = useMemo(() => {
     const mainImage = cleanImageUrl(project.images.main)
     const galleryImages = project.images.gallery
@@ -32,84 +53,23 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     return [mainImage, ...galleryImages].filter(Boolean)
   }, [project])
 
-  // Pagination settings for thumbnails
-  const imagesPerPage = 8
+  // Pagination
+  const imagesPerPage = GALLERY_CONFIG.imagesPerPage
   const totalPages = Math.ceil(processedImages.length / imagesPerPage)
 
-  // Add this helper function at the top of the ProjectDetails component, before the return statement
-  const formatDate = (dateString: string | Date) => {
-    const date = new Date(dateString)
-    const day = date.getDate()
-    const month = date.toLocaleString('en-US', { month: 'short' })
-    const year = date.getFullYear()
-    return `${day} ${month} ${year}`
-  }
-
-  // Get current page images
   const currentPageImages = useMemo(() => {
     const startIndex = currentPage * imagesPerPage
     const endIndex = startIndex + imagesPerPage
     return processedImages.slice(startIndex, endIndex)
   }, [processedImages, currentPage, imagesPerPage])
 
-  // Status colors and icons
-  const statusConfig = {
-    planning: {
-      color: 'bg-blue-100 text-blue-800 border-blue-200',
-      icon: <Clock className="w-4 h-4" />,
-      text: 'Planning Phase'
-    },
-    ongoing: {
-      color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      icon: <Building2 className="w-4 h-4" />,
-      text: 'Under Construction'
-    },
-    completed: {
-      color: 'bg-green-100 text-green-800 border-green-200',
-      icon: <CheckCircle className="w-4 h-4" />,
-      text: 'Completed'
-    },
-    upcoming: {
-      color: 'bg-purple-100 text-purple-800 border-purple-200',
-      icon: <Calendar className="w-4 h-4" />,
-      text: 'Upcoming'
-    }
-  }
-
-  const projectTypeColors = {
-    residential: 'from-indigo-500 to-indigo-700',
-    commercial: 'from-cyan-500 to-cyan-700',
-    industrial: 'from-orange-500 to-orange-700',
-    'mixed-use': 'from-pink-500 to-pink-700',
-    hospitality: 'from-teal-500 to-teal-700'
-  }
-
-  const shareProject = (platform?: string) => {
-    const shareUrl = window.location.href
-    const shareTitle = project.title
-    const shareText = project.description
-    
-    if (platform === 'facebook') {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank')
-    } else if (platform === 'twitter') {
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`, '_blank')
-    } else if (platform === 'linkedin') {
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank')
-    } else if (platform === 'mail') {
-      window.location.href = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareText}\n\nView more: ${shareUrl}`)}`
-    } else if (platform === 'print') {
-      window.print()
-    } else if (navigator.share) {
-      navigator.share({
-        title: shareTitle,
-        text: shareText,
-        url: shareUrl,
-      })
-    } else {
-      navigator.clipboard.writeText(shareUrl)
-      alert('Link copied to clipboard!')
-    }
-    setShowShareOptions(false)
+  // Helper functions
+  const formatDate = (dateString: string | Date) => {
+    const date = new Date(dateString)
+    const day = date.getDate()
+    const month = date.toLocaleString('en-US', { month: 'short' })
+    const year = date.getFullYear()
+    return `${day} ${month} ${year}`
   }
 
   const handleThumbnailClick = (index: number) => {
@@ -129,19 +89,30 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     }
   }
 
-  // Auto-rotate images every 5 seconds
+  const handleShareClick = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setShowNotification(true)
+      setTimeout(() => setShowNotification(false), 3000)
+    } catch (error) {
+      console.error('Failed to copy URL:', error)
+    }
+  }
+
+  // Auto-rotate images
   useEffect(() => {
     if (processedImages.length <= 1) return
     
     const interval = setInterval(() => {
       setActiveImage(prev => (prev + 1) % processedImages.length)
-    }, 5000)
+    }, GALLERY_CONFIG.autoRotateInterval)
     
     return () => clearInterval(interval)
   }, [processedImages.length])
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="container max-w-7xl mx-auto my-4">
+      {/* Image Modal */}
       <ImageModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -150,88 +121,34 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         onIndexChange={setActiveImage}
       />
       
-      {/* Back Navigation with Actions */}
-      <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* Notification */}
+      {showNotification && (
+        <Notification 
+          message="Project link copied to clipboard!" 
+          type="success"
+          duration={3000}
+          onClose={() => setShowNotification(false)}
+        />
+      )}
+      
+      {/* Back Navigation with Share Button */}
+      <div className="mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <Link 
-          href="/projects" 
+          href={NAVIGATION_LINKS.backToProjects.href}
           className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
         >
           <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back to Projects
+          {NAVIGATION_LINKS.backToProjects.label}
         </Link>
         
-        <div className="flex items-center space-x-3">
-          {/* Like Button */}
-          <button
-            onClick={() => setIsLiked(!isLiked)}
-            className={`p-2 rounded-lg transition-colors ${isLiked ? 'bg-red-50 text-red-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-            aria-label={isLiked ? 'Unlike project' : 'Like project'}
-          >
-            <Heart size={20} className={isLiked ? 'fill-current' : ''} />
-          </button>
-          
-          {/* Bookmark Button */}
-          <button
-            onClick={() => setIsBookmarked(!isBookmarked)}
-            className={`p-2 rounded-lg transition-colors ${isBookmarked ? 'bg-blue-50 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-            aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark project'}
-          >
-            <Bookmark size={20} className={isBookmarked ? 'fill-current' : ''} />
-          </button>
-          
-          {/* Share Button with Dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setShowShareOptions(!showShareOptions)}
-              className="p-2 bg-gray-100 text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
-              aria-label="Share project"
-            >
-              <Share2 size={20} />
-            </button>
-            
-            {showShareOptions && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                <div className="p-2">
-                  <button
-                    onClick={() => shareProject('facebook')}
-                    className="w-full flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    <Facebook size={18} className="mr-3 text-blue-600" />
-                    Share on Facebook
-                  </button>
-                  <button
-                    onClick={() => shareProject('twitter')}
-                    className="w-full flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    <Twitter size={18} className="mr-3 text-blue-400" />
-                    Share on Twitter
-                  </button>
-                  <button
-                    onClick={() => shareProject('linkedin')}
-                    className="w-full flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    <Linkedin size={18} className="mr-3 text-blue-700" />
-                    Share on LinkedIn
-                  </button>
-                  <button
-                    onClick={() => shareProject('mail')}
-                    className="w-full flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    <Mail size={18} className="mr-3 text-gray-600" />
-                    Share via Email
-                  </button>
-                  <button
-                    onClick={() => shareProject('print')}
-                    className="w-full flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    <Printer size={18} className="mr-3 text-gray-600" />
-                    Print Details
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        <button
+          onClick={handleShareClick}
+          className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
+          aria-label="Share project"
+        >
+          <Share2 size={20} className="mr-2" />
+          Share Project
+        </button>
       </div>
 
       {/* Project Header with Hero Image */}
@@ -283,7 +200,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           
           {/* Image Counter */}
           {processedImages.length > 1 && (
-            <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+            <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
               {activeImage + 1} / {processedImages.length}
             </div>
           )}
@@ -295,12 +212,13 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             <div>
               {/* Project Badges */}
               <div className="flex flex-wrap gap-3 mb-4">
-                <span className={`px-4 py-2 rounded-full font-semibold flex items-center gap-2 border backdrop-blur-sm ${statusConfig[project.status].color}`}>
-                  {statusConfig[project.status].icon}
-                  {statusConfig[project.status].text}
-                </span>
+                {statusConfig && (
+                  <span className={`px-4 py-2 rounded-full font-semibold flex items-center gap-2 border backdrop-blur-sm ${statusConfig.color}`}>
+                    {statusConfig.name}
+                  </span>
+                )}
                 <span className="px-4 py-2 rounded-full font-medium bg-white/10 text-white backdrop-blur-sm border border-white/20">
-                  <span className={`bg-gradient-to-r bg-clip-text text-transparent font-bold ${projectTypeColors[project.type] || 'from-primary-500 to-primary-700'}`}>
+                  <span className={`bg-gradient-to-r bg-clip-text text-transparent font-bold ${getProjectTypeColor(project.type)}`}>
                     {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
                   </span>
                 </span>
@@ -310,14 +228,16 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 {project.title}
               </h1>
               
-              <div className="flex items-center text-white/90 mb-4">
-                <MapPin size={22} className="mr-2" />
-                <span className="text-lg">{project.location}</span>
+              {/* Display address under title */}
+              <div className="flex items-center text-white/90 mb-2">
+                <MapPin size={22} className="mr-2 flex-shrink-0" />
+                <span className="text-lg">{formattedAddress}</span>
               </div>
+
             </div>
             
             {/* Quick Stats */}
-            <div className="flex flex-col sm:flex-row md:flex-col gap-4 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <div className="flex flex-col sm:flex-row md:flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <div className="text-center">
                 <div className="text-2xl font-bold text-white">{project.area} sq.ft.</div>
                 <div className="text-sm text-white/80">Built-up Area</div>
@@ -342,8 +262,10 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold">Project Overview</h2>
-                <p className="text-gray-600">Complete details about this development</p>
+                <h2 className="text-3xl font-semibold">Project Overview</h2>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  {project.title}
+                </p>
               </div>
             </div>
             
@@ -405,135 +327,13 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               </div>
             </div>
           </div>
-
-          {/* Gallery Section */}
-          {processedImages.length > 1 && (
-            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Project Gallery</h3>
-                  <p className="text-gray-600">{processedImages.length} photos available</p>
-                </div>
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="flex items-center text-primary-600 hover:text-primary-700 font-medium"
-                >
-                  View All
-                  <Maximize2 size={18} className="ml-2" />
-                </button>
-              </div>
-
-              {/* Thumbnail Grid with Pagination */}
-              <div className="mb-6">
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                  {currentPageImages.map((image, index) => {
-                    const globalIndex = (currentPage * imagesPerPage) + index
-                    return (
-                      <button
-                        key={globalIndex}
-                        onClick={() => handleThumbnailClick(index)}
-                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all group ${
-                          activeImage === globalIndex 
-                            ? 'border-primary-500 ring-2 ring-primary-300 scale-[1.02]' 
-                            : 'border-transparent hover:border-primary-300'
-                        }`}
-                      >
-                        <ImageWithFallback
-                          src={image}
-                          alt={`${project.title} - View ${globalIndex + 1}`}
-                          fill
-                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-                          quality={75}
-                          className="object-cover"
-                          fallbackText={`Image ${globalIndex + 1}`}
-                        />
-                        
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 text-white text-xs px-2 py-1 rounded">
-                            View
-                          </div>
-                        </div>
-                        
-                        {/* Active indicator */}
-                        {activeImage === globalIndex && (
-                          <div className="absolute top-2 right-2 w-3 h-3 bg-primary-500 rounded-full border-2 border-white"></div>
-                        )}
-                        
-                        {/* Image number */}
-                        <div className="absolute bottom-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                          {globalIndex + 1}
-                        </div>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                {/* Pagination Controls */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-                    <button
-                      onClick={prevPage}
-                      disabled={currentPage === 0}
-                      className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                        currentPage === 0 
-                          ? 'text-gray-400 cursor-not-allowed' 
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                      aria-label="Previous page"
-                    >
-                      <ChevronLeft size={20} className="mr-2" />
-                      Previous
-                    </button>
-                    
-                    <div className="flex items-center space-x-2">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum = i
-                        if (totalPages > 5) {
-                          if (currentPage < 3) pageNum = i
-                          else if (currentPage > totalPages - 4) pageNum = totalPages - 5 + i
-                          else pageNum = currentPage - 2 + i
-                        }
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => setCurrentPage(pageNum)}
-                            className={`w-10 h-10 rounded-lg transition-colors ${
-                              currentPage === pageNum 
-                                ? 'bg-primary-600 text-white' 
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            }`}
-                          >
-                            {pageNum + 1}
-                          </button>
-                        )
-                      })}
-                    </div>
-                    
-                    <button
-                      onClick={nextPage}
-                      disabled={currentPage === totalPages - 1}
-                      className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                        currentPage === totalPages - 1 
-                          ? 'text-gray-400 cursor-not-allowed' 
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                      aria-label="Next page"
-                    >
-                      Next
-                      <ChevronRight size={20} className="ml-2" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Right Column - Sidebar (1/3 width) */}
         <div className="space-y-8">
+
           {/* Quick Actions Card */}
-          <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
+          {/* <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
             <h3 className="text-xl font-bold mb-6 flex items-center">
               <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-3">
                 <Download size={20} />
@@ -542,14 +342,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             </h3>
             
             <div className="space-y-3">
-              <button className="w-full flex items-center justify-between p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                <div className="flex items-center">
-                  <Download size={18} className="mr-3" />
-                  <span>Download Brochure</span>
-                </div>
-                <span className="text-xs bg-white/20 px-2 py-1 rounded">PDF</span>
-              </button>
-              
               <button className="w-full flex items-center p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
                 <Calendar size={18} className="mr-3" />
                 <span>Schedule Site Visit</span>
@@ -567,7 +359,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 Get Free Consultation
               </Link>
             </div>
-          </div>
+          </div> */}
 
           {/* Amenities & Facilities */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
@@ -612,7 +404,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           </div>
 
           {/* Location Card */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          {/* <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold mb-6 flex items-center">
               <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
                 <MapPin className="w-5 h-5 text-red-600" />
@@ -622,9 +414,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-gray-700 font-medium">{project.address.street}</p>
-                <p className="text-gray-600">{project.address.city}, {project.address.state}</p>
-                <p className="text-gray-500 text-sm">PIN: {project.address.zipCode}</p>
+                <p className="text-gray-700">{formattedAddress}</p>
               </div>
               
               <div className="flex space-x-3">
@@ -638,65 +428,57 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 </button>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Similar Projects */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold mb-6">Similar Projects</h3>
             
             <div className="space-y-4">
-              <Link 
-                href="/projects/skyline-towers"
-                className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group"
-              >
-                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 mr-4">
-                  <ImageWithFallback
-                    src="https://images.pexels.com/photos/1102846/pexels-photo-1102846.jpeg"
-                    alt="Skyline Towers"
-                    width={64}
-                    height={64}
-                    className="object-cover"
-                    fallbackText="Skyline"
-                  />
-                </div>
-                <div>
-                  <div className="font-semibold group-hover:text-primary-600 transition-colors">
-                    Skyline Towers
-                  </div>
-                  <div className="text-sm text-gray-600">Residential • Completed</div>
-                  <div className="text-xs text-gray-500 mt-1">Downtown Business District</div>
-                </div>
-              </Link>
-              
-              <Link 
-                href="/projects/tech-park-one"
-                className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group"
-              >
-                <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 mr-4">
-                  <ImageWithFallback
-                    src="https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg"
-                    alt="Tech Park One"
-                    width={64}
-                    height={64}
-                    className="object-cover"
-                    fallbackText="Tech Park"
-                  />
-                </div>
-                <div>
-                  <div className="font-semibold group-hover:text-primary-600 transition-colors">
-                    Tech Park One
-                  </div>
-                  <div className="text-sm text-gray-600">Commercial • Ongoing</div>
-                  <div className="text-xs text-gray-500 mt-1">IT Corridor</div>
-                </div>
-              </Link>
+              {similarProjects.map((similarProject) => {
+                const similarStatus = getStatusConfig(similarProject.status)
+                return (
+                  <Link 
+                    key={similarProject.slug}
+                    href={`/projects/${similarProject.slug}`}
+                    className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group"
+                  >
+                    <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 mr-4">
+                      <ImageWithFallback
+                        src={similarProject.images.main}
+                        alt={similarProject.title}
+                        width={64}
+                        height={64}
+                        className="object-cover"
+                        fallbackText={similarProject.title}
+                      />
+                    </div>
+                    <div>
+                      <div className="font-semibold group-hover:text-primary-600 transition-colors">
+                        {similarProject.title}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {similarProject.type.charAt(0).toUpperCase() + similarProject.type.slice(1)} • 
+                        {similarStatus && (
+                          <span className={`ml-1 ${similarStatus.color.split(' ')[1]}`}>
+                            {similarStatus.name}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {getFormattedLocation(similarProject)}
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
             
             <Link 
               href="/projects" 
               className="block text-center mt-6 text-primary-600 hover:text-primary-700 font-medium"
             >
-              View All Projects →
+              {NAVIGATION_LINKS.viewAllProjects.label} →
             </Link>
           </div>
         </div>

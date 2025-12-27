@@ -1,3 +1,4 @@
+// src/components/about-us/CSRActivity.tsx
 import { Heart, TreePine, Users, BookOpen, Award } from 'lucide-react'
 import Container from '@/components/common/Layout/Container'
 import Section from '@/components/common/Layout/Section'

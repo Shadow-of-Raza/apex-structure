@@ -9,6 +9,10 @@
     --background-rgb: 255, 255, 255;
     --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   }
+  
+html {
+  scroll-behavior: smooth;
+}
 /* 
   * {
     @apply border;
@@ -156,4 +160,33 @@
   .aspect-portrait {
     aspect-ratio: 3/4;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* src/styles/globals.css */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop2 {
+  from { transform: translateY(-10px); }
+  to { transform: translateY(0); }
+}
+
+.animate-in {
+  animation: in 0.2s ease-in-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.slide-in-from-top-2 {
+  animation: slideInFromTop2 0.2s ease-in-out;
 }

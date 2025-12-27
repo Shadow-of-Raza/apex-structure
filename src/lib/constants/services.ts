@@ -49,8 +49,7 @@ export const servicesData: Service[] = [
       }
     ]
   },
-  // Add other services similarly...
-]
+ ]
 
 export const serviceBenefits = [
   {

@@ -1,3 +1,4 @@
+// src/components/about-us/MentorsMessage.tsx
 import { Award, Lightbulb, Target } from 'lucide-react'
 import Container from '@/components/common/Layout/Container'
 import Section from '@/components/common/Layout/Section'

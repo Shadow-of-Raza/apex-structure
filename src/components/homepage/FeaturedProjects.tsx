@@ -1,135 +1,164 @@
+// src/components/homepage/FeaturedProjects.tsx
 'use client'
 
-import { MapPin, Calendar, ArrowRight } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { getFeaturedProjects } from '@/lib/utils/projects'
+import useEmblaCarousel from 'embla-carousel-react'
+import { getOnlyFeaturedProjects, getTotalProjectsCount } from '@/lib/utils/projects'
+import ProjectCard from '@/components/projects/ProjectCard'
 
 export default function FeaturedProjects() {
-  // Get featured projects (first 3 from our data)
-  const featuredProjects = getFeaturedProjects(3)
+  // Get ONLY featured projects (isFeatured = true)
+  const featuredProjects = getOnlyFeaturedProjects()
+  const totalProjects = getTotalProjectsCount()
+  
+  // Embla Carousel setup
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    align: 'start',
+    skipSnaps: false,
+    duration: 20
+  })
+  
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
-  // Clean image URL by removing query parameters
-  const cleanImageUrl = (url: string) => {
-    return url.split('?')[0] || url;
+  const scrollTo = useCallback((index: number) => emblaApi && emblaApi.scrollTo(index), [emblaApi])
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return
+    setSelectedIndex(emblaApi.selectedScrollSnap())
+  }, [emblaApi])
+
+  useEffect(() => {
+    if (!emblaApi) return
+    
+    // Initialize
+    onSelect()
+    setScrollSnaps(emblaApi.scrollSnapList())
+    
+    // Event listeners
+    emblaApi.on('select', onSelect)
+    emblaApi.on('reInit', onSelect)
+    
+    return () => {
+      emblaApi.off('select', onSelect)
+      emblaApi.off('reInit', onSelect)
+    }
+  }, [emblaApi, onSelect])
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (!emblaApi || scrollSnaps.length <= 1) return
+    
+    const interval = setInterval(() => {
+      if (emblaApi) {
+        const nextIndex = (emblaApi.selectedScrollSnap() + 1) % scrollSnaps.length
+        scrollTo(nextIndex)
+      }
+    }, 5000)
+    
+    return () => {
+      clearInterval(interval)
+    }
+  }, [emblaApi, scrollSnaps.length, scrollTo])
+
+  // Don't show the section if there are no featured projects
+  if (featuredProjects.length === 0) {
+    return null
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-8 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <span className="text-primary-600 font-semibold">FEATURED PROJECTS</span>
-          <h2 className="text-4xl font-bold mt-2 mb-4">Our Premium Developments</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our landmark projects that redefine urban living and commercial spaces
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {featuredProjects.map((project) => {
-            const statusColors = {
-              planning: 'bg-blue-100 text-blue-800',
-              ongoing: 'bg-secondary-100 text-secondary-800',
-              completed: 'bg-green-100 text-green-800',
-              upcoming: 'bg-purple-100 text-purple-800',
-            }
-            
-            const statusText = {
-              planning: 'Planning',
-              ongoing: 'Ongoing',
-              completed: 'Completed',
-              upcoming: 'Upcoming',
-            }
-
-            const mainImage = cleanImageUrl(project.images.main)
-
-            return (
-              <div key={project.id} className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <div className="h-56 relative overflow-hidden">
-                  {/* Real Project Image */}
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={mainImage}
-                      alt={project.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      onError={(e) => {
-                        // Fallback if image fails to load
-                        const target = e.target as HTMLImageElement
-                        target.style.display = 'none'
-                        target.parentElement!.innerHTML = `
-                          <div class="w-full h-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                            <div class="text-white text-center">
-                              <div class="text-4xl font-bold opacity-20">AS</div>
-                              <p class="mt-2 opacity-70">${project.title}</p>
-                            </div>
-                          </div>
-                        `
-                      }}
-                    />
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold flex items-center ${statusColors[project.status]}`}>
-                      <div className={`w-2 h-2 rounded-full mr-2 ${project.status === 'ongoing' ? 'bg-secondary-800' : project.status === 'completed' ? 'bg-green-800' : 'bg-blue-800'}`}></div>
-                      {statusText[project.status]}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
-                      {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
-                    </span>
-                    <div className="flex items-center text-gray-500">
-                      <Calendar size={16} className="mr-1" />
-                      <span className="text-sm">
-                        {new Date(project.completionDate).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
-                      </span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-primary-600 transition-colors line-clamp-1">
-                    {project.title}
-                  </h3>
-                  
-                  <div className="flex items-center text-gray-600 mb-3">
-                    <MapPin size={16} className="mr-2 flex-shrink-0" />
-                    <span className="text-sm truncate">{project.location}</span>
-                  </div>
-                  
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700">
-                      {project.area} sq.ft.
-                    </span>
-                    <Link 
-                      href={`/projects/${project.slug}`}
-                      className="inline-flex items-center text-primary-600 font-semibold hover:text-primary-700"
-                    >
-                      View Details
-                      <ArrowRight size={16} className="ml-2" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-        
-        <div className="text-center">
+        {/* Header with View All Link */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold">
+              Our <span className="text-primary-600">Featured</span> Projects
+            </h2>
+            <p className="text-gray-600 mt-1 max-w-2xl">
+              Explore our handpicked featured projects that redefine urban living and commercial spaces
+            </p>
+          </div>
+          
+          {/* View All Projects Link */}
           <Link 
             href="/projects"
-            className="inline-flex items-center justify-center border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-8 py-3 rounded-lg font-semibold text-lg transition duration-300"
+            className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold whitespace-nowrap group"
           >
-            View All Projects
-            <ArrowRight className="ml-2" size={20} />
+            View All {totalProjects} Projects
+            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
           </Link>
         </div>
+
+        {/* Carousel Container */}
+        <div className="relative">
+          {/* Carousel */}
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex -ml-4">
+              {featuredProjects.map((project) => (
+                <div key={project.id} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-4">
+                  <div className="h-full">
+                    {/* Using the SAME grid view card from ProjectCard */}
+                    <ProjectCard 
+                      project={project} 
+                      viewMode="grid"  // Changed from "featured" to "grid"
+                      compact={true}
+                      showFeatures={true}
+                      showHighlights={false}
+                      showDates={true}
+                      showClient={false}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Buttons - Only show if there are multiple featured projects */}
+          {featuredProjects.length > 1 && (
+            <>
+              <button 
+                onClick={scrollPrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+                aria-label="Previous project"
+              >
+                <ChevronLeft size={20} className="text-gray-700" />
+              </button>
+              
+              <button 
+                onClick={scrollNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+                aria-label="Next project"
+              >
+                <ChevronRight size={20} className="text-gray-700" />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* Dots Indicator - Only show if there are multiple featured projects */}
+        {featuredProjects.length > 1 && (
+          <div className="flex justify-center items-center mt-8 space-x-2">
+            {scrollSnaps.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollTo(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === selectedIndex 
+                    ? 'bg-primary-600 w-6' 
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={index === selectedIndex}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

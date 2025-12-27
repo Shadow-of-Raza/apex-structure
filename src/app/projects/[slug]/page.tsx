@@ -80,11 +80,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         ]}
       />
 
-      <Section padding="lg">
-        <Container>
-          <ProjectDetails project={project} />
-        </Container>
-      </Section>
+      <ProjectDetails project={project} />
+
     </>
   )
 }

@@ -1,14 +1,9 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { IBM_Plex_Serif } from 'next/font/google'
 import '@/styles/globals.css'
 import Header from '@/components/common/Header/Header'
 import Footer from '@/components/common/Footer/Footer'
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://apex-structure.com'),
@@ -18,12 +13,7 @@ export const metadata: Metadata = {
   },
   description:
     'Leading real estate development company specializing in residential, commercial, and industrial projects.',
-  keywords: [
-    'real estate',
-    'construction',
-    'property development',
-    'builders',
-  ],
+  keywords: ['real estate', 'construction', 'property development', 'builders'],
   openGraph: {
     title: 'Apex Structure',
     description:
@@ -35,7 +25,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/images/favicon/favicon.ico',
   },
 }
 
@@ -45,8 +35,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body className="min-h-screen bg-gray-50" suppressHydrationWarning >          
+    <html lang="en">
+      <body
+        className="min-h-screen bg-gray-50 font-sans"
+        suppressHydrationWarning
+      >
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />

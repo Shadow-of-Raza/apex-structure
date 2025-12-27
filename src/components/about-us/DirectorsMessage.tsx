@@ -1,3 +1,4 @@
+// src/components/about-us/DirectorsMessage.tsx
 import { Signature, Quote } from 'lucide-react'
 import Container from '@/components/common/Layout/Container'
 import Section from '@/components/common/Layout/Section'

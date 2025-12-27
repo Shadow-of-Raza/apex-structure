@@ -17,7 +17,7 @@ export default function PageHeader({
 }: PageHeaderProps) {
   return (
     <div 
-      className="relative bg-gradient-to-r from-primary-700 to-primary-800 text-white py-20"
+      className="relative bg-gradient-to-r from-primary-700 to-primary-100 text-white py-20"
       style={{
         backgroundImage: backgroundImage ? `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backgroundImage})` : undefined,
         backgroundSize: 'cover',
@@ -63,7 +63,7 @@ export default function PageHeader({
         {/* CTA Buttons */}
         <div className="flex flex-wrap gap-4 mt-8">
           <a
-            href="#company-profile"
+            href="/about-us#company-profile"
             className="bg-secondary-500 hover:bg-secondary-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300"
           >
             Explore Our Story

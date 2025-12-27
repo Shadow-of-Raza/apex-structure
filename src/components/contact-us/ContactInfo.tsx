@@ -129,32 +129,7 @@ export default function ContactInfo() {
           </div>
         </div>
       </div>
-      
-      {/* Department Contacts */}
-      <div className="bg-gray-50 rounded-2xl p-6">
-        <h4 className="text-lg font-bold mb-4">Contact by Department</h4>
-        <div className="space-y-4">
-          {departments.map((dept, index) => (
-            <div key={index} className="bg-white rounded-lg p-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h5 className="font-semibold text-gray-800">{dept.name}</h5>
-                  <div className="text-sm text-gray-600 mt-1">
-                    <div>{dept.contact}</div>
-                    <div>{dept.phone}</div>
-                  </div>
-                </div>
-                <a
-                  href={`mailto:${dept.contact}`}
-                  className="text-primary-600 hover:text-primary-700 text-sm font-medium whitespace-nowrap"
-                >
-                  Contact
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+
     </div>
   )
 }

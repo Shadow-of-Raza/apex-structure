@@ -5,7 +5,6 @@ export const mainNav = [
   { name: 'Projects', href: '/projects', current: false },
   { name: 'Services', href: '/services', current: false },
   { name: 'Our Business', href: '/our-business', current: false },
-  { name: 'Gallery', href: '/gallery', current: false },
   { name: 'Equipment', href: '/equipment', current: false },
   { name: 'Clientele', href: '/clientele', current: false },
   { name: 'Blogs', href: '/blogs', current: false },
@@ -16,7 +15,6 @@ export const footerNav = {
     { name: 'About Us', href: '/about-us' },
     { name: 'Projects', href: '/projects' },
     { name: 'Services', href: '/services' },
-    { name: 'Gallery', href: '/gallery' },
     { name: 'Contact Us', href: '/contact-us' },
   ],
   services: [

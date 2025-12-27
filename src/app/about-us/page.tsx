@@ -29,7 +29,6 @@ export default function AboutUsPage() {
       <VisionMission />
       <OurTeam />
       <CSRActivity />
-      
       {/* CTA Section */}
       <Section background="primary" padding="lg">
         <Container>

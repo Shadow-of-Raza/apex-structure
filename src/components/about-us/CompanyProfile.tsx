@@ -1,3 +1,4 @@
+// src/components/about-us/CompanyProfile.tsx
 'use client'
 
 import { useState } from 'react'

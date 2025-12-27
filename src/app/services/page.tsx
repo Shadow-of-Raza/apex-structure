@@ -35,7 +35,7 @@ export default function ServicesPage() {
         ]}
       />
       {/* Stats Overview */}
-      <Section padding="md" background="primary">
+      {/* <Section padding="md" background="primary">
         <Container>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-white">
             <div className="text-center">
@@ -56,7 +56,7 @@ export default function ServicesPage() {
             </div>
           </div>
         </Container>
-      </Section>
+      </Section> */}
 
 
       <Section padding="lg">
