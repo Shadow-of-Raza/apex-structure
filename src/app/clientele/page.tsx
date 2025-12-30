@@ -7,18 +7,17 @@ import ClientTestimonials from '@/components/clientele/ClientTestimonials'
 import ClientIndustries from '@/components/clientele/ClientIndustries'
 import ClientPartnerships from '@/components/clientele/ClientPartnerships'
 import CTA from '@/components/homepage/CTA'
+import { CLIENTELE_IMAGES } from '@/lib/constants/page-header'
 
 export default function ClientelePage() {
   return (
     <>
       {/* Hero Section */}
       <PageHeader
-        title="Our Prestigious Clientele"
-        description="Trusted by leading corporations, institutions, and satisfied customers across various sectors for premium real estate development solutions."
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Clientele', href: '/clientele' }
-        ]}
+        images={CLIENTELE_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
       
       {/* Client Statistics */}

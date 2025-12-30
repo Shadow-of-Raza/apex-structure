@@ -8,18 +8,17 @@ import VisionMission from '@/components/about-us/VisionMission'
 import OurTeam from '@/components/about-us/OurTeam'
 import CSRActivity from '@/components/about-us/CSRActivity'
 import Section from '@/components/common/Layout/Section'
+import { ABOUT_US_IMAGES } from '@/lib/constants/page-header'
 
 export default function AboutUsPage() {
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section with Auto-Changing Images */}
       <PageHeader
-        title="About Apex Structure"
-        description="Building excellence in real estate since 2005 with innovation, quality, and integrity"
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'About Us', href: '/about-us' }
-        ]}
+        images={ABOUT_US_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
       
       {/* Rest of your content remains the same */}

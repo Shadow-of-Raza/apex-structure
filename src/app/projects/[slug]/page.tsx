@@ -71,17 +71,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <>
-      <PageHeader
-        title={project.title}
-        description={project.description}
-        breadcrumbs={[
-          ...getBreadcrumbs(),
-          { name: project.title, href: `/projects/${project.slug}` }
-        ]}
-      />
-
       <ProjectDetails project={project} />
-
     </>
   )
 }

@@ -14,6 +14,8 @@ import {
   getUniqueCities,
   getHeroStats // Import hero stats
 } from '@/lib/utils/projects'
+import { PROJECTS_IMAGES } from '@/lib/constants/page-header'
+
 
 export default function ProjectsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -63,12 +65,10 @@ export default function ProjectsPage() {
     <>
       {/* Hero Section - Updated with more stats */}
       <PageHeader
-        title="Our Projects Portfolio"
-        description={`Explore ${totalProjects} successful projects across ${citiesCovered} cities, featuring ${featuredProjects} premium developments delivered with excellence`}
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Projects', href: '/projects' }
-        ]}
+                images={PROJECTS_IMAGES}
+                imageTransitionInterval={6000}
+                showOverlay={true}
+                overlayOpacity={0.7}
       />
 
       {/* Main Content Section */}

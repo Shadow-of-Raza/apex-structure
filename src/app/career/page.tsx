@@ -14,6 +14,7 @@ import {
   careerStats,
   type JobOpening as JobOpeningType 
 } from '@/lib/constants/career'
+import { CAREER_IMAGES } from '@/lib/constants/page-header'
 
 export default function CareerPage() {
   const [filteredJobs, setFilteredJobs] = useState<JobOpeningType[]>(jobOpenings)
@@ -64,12 +65,10 @@ export default function CareerPage() {
     <>
       {/* Hero Section */}
       <PageHeader
-        title="Build Your Career With Us"
-        description="Join Apex Structure and contribute to landmark projects while advancing your professional journey in real estate development."
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Career', href: '/career' }
-        ]}
+        images={CAREER_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
       
       {/* Stats Section */}

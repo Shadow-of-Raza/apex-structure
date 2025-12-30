@@ -1,7 +1,6 @@
 // src/app/equipment/categories/[categoryId]/page.tsx
 import { notFound } from 'next/navigation'
 import Container from '@/components/common/Layout/Container'
-import PageHeader from '@/components/common/Layout/PageHeader'
 import Section from '@/components/common/Layout/Section'
 import EquipmentCard from '@/components/equipment/EquipmentCard'
 import { 
@@ -33,18 +32,7 @@ export default async function CategoryEquipmentPage({ params }: CategoryEquipmen
   const equipmentCount = getEquipmentCountByCategory(categoryId)
 
   return (
-    <>
-      <PageHeader
-        title={category.name}
-        description={category.description}
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Equipment', href: '/equipment' },
-          { name: 'Categories', href: '/equipment#categories' },
-          { name: category.name, href: `/equipment/categories/${categoryId}` }
-        ]}
-      />
-      
+    <>   
       <Section>
         <Container>
           <div className="mb-8">

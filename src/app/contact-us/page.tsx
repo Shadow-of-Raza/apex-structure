@@ -3,18 +3,17 @@ import PageHeader from '@/components/common/Layout/PageHeader'
 import ContactForm from '@/components/contact-us/ContactForm'
 import ContactInfo from '@/components/contact-us/ContactInfo'
 import Section from '@/components/common/Layout/Section'
+import { CONTACT_IMAGES } from '@/lib/constants/page-header'
 
 export default function ContactUsPage() {
   return (
     <>
       {/* Hero Section */}
       <PageHeader
-        title="Get In Touch"
-        description="Connect with our team for premium real estate development solutions, project consultations, and partnership opportunities."
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Contact Us', href: '/contact-us' }
-        ]}
+        images={CONTACT_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
       
       <Section>

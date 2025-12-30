@@ -6,18 +6,17 @@ import BusinessModel from '@/components/our-business/BusinessModel'
 import ProjectLifecycle from '@/components/our-business/ProjectLifecycle'
 import MarketPresence from '@/components/our-business/MarketPresence'
 import BusinessAdvantages from '@/components/our-business/BusinessAdvantages'
+import { OURBUSINESS_IMAGES } from '@/lib/constants/page-header'
 
 export default function OurBusinessPage() {
   return (
     <>
       {/* Hero Section */}
       <PageHeader
-        title="Our Business"
-        description="Comprehensive real estate development solutions across residential, commercial, and industrial sectors. Discover our business model, expertise, and commitment to excellence."
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Our Business', href: '/our-business' }
-        ]}
+                images={OURBUSINESS_IMAGES}
+                imageTransitionInterval={6000}
+                showOverlay={true}
+                overlayOpacity={0.7}
       />
       
       {/* Introduction */}

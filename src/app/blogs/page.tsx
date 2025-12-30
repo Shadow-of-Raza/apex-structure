@@ -7,6 +7,9 @@ import Container from '@/components/common/Layout/Container'
 import PageHeader from '@/components/common/Layout/PageHeader'
 import Section from '@/components/common/Layout/Section'
 import Button from '@/components/common/UI/Button'
+import { BLOG_IMAGES } from '@/lib/constants/page-header'
+
+
 import { 
   blogPosts, 
   blogCategories, 
@@ -115,12 +118,10 @@ export default function BlogPage() {
     <>
       {/* Hero Section */}
       <PageHeader
-        title="Blog & Insights"
-        description="Expert insights, industry news, and construction tips from our team of professionals"
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Blog', href: '/blogs' }
-        ]}
+        images={BLOG_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
       
       <Section>

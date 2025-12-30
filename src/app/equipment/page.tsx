@@ -8,17 +8,16 @@ import TechnologyShowcase from '@/components/equipment/TechnologyShowcase'
 import MaintenanceSection from '@/components/equipment/MaintenanceSection'
 import EquipmentCTA from '@/components/equipment/EquipmentCTA'
 import Section from '@/components/common/Layout/Section'
+import { EQUIPMENT_IMAGES } from '@/lib/constants/page-header'
 
 export default function EquipmentPage() {
   return (
     <>
       <PageHeader
-        title="Equipment & Machinery"
-        description="State-of-the-art construction equipment and technology infrastructure powering our projects with precision, safety, and efficiency."
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Equipment', href: '/equipment' }
-        ]}
+                images={EQUIPMENT_IMAGES}
+                imageTransitionInterval={6000}
+                showOverlay={true}
+                overlayOpacity={0.7}
       />
       
       {/* Featured Equipment Grid */}

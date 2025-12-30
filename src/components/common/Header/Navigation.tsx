@@ -4,10 +4,15 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ChevronDown, Building2, MessageSquare, Target, Users, Heart } from 'lucide-react'
+import { ChevronDown, Building2, MessageSquare, Target, Users, Heart, Pen } from 'lucide-react'
 import { mainNav } from '@/lib/constants/navigation'
 
 const aboutDropdownItems = [
+  { 
+    name: 'About Us', 
+    href: '/about-us',
+    icon: <Pen size={16} />
+  },
   { 
     name: 'Company Profile', 
     href: '/about-us#company-profile',

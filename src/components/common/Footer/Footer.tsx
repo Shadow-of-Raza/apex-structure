@@ -19,16 +19,16 @@ export default function Footer() {
               Leading real estate developers creating sustainable and innovative spaces for a better tomorrow.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-primary-700 hover:text-white transition-all duration-300">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-primary-700 hover:text-white transition-all duration-300">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-primary-700 hover:text-white transition-all duration-300">
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-blue_shade_1 hover:text-white transition-all duration-300">
+              <a href="#" className="w-10 h-10 text-black-400 bg-platinum-500 rounded-full flex items-center justify-center hover:bg-primary-700 hover:text-white transition-all duration-300">
                 <Instagram size={20} />
               </a>
             </div>
@@ -41,64 +41,64 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/about-us" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   About Us
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/projects" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Projects
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Services
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/our-business" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Our Buisness
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/equipments" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Equipments
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/blogs" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Blogs
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/contact-us" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Contact Us
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
             </ul>
@@ -111,55 +111,55 @@ export default function Footer() {
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Commercial Construction
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Residential Projects
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Industrial Construction
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Renovation & Interior
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Project Management
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
               <li>
                 <Link 
                   href="/services" 
-                  className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >
                   Consultation
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </li>
             </ul>
@@ -170,7 +170,7 @@ export default function Footer() {
             <h3 className="text-xl text-blue_shade_1 font-bold mb-6 font-sans">Contact Us</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin className="text-royal_gold-400 mr-3 mt-1" size={20} />
+                <MapPin className="text-secondary-500 mr-3 mt-1" size={20} />
                 <span className="text-black-400 font-medium font-sans">
                   123 Construction Avenue,<br />
                   Business District,<br />
@@ -178,11 +178,11 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center">
-                <Phone className="text-royal_gold-400 mr-3" size={20} />
+                <Phone className="text-secondary-500 mr-3" size={20} />
                 <span className="text-black-400 font-medium font-sans">+1 (555) 123-4567</span>
               </li>
               <li className="flex items-center">
-                <Mail className="text-royal_gold-400 mr-3" size={20} />
+                <Mail className="text-secondary-500 mr-3" size={20} />
                 <span className="text-black-400 font-medium font-sans">info@apexstructure.com</span>
               </li>
             </ul>
@@ -199,31 +199,31 @@ export default function Footer() {
             <div className="flex space-x-6">
               <Link 
                 href="/career" 
-                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
               >
                 Career
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href="/privacy-policy" 
-                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
               >
                 Privacy Policy
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href="/terms-and-conditions" 
-                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
               >
                 Terms & Conditions
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link 
                 href="/sitemap.xml" 
-                className="relative text-black-400 font-medium hover:text-blue_shade_1 transition-colors duration-300 inline-block group font-sans"
+                className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
               >
                 Sitemap
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-royal_gold-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </div>
           </div>

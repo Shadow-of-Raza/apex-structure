@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { 
   ArrowLeft, 
   Upload, 
-  FileText, 
   CheckCircle, 
   AlertCircle,
   Mail,
@@ -14,7 +13,6 @@ import {
   Briefcase
 } from 'lucide-react'
 import Container from '@/components/common/Layout/Container'
-import PageHeader from '@/components/common/Layout/PageHeader'
 import Section from '@/components/common/Layout/Section'
 import FormInput from '@/components/common/Forms/FormInput'
 import FormTextarea from '@/components/common/Forms/FormTextarea'
@@ -159,16 +157,6 @@ export default function JobApplicationPage() {
   if (isSubmitted) {
     return (
       <>
-        <PageHeader
-          title="Application Submitted"
-          description="Thank you for applying to Apex Structure. We'll review your application and get back to you soon."
-          breadcrumbs={[
-            { name: 'Home', href: '/' },
-            { name: 'Career', href: '/career' },
-            { name: job.title, href: `/career/apply/${job.slug}` }
-          ]}
-        />
-        
         <Section>
           <Container>
             <div className="max-w-2xl mx-auto text-center">
@@ -235,15 +223,7 @@ export default function JobApplicationPage() {
 
   return (
     <>
-      <PageHeader
-        title={`Apply: ${job.title}`}
-        description={`Submit your application for the ${job.title} position at Apex Structure`}
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Career', href: '/career' },
-          { name: job.title, href: `/career/apply/${job.slug}` }
-        ]}
-      />
+
       
       <Section>
         <Container>

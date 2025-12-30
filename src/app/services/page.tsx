@@ -7,6 +7,7 @@ import ServicesProcess from '@/components/services/ServicesProcess'
 import ServiceCTA from '@/components/services/ServiceCTA'
 import SeoHead from '@/components/common/SEO/SeoHead'
 import { projectsData } from '@/lib/constants/projects'
+import { SERVICES_IMAGES } from '@/lib/constants/page-header'
 
 const totalProjects = projectsData.length
 
@@ -27,12 +28,10 @@ export default function ServicesPage() {
       />
 
       <PageHeader
-        title="Our Services"
-        description="Comprehensive construction and real estate development solutions delivered with innovation, quality, and precision"
-        breadcrumbs={[
-          { name: 'Home', href: '/' },
-          { name: 'Services', href: '/services' }
-        ]}
+                images={SERVICES_IMAGES}
+                imageTransitionInterval={6000}
+                showOverlay={true}
+                overlayOpacity={0.7}
       />
       {/* Stats Overview */}
       {/* <Section padding="md" background="primary">
