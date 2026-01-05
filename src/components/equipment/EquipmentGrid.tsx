@@ -17,12 +17,18 @@ export default function EquipmentGrid() {
     index: 0
   })
 
+  const [flippedCardId, setFlippedCardId] = useState<number | null>(null)
+
   const openModal = (images: string[]) => {
     setModalState({
       isOpen: true,
       images,
       index: 0
     })
+  }
+
+  const handleToggleFlip = (id: number) => {
+    setFlippedCardId(prev => prev === id ? null : id)
   }
 
   return (
@@ -50,6 +56,8 @@ export default function EquipmentGrid() {
             <EquipmentCard
               key={item.id}
               equipment={item}
+              isFlipped={flippedCardId === item.id}
+              onToggleFlip={() => handleToggleFlip(item.id)}
               onViewImage={openModal}
             />
           ))}

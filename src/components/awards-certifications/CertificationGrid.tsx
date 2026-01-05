@@ -21,7 +21,7 @@ export default function CertificationGrid() {
                     {items.map((item) => (
                         <div
                             key={item.id}
-                            className="group relative h-[650px] rounded-2xl overflow-hidden cursor-pointer shadow-xl hover:shadow-3xl transition-all duration-700"
+                            className="group relative h-[650px] rounded-2xl overflow-hidden shadow-xl hover:shadow-3xl transition-all duration-700"
                         >
                             {/* Background Image */}
                             <Image
@@ -43,7 +43,7 @@ export default function CertificationGrid() {
                                             {item.year}
                                         </span>
                                     )}
-                                    <span className="text-secondary-400 text-xs font-bold uppercase tracking-[0.25em]">
+                                    <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full px-2">
                                         {item.authority}
                                     </span>
                                 </div>

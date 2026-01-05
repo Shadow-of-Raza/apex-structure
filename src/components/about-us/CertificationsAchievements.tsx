@@ -100,7 +100,7 @@ export default function CertificationsAchievements() {
                         <div className="flex -ml-8">
                             {featuredItems.map((item) => (
                                 <div key={item.id} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-8">
-                                    <div className="group relative h-[600px] rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500">
+                                    <div className="group relative h-[600px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
                                         {/* Background Image */}
                                         <Image
                                             src={item.image}

@@ -9,8 +9,9 @@ export const equipmentData: Equipment[] = [
     year: 2022,
     count: 12,
     images: [
-      'https://images.pexels.com/photos/93400/pexels-photo-93400.jpeg',
-      'https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg'
+      'https://images.pexels.com/photos/6245621/pexels-photo-6245621.jpeg',
+      'https://images.pexels.com/photos/95687/pexels-photo-95687.jpeg',
+      'https://images.pexels.com/photos/1078884/pexels-photo-1078884.jpeg'
     ],
   },
   {
@@ -21,8 +22,8 @@ export const equipmentData: Equipment[] = [
     year: 2021,
     count: 4,
     images: [
-      'https://images.pexels.com/photos/259071/pexels-photo-259071.jpeg',
-      'https://images.pexels.com/photos/4508748/pexels-photo-4508748.jpeg'
+      'https://images.pexels.com/photos/224924/pexels-photo-224924.jpeg',
+      'https://images.pexels.com/photos/259870/pexels-photo-259870.jpeg'
     ],
   },
   {
@@ -33,7 +34,8 @@ export const equipmentData: Equipment[] = [
     year: 2020,
     count: 6,
     images: [
-      'https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg'
+      'https://images.pexels.com/photos/1009926/pexels-photo-1009926.jpeg',
+      'https://images.pexels.com/photos/461789/pexels-photo-461789.jpeg'
     ]
   },
   {
@@ -44,8 +46,8 @@ export const equipmentData: Equipment[] = [
     year: 2023,
     count: 8,
     images: [
-      'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg',
-      'https://images.pexels.com/photos/4508751/pexels-photo-4508751.jpeg'
+      'https://images.pexels.com/photos/10068081/pexels-photo-10068081.jpeg',
+      'https://images.pexels.com/photos/12032961/pexels-photo-12032961.jpeg'
     ]
   },
   {
@@ -56,8 +58,8 @@ export const equipmentData: Equipment[] = [
     year: 2021,
     count: 3,
     images: [
-      'https://images.pexels.com/photos/4508754/pexels-photo-4508754.jpeg',
-      'https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg'
+      'https://images.pexels.com/photos/20591230/pexels-photo-20591230.jpeg',
+      'https://images.pexels.com/photos/15109999/pexels-photo-15109999.jpeg'
     ]
   },
   {
@@ -68,7 +70,9 @@ export const equipmentData: Equipment[] = [
     year: 2022,
     count: 7,
     images: [
-      'https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg'
+      'https://images.pexels.com/photos/4390530/pexels-photo-4390530.jpeg',
+      'https://images.pexels.com/photos/32967188/pexels-photo-32967188.jpeg',
+      'https://images.pexels.com/photos/29470165/pexels-photo-29470165.jpeg'
     ]
   },
   {
@@ -79,8 +83,8 @@ export const equipmentData: Equipment[] = [
     year: 2022,
     count: 10,
     images: [
-      'https://images.pexels.com/photos/4484079/pexels-photo-4484079.jpeg',
-      'https://images.pexels.com/photos/2101137/pexels-photo-2101137.jpeg'
+      'https://images.pexels.com/photos/1267324/pexels-photo-1267324.jpeg',
+      'https://images.pexels.com/photos/11666905/pexels-photo-11666905.jpeg'
     ],
   },
   {
@@ -91,8 +95,8 @@ export const equipmentData: Equipment[] = [
     year: 2023,
     count: 5,
     images: [
-      'https://images.pexels.com/photos/4508746/pexels-photo-4508746.jpeg',
-      'https://images.pexels.com/photos/4508747/pexels-photo-4508747.jpeg'
+      'https://images.pexels.com/photos/33703998/pexels-photo-33703998.jpeg',
+      'https://images.pexels.com/photos/16717787/pexels-photo-16717787.jpeg'
     ],
   },
   {
@@ -103,8 +107,8 @@ export const equipmentData: Equipment[] = [
     year: 2023,
     count: 25,
     images: [
-      'https://images.pexels.com/photos/209235/pexels-photo-209235.jpeg',
-      'https://images.pexels.com/photos/162553/pexels-photo-162553.jpeg'
+      'https://images.pexels.com/photos/4792494/pexels-photo-4792494.jpeg',
+      'https://images.pexels.com/photos/20744242/pexels-photo-20744242.jpeg'
     ],
   },
   {
@@ -115,8 +119,8 @@ export const equipmentData: Equipment[] = [
     year: 2022,
     count: 15,
     images: [
-      'https://images.pexels.com/photos/4792492/pexels-photo-4792492.jpeg',
-      'https://images.pexels.com/photos/4792493/pexels-photo-4792493.jpeg'
+      'https://images.pexels.com/photos/21366138/pexels-photo-21366138.jpeg',
+      'https://images.pexels.com/photos/12951637/pexels-photo-12951637.jpeg'
     ],
   }
 ]

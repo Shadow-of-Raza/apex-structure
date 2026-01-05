@@ -69,7 +69,7 @@ export interface CSRActivity {
     category: string;
 }
 export interface CertificationAndAchievement {
-    id: string;
+    id: number;
     title: string;
     authority: string; // Issuing authority or achievement context
     description: string;

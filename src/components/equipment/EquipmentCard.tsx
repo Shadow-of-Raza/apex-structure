@@ -8,16 +8,17 @@ import { Equipment } from '@/lib/types/equipment'
 
 interface EquipmentCardProps {
   equipment: Equipment
+  isFlipped: boolean
+  onToggleFlip: () => void
   onViewImage: (images: string[]) => void
 }
 
-export default function EquipmentCard({ equipment, onViewImage }: EquipmentCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false)
+export default function EquipmentCard({ equipment, isFlipped, onToggleFlip, onViewImage }: EquipmentCardProps) {
 
   return (
     <div
       className="relative h-[450px] w-full perspective-1000 cursor-pointer group"
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={onToggleFlip}
     >
       <div
         className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''
@@ -35,9 +36,6 @@ export default function EquipmentCard({ equipment, onViewImage }: EquipmentCardP
 
             {/* Overlay Name */}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black-200/90 via-black-200/40 to-transparent p-6 pt-12">
-              <span className="text-secondary-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block">
-                {equipment.brand}
-              </span>
               <h3 className="text-white text-xl font-black uppercase leading-tight">
                 {equipment.name}
               </h3>
