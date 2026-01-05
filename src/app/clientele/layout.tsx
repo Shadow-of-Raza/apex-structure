@@ -36,7 +36,7 @@ export default function ClienteleLayout({
           "itemListOrder": "https://schema.org/ItemListOrderDescending",
         }}
       />
-      
+
       {children}
     </>
   )

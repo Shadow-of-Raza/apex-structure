@@ -32,17 +32,17 @@ export default function Header() {
                 <span className="whitespace-nowrap">123 Construction Avenue, Business District, City, State 12345</span>
               </div>
             </div>
-            
+
             {/* Quick Links */}
             <div className="flex space-x-4">
-              <Link 
-                href="/career" 
+              <Link
+                href="/career"
                 className="text-white hover:text-secondary-500 text-sm transition whitespace-nowrap"
               >
                 Careers
               </Link>
-              <Link 
-                href="/contact-us" 
+              <Link
+                href="/contact-us"
                 className="text-white hover:text-secondary-500 text-sm transition whitespace-nowrap"
               >
                 Contact
@@ -56,9 +56,9 @@ export default function Header() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex-shrink-0">
-            <Image 
-              src="/images/logo/logo.png" 
-              alt="Apex Structure Logo" 
+            <Image
+              src="/images/logo/logo.png"
+              alt="Apex Structure Logo"
               width={150}
               height={50}
               className="h-auto w-[140px] md:w-[170px] lg:w-[190px]"
@@ -84,6 +84,7 @@ export default function Header() {
 
           {/* Mobile menu button */}
           <button
+            suppressHydrationWarning
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden p-2 rounded-md text-black-400 hover:bg-platinum-700 ml-4"
             aria-label="Toggle menu"

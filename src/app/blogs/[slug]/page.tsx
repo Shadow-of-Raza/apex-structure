@@ -1,17 +1,17 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { 
-  Calendar, 
-  User, 
-  Clock, 
-  Eye, 
-  MessageCircle, 
-  Share2, 
-  Bookmark, 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
+import {
+  Calendar,
+  User,
+  Clock,
+  Eye,
+  MessageCircle,
+  Share2,
+  Bookmark,
+  Facebook,
+  Twitter,
+  Linkedin,
   Mail,
   ChevronLeft,
   Tag
@@ -32,16 +32,17 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = blogPosts.find(p => p.slug === params.slug)
-  
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = blogPosts.find(p => p.slug === slug)
+
   if (!post) {
     return {
       title: 'Post Not Found',
       description: 'The requested blog post could not be found.'
     }
   }
-  
+
   return {
     title: post.metaTitle || post.title,
     description: post.metaDescription || post.excerpt,
@@ -57,22 +58,23 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = blogPosts.find(p => p.slug === params.slug)
-  
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = blogPosts.find(p => p.slug === slug)
+
   if (!post) {
     notFound()
   }
-  
+
   const relatedPosts = getRelatedPosts(post.id, 3)
-  
+
   // Share URL
-  const shareUrl = typeof window !== 'undefined' 
-    ? window.location.href 
+  const shareUrl = typeof window !== 'undefined'
+    ? window.location.href
     : `https://apex-structure.com/blogs/${post.slug}`
-  
+
   const shareText = `Check out this article: ${post.title}`
-  
+
   return (
     <>
       {/* Hero Section */}
@@ -81,14 +83,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="absolute inset-0 bg-black/40" />
           <Container className="relative h-full flex flex-col justify-center text-white">
             <div className="max-w-4xl">
-              <Link 
-                href="/blogs" 
+              <Link
+                href="/blogs"
                 className="inline-flex items-center text-white/80 hover:text-white mb-6 group"
               >
                 <ChevronLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
                 Back to Blog
               </Link>
-              
+
               <div className="flex flex-wrap gap-3 mb-6">
                 <span className="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
                   {post.category.name}
@@ -99,11 +101,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   </span>
                 )}
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                 {post.title}
               </h1>
-              
+
               <div className="flex flex-wrap items-center gap-6 text-white/90">
                 <div className="flex items-center">
                   <User size={18} className="mr-2" />
@@ -126,7 +128,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </Container>
         </div>
       </Section>
-      
+
       <Section>
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -141,7 +143,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   </div>
                 </div>
               </div>
-              
+
               {/* Article Content */}
               <article className="prose prose-lg max-w-none mb-12">
                 {/* This would be your actual blog content in production */}
@@ -149,24 +151,24 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   <p className="text-xl text-gray-700 leading-relaxed">
                     {post.excerpt}
                   </p>
-                  
+
                   <h2 className="text-3xl font-bold mt-12 mb-6">Introduction</h2>
                   <p className="text-gray-700 leading-relaxed">
-                    Welcome to our deep dive into {post.title.toLowerCase()}. In this comprehensive guide, 
-                    we'll explore the key aspects, benefits, and practical applications of this important topic 
+                    Welcome to our deep dive into {post.title.toLowerCase()}. In this comprehensive guide,
+                    we'll explore the key aspects, benefits, and practical applications of this important topic
                     in the construction and real estate industry.
                   </p>
-                  
+
                   <h2 className="text-3xl font-bold mt-12 mb-6">Key Insights</h2>
                   <p className="text-gray-700 leading-relaxed">
-                    Based on our 18+ years of experience in the industry, we've identified several crucial 
-                    factors that contribute to successful implementation. These insights are drawn from 
+                    Based on our 18+ years of experience in the industry, we've identified several crucial
+                    factors that contribute to successful implementation. These insights are drawn from
                     real-world projects and proven methodologies.
                   </p>
-                  
+
                   <div className="bg-primary-50 border-l-4 border-primary-500 p-6 my-8 rounded-r-lg">
                     <p className="text-primary-800 font-semibold italic">
-                      "Success in construction isn't just about building structures; it's about building 
+                      "Success in construction isn't just about building structures; it's about building
                       relationships, trust, and communities that last for generations."
                     </p>
                     <div className="flex items-center mt-4">
@@ -179,13 +181,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                       </div>
                     </div>
                   </div>
-                  
+
                   <h2 className="text-3xl font-bold mt-12 mb-6">Practical Applications</h2>
                   <p className="text-gray-700 leading-relaxed">
-                    Implementing these strategies requires careful planning and execution. Here are some 
+                    Implementing these strategies requires careful planning and execution. Here are some
                     practical steps you can take:
                   </p>
-                  
+
                   <ul className="space-y-3 text-gray-700">
                     <li className="flex items-start">
                       <div className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mr-3 mt-1 flex-shrink-0">
@@ -212,16 +214,16 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                       <span>Regular review and continuous improvement</span>
                     </li>
                   </ul>
-                  
+
                   <h2 className="text-3xl font-bold mt-12 mb-6">Conclusion</h2>
                   <p className="text-gray-700 leading-relaxed">
-                    {post.title} represents a significant opportunity for growth and improvement in the 
-                    construction industry. By embracing these principles and approaches, organizations 
+                    {post.title} represents a significant opportunity for growth and improvement in the
+                    construction industry. By embracing these principles and approaches, organizations
                     can achieve better results, higher efficiency, and greater client satisfaction.
                   </p>
                 </div>
               </article>
-              
+
               {/* Tags */}
               <div className="mb-12">
                 <div className="flex items-center mb-4">
@@ -240,7 +242,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   ))}
                 </div>
               </div>
-              
+
               {/* Share and Actions */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-6 bg-gray-50 rounded-2xl mb-12">
                 <div>
@@ -282,7 +284,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                     </a>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4">
                   <button className="flex items-center text-gray-600 hover:text-primary-600 transition">
                     <Bookmark size={20} className="mr-2" />
@@ -294,19 +296,19 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   </Button>
                 </div>
               </div>
-              
+
               {/* Author Bio */}
               <BlogAuthorBio author={post.author} />
-              
+
               {/* Comments */}
               <BlogComments postId={post.id} />
             </div>
-            
+
             {/* Sidebar */}
             <div className="space-y-8">
               {/* Related Posts */}
               <RelatedPosts posts={relatedPosts} currentPostId={post.id} />
-              
+
               {/* Newsletter */}
               <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
                 <h3 className="text-xl font-bold mb-4">Never Miss an Update</h3>
@@ -327,7 +329,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                   No spam. Unsubscribe anytime.
                 </p>
               </div>
-              
+
               {/* Table of Contents */}
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h3 className="text-xl font-bold mb-6">Table of Contents</h3>

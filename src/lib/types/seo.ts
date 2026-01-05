@@ -6,7 +6,7 @@ export interface SeoConfig {
   canonicalUrl?: string;
   ogImage?: string;
   noindex?: boolean;
-  structuredData?: Record<string, any>;
+  structuredData?: Record<string, unknown>;
   type?: 'website' | 'article' | 'profile' | 'product';
   publishedTime?: string;
   modifiedTime?: string;

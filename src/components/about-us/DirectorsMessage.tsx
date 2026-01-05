@@ -1,96 +1,86 @@
 // src/components/about-us/DirectorsMessage.tsx
-import { Signature, Quote } from 'lucide-react'
-import Container from '@/components/common/Layout/Container'
-import Section from '@/components/common/Layout/Section'
+import { Quote, Award, Briefcase } from 'lucide-react'
+import { DIRECTORS_MESSAGE } from '@/lib/constants/about-us'
 import Image from 'next/image'
 
+
 export default function DirectorsMessage() {
+  const data = DIRECTORS_MESSAGE
+
   return (
-    <Section background="gray" id="directors-message">
-      <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Director's Photo and Info */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
-              <div className="w-48 h-48 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-6xl font-bold">
-                RK
+    <div id="directors-message" className="container mx-auto px-4 pt-20">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        {/* Visual Column */}
+        <div className="lg:col-span-5">
+          <div className="relative">
+            {/* Profile Card Overlay */}
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-black-100/90 via-black-100/20 to-transparent z-10"></div>
+              <div className="absolute inset-0">
+                <Image
+                  src={data.profile}
+                  alt={data.name}
+                  fill
+                  className="object-cover"
+                />
               </div>
-              <h3 className="text-2xl font-bold mb-2">Rajesh Kumar</h3>
-              <p className="text-primary-600 font-semibold mb-4">Founder & Managing Director</p>
-              <p className="text-gray-600 text-sm mb-4">
-                With 25+ years in real estate development, Rajesh leads Apex Structure with vision and integrity.
-              </p>
-              <div className="flex justify-center space-x-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-600">25+</div>
-                  <div className="text-xs text-gray-500">Years Experience</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary-600">150+</div>
-                  <div className="text-xs text-gray-500">Projects Led</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Message Content */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <div className="flex items-center mb-6">
-                <Quote className="w-12 h-12 text-primary-200 mr-4" />
-                <span className="text-primary-600 font-semibold">DIRECTOR&apos;S MESSAGE</span>
-              </div>
-              
-              <h2 className="text-3xl font-bold mb-6">
-                Building a Legacy of Excellence
-              </h2>
-              
-              <div className="space-y-4 text-gray-700">
-                <p className="text-lg">
-                  Welcome to Apex Structure, where we don&apos;t just build structures, we build 
-                  dreams, communities, and lasting relationships.
-                </p>
-                
-                <p>
-                  When I founded this company in 2005, I had a simple vision: to create spaces 
-                  that inspire, function flawlessly, and stand the test of time. Today, as we 
-                  celebrate our journey, I&apos;m proud to see that vision realized in every 
-                  project we undertake.
-                </p>
-                
-                <p>
-                  Our success isn&apos;t measured just in square feet constructed, but in the 
-                  trust our clients place in us, the satisfaction of homeowners moving into 
-                  their dream spaces, and the thriving businesses operating from our commercial 
-                  developments.
-                </p>
-                
-                <p className="font-medium italic">
-                  &quot;At Apex Structure, we believe that quality is never an accident; 
-                  it is always the result of intelligent effort, sincere direction, 
-                  and skillful execution.&quot;
-                </p>
-                
-                <p>
-                  As we move forward, our commitment remains unchanged: to deliver excellence 
-                  in every project, embrace innovation, and contribute positively to the 
-                  communities we serve.
-                </p>
-              </div>
-              
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <div className="flex items-center">
-                  <Signature className="w-6 h-6 text-primary-600 mr-2" />
+
+              {/* Content Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-10 z-20 text-white">
+                <h3 className="text-3xl font-bold mb-2">{data.name}</h3>
+                <p className="text-primary-200 font-medium mb-6">{data.role}</p>
+
+                <div className="flex gap-8 border-t border-white/20 pt-6">
                   <div>
-                    <div className="font-bold">Rajesh Kumar</div>
-                    <div className="text-sm text-gray-600">Founder & Managing Director</div>
+                    <div className="text-2xl font-bold">{data.experience}+</div>
+                    <div className="text-xs text-white/60 uppercase tracking-widest">Years Experience</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">{data.projectsLed}+</div>
+                    <div className="text-xs text-white/60 uppercase tracking-widest">Projects Led</div>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Decorative Elements */}
+            <div className="absolute -top-6 -right-6 w-32 h-32 bg-secondary-500/10 rounded-full blur-3xl -z-10"></div>
+            <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-primary-500/10 rounded-full blur-3xl -z-10"></div>
           </div>
         </div>
-      </Container>
-    </Section>
+
+        {/* Text Column */}
+        <div className="lg:col-span-7 space-y-8">
+          <div className="flex items-center gap-4 text-primary-600 font-bold uppercase tracking-widest text-sm">
+            <span className="h-px w-8 bg-primary-600"></span>
+            {data.badge}
+          </div>
+
+          <h2 className="text-4xl font-bold text-black-200 leading-tight">
+            {data.messageTitle}
+          </h2>
+
+          <div className="relative">
+            <Quote className="absolute -top-4 -left-8 w-16 h-16 text-primary-500/10 -z-10" />
+            <div className="space-y-6 text-gray-700 text-lg leading-relaxed italic">
+              {data.content.map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+
+          {/* Featured Quote */}
+          <blockquote className="text-xl font-medium leading-relaxed mb-6 relative z-10 text-black-300 italic">
+            &quot;{data.quote}&quot;
+          </blockquote>
+          <div className="flex items-center gap-4">
+            <div className="h-px w-10 bg-secondary-500"></div>
+            <div className="text-secondary-500 font-bold tracking-widest uppercase text-xs">
+              {data.signatureRole}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

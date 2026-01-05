@@ -1,7 +1,8 @@
 // src/lib/utils/projects.ts
 import { Project, ProjectCategory, ProjectStatus, ProjectFilter } from '@/lib/types'
-import { projectsData, PROJECT_CATEGORIES, PROJECT_STATUSES, PROJECT_TYPE_COLORS } from '@/lib/constants/projects'
-import { CATEGORY_CONFIG, STATUS_CONFIG } from '@/lib/constants/projects'
+import { projectsData, PROJECT_STATUSES } from '@/lib/constants/projects'
+import { STATUS_CONFIG } from '@/lib/constants/projects'
+import { servicesData } from '@/lib/constants/services'
 
 // Data access functions
 export function getProjectBySlug(slug: string): Project | undefined {
@@ -30,10 +31,15 @@ export function getAllProjectSlugs(): string[] {
 
 // Dynamic calculation functions
 export function getProjectCategoriesWithCounts(): ProjectCategory[] {
-  return PROJECT_CATEGORIES.map(category => ({
-    ...category,
-    projectCount: projectsData.filter(project => project.type === category.slug).length
+  // Use servicesData as the source of truth for categories
+  return servicesData.map(service => ({
+    id: service.name, // Use name (slug) as the ID for category to match Project.type
+    name: service.categoryLabel || service.title,
+    slug: service.name,
+    description: service.shortDescription || service.description,
+    projectCount: projectsData.filter(project => project.type === service.name).length
   }))
+    .filter(cat => cat.projectCount > 0)
 }
 
 export function getProjectStatusesWithCounts(): ProjectStatus[] {
@@ -74,11 +80,6 @@ export function getUniqueLocations(): string[] {
   return [...new Set(cities)].sort()
 }
 
-// Get project type color
-export function getProjectTypeColor(type: Project['type']): string {
-  return PROJECT_TYPE_COLORS[type] || 'from-primary-500 to-primary-700'
-}
-
 // Export projectsData for convenience
 export { projectsData }
 
@@ -87,10 +88,13 @@ export function getUniqueCities(): string[] {
   return getUniqueLocations() // Using existing function
 }
 
-
-// Get category config
+// Get category config - REMOVED (using dynamic)
 export function getCategoryConfig(category: string) {
-  return CATEGORY_CONFIG[category as keyof typeof CATEGORY_CONFIG] || CATEGORY_CONFIG.all
+  const service = servicesData.find(s => s.name === category)
+  return {
+    name: service?.categoryLabel || service?.title || category,
+    // Add other config if needed by legacy code, though we should be using service data directly
+  }
 }
 
 // Get status config
@@ -112,25 +116,28 @@ export function getTotalCitiesCount(): number {
   return uniqueCities.size
 }
 
-
+// Get completed projects count
+export function getCompletedProjectsCount(): number {
+  return projectsData.filter(project => project.status === 'completed').length
+}
 
 // Update getFeaturedProjects function to use isFeatured field
 export function getFeaturedProjects(count: number = 6): Project[] {
   // Get all featured projects first
   const featured = projectsData.filter(project => project.isFeatured)
-  
+
   // If we have enough featured projects, return them (limited by count)
   if (featured.length >= count) {
     return featured.slice(0, count)
   }
-  
+
   // If not enough featured projects, add recent non-featured projects
   const remainingCount = count - featured.length
   const nonFeatured = projectsData
     .filter(project => !project.isFeatured)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, remainingCount)
-  
+
   return [...featured, ...nonFeatured]
 }
 
@@ -147,10 +154,7 @@ export function getFeaturedProjectsCount(): number {
 // Update getHeroStats to include featured projects count
 export function getHeroStats() {
   return {
-    totalProjects: getTotalProjectsCount(),
-    totalCities: getTotalCitiesCount(),
-    featuredProjects: getFeaturedProjectsCount(), // NEW STAT
-    formattedProjects: `${getTotalProjectsCount()}+ Projects`,
+    formattedProjects: `${getCompletedProjectsCount()}+ Projects`,
     formattedCities: `${getTotalCitiesCount()}+ Cities`,
     formattedFeatured: `${getFeaturedProjectsCount()} Featured Projects`
   }
@@ -161,16 +165,13 @@ export function getFilteredProjects(filters: ProjectFilter): Project[] {
     if (filters.type?.length && !filters.type.includes(project.type)) return false
     if (filters.status?.length && !filters.status.includes(project.status)) return false
     if (filters.city?.length && !filters.city.includes(project.address.city)) return false
-    
+
     if (filters.minArea || filters.maxArea) {
       const areaNumber = parseInt(project.area.replace(/,/g, ''))
       if (filters.minArea && areaNumber < filters.minArea) return false
       if (filters.maxArea && areaNumber > filters.maxArea) return false
     }
 
-    // Note: We could add isFeatured filter here if needed in future
-    // if (filters.isFeatured !== undefined && project.isFeatured !== filters.isFeatured) return false
-    
     return true
   })
 }
@@ -178,7 +179,7 @@ export function getFilteredProjects(filters: ProjectFilter): Project[] {
 export function toggleFeaturedStatus(projectId: string): boolean {
   const projectIndex = projectsData.findIndex(p => p.id === projectId)
   if (projectIndex === -1) return false
-  
+
   projectsData[projectIndex].isFeatured = !projectsData[projectIndex].isFeatured
   return projectsData[projectIndex].isFeatured
 }

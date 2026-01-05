@@ -1,117 +1,75 @@
 // src/components/about-us/CSRActivity.tsx
-import { Heart, TreePine, Users, BookOpen, Award } from 'lucide-react'
+import { Heart, ArrowUpRight } from 'lucide-react'
+import { CSR_ACTIVITIES } from '@/lib/constants/about-us'
 import Container from '@/components/common/Layout/Container'
 import Section from '@/components/common/Layout/Section'
-
-const csrActivities = [
-  {
-    icon: <TreePine size={32} />,
-    title: "Environmental Sustainability",
-    description: "Planting 10,000+ trees annually and implementing rainwater harvesting in all projects",
-    initiatives: [
-      "Green building certification for all new projects",
-      "Solar panel installations in residential complexes",
-      "Waste management and recycling programs"
-    ]
-  },
-  {
-    icon: <Heart size={32} />,
-    title: "Community Development",
-    description: "Supporting local communities through infrastructure and educational initiatives",
-    initiatives: [
-      "Building schools and community centers",
-      "Skill development programs for local youth",
-      "Healthcare camps in project areas"
-    ]
-  },
-  {
-    icon: <Users size={32} />,
-    title: "Employee Welfare",
-    description: "Creating a safe, inclusive, and growth-oriented work environment",
-    initiatives: [
-      "Comprehensive health insurance for all employees",
-      "Regular training and skill upgradation",
-      "Equal opportunity and diversity policies"
-    ]
-  },
-  {
-    icon: <BookOpen size={32} />,
-    title: "Education Support",
-    description: "Promoting education through scholarships and infrastructure support",
-    initiatives: [
-      "Annual scholarships for engineering students",
-      "Adoption of government schools",
-      "Digital learning labs in rural areas"
-    ]
-  }
-]
+import Image from 'next/image'
 
 export default function CSRActivity() {
+  const activities = CSR_ACTIVITIES
+
   return (
-    <Section background="gray" id="csr">
-      <Container>
-        <div className="text-center mb-12">
-          <span className="text-primary-600 font-semibold">CORPORATE RESPONSIBILITY</span>
-          <h2 className="text-4xl font-bold mt-2 mb-6">Building Better Communities</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            At Apex Structure, we believe our responsibility extends beyond construction 
-            to making a positive impact on society and the environment.
-          </p>
+      <div id="csr" className="container mx-auto px-4 py-20"> 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 text-secondary-600 font-bold uppercase tracking-widest text-sm">
+              <Heart className="w-5 h-5 fill-secondary-500" />
+              Corporate Social Responsibility
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-black-200 leading-tight">
+              Building Beyond Structures: Our Social Impact
+            </h2>
+          </div>
+          <div className="text-gray-600 text-lg leading-relaxed">
+            <p>
+              At Apex Structure, we believe our responsibility extends beyond construction
+              to making a positive impact on society and the environment. We invest in
+              sustainable practices, community growth, and educational empowerment.
+            </p>
+          </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {csrActivities.map((activity, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
-              <div className="flex items-start mb-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center mr-6 flex-shrink-0">
-                  <div className="text-green-600">
-                    {activity.icon}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">{activity.title}</h3>
-                  <p className="text-gray-600">{activity.description}</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {activities.map((activity) => (
+            <div
+              key={activity.id}
+              className="group bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 border border-platinum"
+            >
+              {/* Image Header */}
+              <div className="relative h-64 overflow-hidden">
+                <Image
+                  src={activity.image}
+                  alt={activity.title}
+                  fill
+                  className="object-cover transition-transform duration-1000"
+                />
+                <div className="absolute inset-0 bg-black-200/30 group-hover:bg-black-200/10 transition-colors duration-500"></div>
+
+                {/* Badge Overlay */}
+                <div className="absolute bottom-6 left-6 px-4 py-1.5 bg-white/90 backdrop-blur-md rounded-full text-xs font-bold text-black-200 uppercase tracking-widest">
+                  {activity.category}
                 </div>
               </div>
-              
-              <div className="border-t border-gray-100 pt-6">
-                <h4 className="font-semibold text-gray-700 mb-3">Key Initiatives:</h4>
-                <ul className="space-y-2">
-                  {activity.initiatives.map((initiative, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <Award className="w-4 h-4 text-green-500 mr-2 mt-1 flex-shrink-0" />
-                      <span className="text-gray-600 text-sm">{initiative}</span>
-                    </li>
-                  ))}
-                </ul>
+
+              {/* Body */}
+              <div className="p-10 space-y-6">
+                <h3 className="text-2xl font-bold text-black-200 group-hover:text-primary-700 transition-colors duration-300">
+                  {activity.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed text-sm font-medium">
+                  {activity.description}
+                </p>
+
+                <div className="pt-6 border-t border-platinum flex justify-between items-center group/btn">
+                  <span className="text-primary-600 font-bold text-sm tracking-tight">Learn more about initiatives</span>
+                  <div className="w-10 h-10 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 transition-all duration-300 group-hover/btn:bg-primary-600 group-hover/btn:text-white group-hover/btn:rotate-45">
+                    <ArrowUpRight size={18} />
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
-        
-        {/* Impact Stats */}
-        <div className="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-8 text-white">
-          <h3 className="text-2xl font-bold text-center mb-8">Our CSR Impact (2023)</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">10,000+</div>
-              <div className="text-green-200">Trees Planted</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">5,000+</div>
-              <div className="text-green-200">Lives Impacted</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">₹50L+</div>
-              <div className="text-green-200">CSR Investment</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">15+</div>
-              <div className="text-green-200">Community Projects</div>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </Section>
+      </div>
   )
 }

@@ -5,7 +5,7 @@ export interface Project {
   title: string
   description: string
   fullDescription: string
-  type: 'residential' | 'commercial' | 'industrial' | 'mixed-use' | 'hospitality'
+  type: 'residential' | 'commercial' | 'industrial' | 'mixed-use' | 'hospitality' | 'renovation' | 'management' | 'consultation'
   status: 'planning' | 'ongoing' | 'completed' | 'upcoming'
   startDate: string
   completionDate: string

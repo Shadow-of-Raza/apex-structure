@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import Link from 'next/link'
-import { heroContent, heroImages, heroConfig, heroIcons  } from '@/lib/constants/hero'
+import { heroContent, heroImages, heroConfig, heroIcons } from '@/lib/constants/hero'
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -28,7 +28,7 @@ export default function HeroSection() {
     }
 
     setProgress(0)
-    
+
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current)
     }
@@ -62,7 +62,7 @@ export default function HeroSection() {
       if (slideIntervalRef.current) {
         clearInterval(slideIntervalRef.current)
       }
-      
+
       slideIntervalRef.current = setInterval(() => {
         nextSlide()
       }, heroConfig.autoSlideInterval)
@@ -79,10 +79,10 @@ export default function HeroSection() {
 
   const nextSlide = () => {
     if (isTransitioning) return
-    
+
     setIsTransitioning(true)
     setProgress(0)
-    
+
     setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % totalSlides)
       setIsTransitioning(false)
@@ -91,10 +91,10 @@ export default function HeroSection() {
 
   const prevSlide = () => {
     if (isTransitioning) return
-    
+
     setIsTransitioning(true)
     setProgress(0)
-    
+
     setTimeout(() => {
       setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)
       setIsTransitioning(false)
@@ -103,10 +103,10 @@ export default function HeroSection() {
 
   const goToSlide = (index: number) => {
     if (isTransitioning || index === currentSlide) return
-    
+
     setIsTransitioning(true)
     setProgress(0)
-    
+
     setTimeout(() => {
       setCurrentSlide(index)
       setIsTransitioning(false)
@@ -129,29 +129,28 @@ export default function HeroSection() {
         {heroImages.map((image, index) => (
           <div
             key={image.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide 
-                ? 'opacity-100 z-10' 
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide
+                ? 'opacity-100 z-10'
                 : 'opacity-0 z-0'
-            }`}
+              }`}
           >
             {/* Background Image with Ken Burns zoom effect */}
-            <div 
+            <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ 
+              style={{
                 backgroundImage: `url(${image.imageUrl})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 animation: index === currentSlide ? 'kenBurns 20s ease-out infinite' : 'none'
               }}
             >
-              
+
               {/* Dark overlay at bottom for better contrast */}
               <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
-              
+
               {/* Top gradient overlay */}
               <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-black/50 to-transparent"></div>
-              
+
               {/* Vignette effect for focus */}
               <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.7)]"></div>
             </div>
@@ -193,7 +192,7 @@ export default function HeroSection() {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Link 
+            <Link
               href={heroContent.button1.href}
               className="inline-flex items-center justify-center bg-primary-700 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
             >
@@ -207,7 +206,7 @@ export default function HeroSection() {
             {heroContent.stats.map((stat, index) => {
               // Get the icon component dynamically
               const IconComponent = heroIcons[stat.icon as keyof typeof heroIcons];
-              
+
               return (
                 <div key={index} className="flex items-center group bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
                   <div className="text-4xl mr-4 group-hover:scale-110 transition-transform duration-300">
@@ -234,11 +233,10 @@ export default function HeroSection() {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
                 ? 'bg-secondary-500 w-8 shadow-lg'
                 : 'bg-white/50 hover:bg-white/80'
-            }`}
+              }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
@@ -246,7 +244,7 @@ export default function HeroSection() {
 
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 z-30">
-        <div 
+        <div
           className="h-full bg-secondary-500 transition-all duration-300 ease-linear"
           style={{
             width: `${progress}%`

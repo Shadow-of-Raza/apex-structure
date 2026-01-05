@@ -47,7 +47,7 @@ export default function StatsCounter() {
   }, [])
 
   return (
-    <section className="py-20 bg-gradient-to-r from-primary-800 to-primary-900 text-white">
+    <section className="py-20 bg-primary-700 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Trusted by Industry Leaders</h2>

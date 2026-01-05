@@ -1,66 +1,21 @@
 // src/app/equipment/page.tsx
-import Container from '@/components/common/Layout/Container'
 import PageHeader from '@/components/common/Layout/PageHeader'
 import EquipmentGrid from '@/components/equipment/EquipmentGrid'
-import EquipmentCategories from '@/components/equipment/EquipmentCategories'
-import EquipmentStats from '@/components/equipment/EquipmentStats'
-import TechnologyShowcase from '@/components/equipment/TechnologyShowcase'
-import MaintenanceSection from '@/components/equipment/MaintenanceSection'
-import EquipmentCTA from '@/components/equipment/EquipmentCTA'
-import Section from '@/components/common/Layout/Section'
 import { EQUIPMENT_IMAGES } from '@/lib/constants/page-header'
 
 export default function EquipmentPage() {
   return (
     <>
       <PageHeader
-                images={EQUIPMENT_IMAGES}
-                imageTransitionInterval={6000}
-                showOverlay={true}
-                overlayOpacity={0.7}
+        images={EQUIPMENT_IMAGES}
+        imageTransitionInterval={6000}
+        showOverlay={true}
+        overlayOpacity={0.7}
       />
-      
-      {/* Featured Equipment Grid */}
-      <Section background="gray">
-        <Container>
-          <EquipmentGrid />
-        </Container>
-      </Section>
-      
-      {/* Equipment Categories */}
-      <Section id="categories">
-        <Container>
-          <EquipmentCategories />
-        </Container>
-      </Section>
 
-      {/* Technology Showcase */}
-      <Section>
-        <Container>
-          <TechnologyShowcase />
-        </Container>
-      </Section>
-      
-      {/* Equipment Stats */}
-      <Section background="primary">
-        <Container>
-          <EquipmentStats />
-        </Container>
-      </Section>
-      
-      {/* Maintenance Section */}
-      <Section background="gray">
-        <Container>
-          <MaintenanceSection />
-        </Container>
-      </Section>
-      
-      {/* CTA Section */}
-      <Section>
-        <Container>
-          <EquipmentCTA />
-        </Container>
-      </Section>
+      {/* Equipment Showcase */}
+
+          <EquipmentGrid />
     </>
   )
 }

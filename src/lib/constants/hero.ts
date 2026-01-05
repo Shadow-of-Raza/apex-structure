@@ -1,10 +1,14 @@
 // src/lib/constants/hero.ts
 import { HeroContent, HeroImage } from '@/lib/types/hero';
 import { getHeroStats } from '@/lib/utils/projects';
-import { Building2, MapPin } from 'lucide-react'
+import { calculateYearsOfExperience } from '@/lib/utils/about-us';
+import { Building2, MapPin, Clock } from 'lucide-react'
+import { COMPANY_PROFILE } from '@/lib/constants/about-us'
 
 // Get stats from projects data
 const heroStats = getHeroStats();
+const data = COMPANY_PROFILE;
+const heroExperience = calculateYearsOfExperience(data.establishedOn);
 
 // Single content object for all slides
 export const heroContent: HeroContent = {
@@ -25,6 +29,11 @@ export const heroContent: HeroContent = {
       label: 'Nationwide Presence',
       value: heroStats.formattedCities,
       icon: 'MapPin'
+    },
+    {
+      label: 'Years of Experience',
+      value: `${heroExperience}+`,
+      icon: 'Clock'
     }
   ]
 };
@@ -33,6 +42,7 @@ export const heroContent: HeroContent = {
 export const heroIcons = {
   Building2: Building2,
   MapPin: MapPin,
+  Clock: Clock
 };
 
 // Multiple images for slideshow

@@ -1,9 +1,6 @@
 // src/app/about-us/layout.tsx
 import type { Metadata } from 'next'
 import SeoHead from '@/components/common/SEO/SeoHead'
-import Container from '@/components/common/Layout/Container'
-import PageHeader from '@/components/common/Layout/PageHeader'
-import { siteConfig } from '@/lib/constants/site-config'
 
 export const metadata: Metadata = {
   title: 'About Us - Apex Structure',
@@ -37,7 +34,7 @@ export default function AboutUsLayout({
           }
         }}
       />
-      
+
       {children}
     </>
   )

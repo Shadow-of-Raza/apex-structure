@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { 
-  MapPin, Calendar, Building2, Award, CheckCircle, 
-  ArrowLeft, Share2, Download, Maximize2, ChevronLeft, 
-  ChevronRight, Navigation, Phone, Globe, ImageIcon
+import {
+  MapPin, Calendar, Building2, Award, CheckCircle,
+  ArrowLeft, Share2, Download, Maximize2, ChevronLeft,
+  ChevronRight, Navigation, Phone, Globe, ImageIcon,
+  TrendingUp, Clock
 } from 'lucide-react'
 import { Project } from '@/lib/types'
 import Link from 'next/link'
@@ -18,14 +19,15 @@ import {
   getFormattedAddress,
   getFormattedLocation,
   getStatusConfig,
-  getSimilarProjects,
-  getProjectTypeColor
+  getSimilarProjects
 } from '@/lib/utils/projects'
+import { servicesData } from '@/lib/constants/services'
+import { getServiceIcon } from '@/lib/utils/services'
 
 // Import constants
-import { 
-  GALLERY_CONFIG, 
-  NAVIGATION_LINKS 
+import {
+  GALLERY_CONFIG,
+  NAVIGATION_LINKS
 } from '@/lib/constants/projects'
 
 interface ProjectDetailsProps {
@@ -42,14 +44,17 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   const statusConfig = getStatusConfig(project.status)
   const formattedAddress = getFormattedAddress(project)
   const similarProjects = getSimilarProjects(project, 2)
-  
+  // const typeTheme = getProjectTypeTheme(project.type)
+  const service = servicesData.find(s => s.name === project.type)
+  const TypeIcon = getServiceIcon(service?.icon || 'Building2')
+
   // Process images
   const processedImages = useMemo(() => {
     const mainImage = cleanImageUrl(project.images.main)
     const galleryImages = project.images.gallery
       .map(cleanImageUrl)
       .filter(isDirectImageUrl)
-    
+
     return [mainImage, ...galleryImages].filter(Boolean)
   }, [project])
 
@@ -102,16 +107,16 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   // Auto-rotate images
   useEffect(() => {
     if (processedImages.length <= 1) return
-    
+
     const interval = setInterval(() => {
       setActiveImage(prev => (prev + 1) % processedImages.length)
     }, GALLERY_CONFIG.autoRotateInterval)
-    
+
     return () => clearInterval(interval)
   }, [processedImages.length])
 
   return (
-    <div className="container max-w-7xl mx-auto my-4">
+    <div className="container mx-auto px-4 py-20">
       {/* Image Modal */}
       <ImageModal
         isOpen={isModalOpen}
@@ -120,27 +125,27 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         currentIndex={activeImage}
         onIndexChange={setActiveImage}
       />
-      
+
       {/* Notification */}
       {showNotification && (
-        <Notification 
-          message="Project link copied to clipboard!" 
+        <Notification
+          message="Project link copied to clipboard!"
           type="success"
           duration={3000}
           onClose={() => setShowNotification(false)}
         />
       )}
-      
+
       {/* Back Navigation with Share Button */}
       <div className="mb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <Link 
+        <Link
           href={NAVIGATION_LINKS.backToProjects.href}
           className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium group"
         >
           <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
           {NAVIGATION_LINKS.backToProjects.label}
         </Link>
-        
+
         <button
           onClick={handleShareClick}
           className="inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors"
@@ -165,10 +170,10 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             className="object-cover"
             fallbackText={project.title}
           />
-          
+
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-          
+
           {/* Image Navigation */}
           {processedImages.length > 1 && (
             <>
@@ -188,7 +193,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               </button>
             </>
           )}
-          
+
           {/* Fullscreen Button */}
           <button
             onClick={() => setIsModalOpen(true)}
@@ -197,7 +202,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           >
             <Maximize2 size={20} />
           </button>
-          
+
           {/* Image Counter */}
           {processedImages.length > 1 && (
             <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
@@ -205,7 +210,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
             </div>
           )}
         </div>
-        
+
         {/* Project Info Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -213,21 +218,27 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               {/* Project Badges */}
               <div className="flex flex-wrap gap-3 mb-4">
                 {statusConfig && (
-                  <span className={`px-4 py-2 rounded-full font-semibold flex items-center gap-2 border backdrop-blur-sm ${statusConfig.color}`}>
+                  <span className="px-4 py-2 rounded-full font-bold flex items-center gap-2 shadow-lg bg-white/90 text-gray-800 backdrop-blur-md">
+                    <span className="text-secondary-600">
+                      {statusConfig.icon === 'CheckCircle' && <CheckCircle size={18} />}
+                      {statusConfig.icon === 'TrendingUp' && <TrendingUp size={18} />}
+                      {statusConfig.icon === 'Calendar' && <Calendar size={18} />}
+                      {statusConfig.icon === 'Clock' && <Clock size={18} />}
+                      {statusConfig.icon === 'Building2' && <Building2 size={18} />}
+                    </span>
                     {statusConfig.name}
                   </span>
                 )}
-                <span className="px-4 py-2 rounded-full font-medium bg-white/10 text-white backdrop-blur-sm border border-white/20">
-                  <span className={`bg-gradient-to-r bg-clip-text text-transparent font-bold ${getProjectTypeColor(project.type)}`}>
-                    {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
-                  </span>
+                <span className={`px-4 py-2 rounded-full font-bold flex items-center gap-2 border-[0.5px] border-white/20 backdrop-blur-md shadow-lg bg-white/90 text-gray-800`}>
+                  <span className="text-secondary-600"><TypeIcon size={18} /></span>
+                  {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
                 </span>
               </div>
-              
+
               <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">
                 {project.title}
               </h1>
-              
+
               {/* Display address under title */}
               <div className="flex items-center text-white/90 mb-2">
                 <MapPin size={22} className="mr-2 flex-shrink-0" />
@@ -235,17 +246,17 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               </div>
 
             </div>
-            
+
             {/* Quick Stats */}
             <div className="flex flex-col sm:flex-row md:flex-col gap-1 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
               <div className="text-center">
                 <div className="text-2xl font-bold text-white">{project.area} sq.ft.</div>
                 <div className="text-sm text-white/80">Built-up Area</div>
               </div>
-              <div className="text-center">
+              {/* <div className="text-center">
                 <div className="text-2xl font-bold text-white">{project.budget}</div>
                 <div className="text-sm text-white/80">Project Budget</div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -268,12 +279,12 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 </p>
               </div>
             </div>
-            
+
             <div className="prose max-w-none">
               <p className="text-gray-700 text-lg leading-relaxed mb-6">
                 {project.fullDescription}
               </p>
-              
+
               {/* Key Stats Grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 p-4 bg-gray-50 rounded-xl">
                 <div className="text-center">
@@ -297,7 +308,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                   <div className="font-bold text-gray-900 truncate">{project.architect}</div>
                 </div>
               </div>
-              
+
               <h3 className="text-xl font-bold mb-4 mt-8">Key Features</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 {project.features.map((feature, index) => (
@@ -369,7 +380,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               </div>
               Amenities & Facilities
             </h3>
-            
+
             <div className="space-y-3">
               {project.amenities.map((amenity, index) => (
                 <div key={index} className="flex items-center p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors group">
@@ -390,7 +401,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               </div>
               Sustainability Features
             </h3>
-            
+
             <div className="space-y-3">
               {project.sustainabilityFeatures.map((feature, index) => (
                 <div key={index} className="flex items-start p-3 bg-green-50/50 hover:bg-green-50 rounded-lg transition-colors group">
@@ -433,12 +444,12 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           {/* Similar Projects */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold mb-6">Similar Projects</h3>
-            
+
             <div className="space-y-4">
               {similarProjects.map((similarProject) => {
                 const similarStatus = getStatusConfig(similarProject.status)
                 return (
-                  <Link 
+                  <Link
                     key={similarProject.slug}
                     href={`/projects/${similarProject.slug}`}
                     className="flex items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors group"
@@ -458,9 +469,9 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                         {similarProject.title}
                       </div>
                       <div className="text-sm text-gray-600">
-                        {similarProject.type.charAt(0).toUpperCase() + similarProject.type.slice(1)} • 
+                        {similarProject.type.charAt(0).toUpperCase() + similarProject.type.slice(1)} •
                         {similarStatus && (
-                          <span className={`ml-1 ${similarStatus.color.split(' ')[1]}`}>
+                          <span className="ml-1 text-secondary-600">
                             {similarStatus.name}
                           </span>
                         )}
@@ -473,9 +484,9 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 )
               })}
             </div>
-            
-            <Link 
-              href="/projects" 
+
+            <Link
+              href="/projects"
               className="block text-center mt-6 text-primary-600 hover:text-primary-700 font-medium"
             >
               {NAVIGATION_LINKS.viewAllProjects.label} →

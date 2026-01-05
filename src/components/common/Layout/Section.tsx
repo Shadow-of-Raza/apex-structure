@@ -27,8 +27,8 @@ export default function Section({
   const backgroundClasses = {
     white: 'bg-white',
     gray: 'bg-gray-50',
-    primary: 'bg-primary-50',
-    secondary: 'bg-secondary-50',
+    primary: 'bg-primary-500',
+    secondary: 'bg-secondary-500',
   }
 
   return (

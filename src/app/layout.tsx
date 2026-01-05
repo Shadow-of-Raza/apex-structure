@@ -1,12 +1,12 @@
 // src/app/layout.tsx
 import type { Metadata } from 'next'
-import { IBM_Plex_Serif } from 'next/font/google'
+// import { IBM_Plex_Serif } from 'next/font/google'
 import '@/styles/globals.css'
 import Header from '@/components/common/Header/Header'
 import Footer from '@/components/common/Footer/Footer'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://apex-structure.com'),
+  metadataBase: new URL('https://apexstructure.in'),
   title: {
     default: 'Apex Structure',
     template: '%s | Apex Structure',
@@ -35,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className="min-h-screen bg-gray-50 font-sans"
         suppressHydrationWarning

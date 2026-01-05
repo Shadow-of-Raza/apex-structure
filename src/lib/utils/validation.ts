@@ -17,15 +17,15 @@ export function validatePhone(phone: string): boolean {
 /**
  * Validate required fields
  */
-export function validateRequired(fields: Record<string, any>): string[] {
+export function validateRequired(fields: Record<string, unknown>): string[] {
   const errors: string[] = []
-  
+
   Object.entries(fields).forEach(([key, value]) => {
     if (!value || (typeof value === 'string' && value.trim() === '')) {
       errors.push(`${key} is required`)
     }
   })
-  
+
   return errors
 }
 

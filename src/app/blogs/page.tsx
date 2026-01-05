@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { Search, Filter, Calendar, User, Eye, MessageCircle, ChevronRight, Tag } from 'lucide-react'
+import { Search, Filter, Calendar, Eye, MessageCircle, ChevronRight, Tag } from 'lucide-react'
 import Link from 'next/link'
 import Container from '@/components/common/Layout/Container'
 import PageHeader from '@/components/common/Layout/PageHeader'
@@ -10,14 +10,14 @@ import Button from '@/components/common/UI/Button'
 import { BLOG_IMAGES } from '@/lib/constants/page-header'
 
 
-import { 
-  blogPosts, 
-  blogCategories, 
-  blogTags, 
-  recentPosts, 
+import {
+  blogPosts,
+  blogCategories,
+  blogTags,
+  recentPosts,
   popularPosts,
   searchPosts,
-  paginatePosts 
+  paginatePosts
 } from '@/lib/constants/blogs'
 import { formatDate } from '@/lib/utils/format'
 
@@ -93,24 +93,24 @@ export default function BlogPage() {
   const getPageNumbers = () => {
     const pages = []
     const maxVisiblePages = 5
-    
+
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
       }
     } else {
       let start = Math.max(1, currentPage - 2)
-      let end = Math.min(totalPages, start + maxVisiblePages - 1)
-      
+      const end = Math.min(totalPages, start + maxVisiblePages - 1)
+
       if (end - start + 1 < maxVisiblePages) {
         start = end - maxVisiblePages + 1
       }
-      
+
       for (let i = start; i <= end; i++) {
         pages.push(i)
       }
     }
-    
+
     return pages
   }
 
@@ -123,7 +123,7 @@ export default function BlogPage() {
         showOverlay={true}
         overlayOpacity={0.7}
       />
-      
+
       <Section>
         <Container>
           {/* Search and Filters */}
@@ -162,11 +162,10 @@ export default function BlogPage() {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => setSelectedCategory('all')}
-                    className={`px-4 py-2 rounded-lg transition ${
-                      selectedCategory === 'all'
+                    className={`px-4 py-2 rounded-lg transition ${selectedCategory === 'all'
                         ? 'bg-primary-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                      }`}
                   >
                     All ({blogPosts.length})
                   </button>
@@ -177,11 +176,10 @@ export default function BlogPage() {
                         setSelectedCategory(category.slug)
                         setCurrentPage(1)
                       }}
-                      className={`px-4 py-2 rounded-lg transition ${
-                        selectedCategory === category.slug
+                      className={`px-4 py-2 rounded-lg transition ${selectedCategory === category.slug
                           ? 'bg-primary-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                        }`}
                     >
                       {category.name} ({category.count})
                     </button>
@@ -199,11 +197,10 @@ export default function BlogPage() {
                     <button
                       key={option.id}
                       onClick={() => setSortBy(option.id)}
-                      className={`px-4 py-2 rounded-lg transition ${
-                        sortBy === option.id
+                      className={`px-4 py-2 rounded-lg transition ${sortBy === option.id
                           ? 'bg-primary-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                        }`}
                     >
                       {option.label}
                     </button>
@@ -219,7 +216,7 @@ export default function BlogPage() {
                   {selectedCategory !== 'all' && (
                     <span className="inline-flex items-center px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
                       Category: {blogCategories.find(c => c.slug === selectedCategory)?.name}
-                      <button 
+                      <button
                         onClick={() => setSelectedCategory('all')}
                         className="ml-2 text-primary-600 hover:text-primary-800"
                       >
@@ -230,7 +227,7 @@ export default function BlogPage() {
                   {selectedTag && (
                     <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
                       Tag: {selectedTag}
-                      <button 
+                      <button
                         onClick={() => setSelectedTag('')}
                         className="ml-2 text-blue-600 hover:text-blue-800"
                       >
@@ -241,7 +238,7 @@ export default function BlogPage() {
                   {searchQuery && (
                     <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
                       Search: "{searchQuery}"
-                      <button 
+                      <button
                         onClick={() => setSearchQuery('')}
                         className="ml-2 text-green-600 hover:text-green-800"
                       >
@@ -309,7 +306,7 @@ export default function BlogPage() {
                         </div>
                       </div>
                     </Link>
-                    
+
                     {/* Content */}
                     <div className="p-6">
                       <div className="flex items-center text-sm text-gray-500 mb-3">
@@ -318,17 +315,17 @@ export default function BlogPage() {
                         <span className="mx-2">•</span>
                         <span>{post.readTime}</span>
                       </div>
-                      
+
                       <h3 className="text-xl font-bold mb-3 group-hover:text-primary-600 transition-colors">
                         <Link href={`/blogs/${post.slug}`} className="hover:underline">
                           {post.title}
                         </Link>
                       </h3>
-                      
+
                       <p className="text-gray-600 mb-4 line-clamp-2">
                         {post.excerpt}
                       </p>
-                      
+
                       {/* Tags */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         {post.tags.slice(0, 2).map(tag => (
@@ -350,7 +347,7 @@ export default function BlogPage() {
                           </span>
                         )}
                       </div>
-                      
+
                       {/* Author and Stats */}
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                         <div className="flex items-center">
@@ -362,7 +359,7 @@ export default function BlogPage() {
                             <div className="text-xs text-gray-500">{post.author.role}</div>
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center space-x-4 text-sm text-gray-500">
                           <span className="flex items-center">
                             <Eye size={14} className="mr-1" />
@@ -391,21 +388,20 @@ export default function BlogPage() {
               >
                 Previous
               </button>
-              
+
               {getPageNumbers().map(page => (
                 <button
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`w-10 h-10 rounded-lg transition ${
-                    currentPage === page
+                  className={`w-10 h-10 rounded-lg transition ${currentPage === page
                       ? 'bg-primary-600 text-white'
                       : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>
               ))}
-              
+
               <button
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
@@ -431,11 +427,10 @@ export default function BlogPage() {
                         setSelectedTag(tag)
                         setCurrentPage(1)
                       }}
-                      className={`px-4 py-2 rounded-full transition ${
-                        selectedTag === tag
+                      className={`px-4 py-2 rounded-full transition ${selectedTag === tag
                           ? 'bg-primary-600 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                        }`}
                     >
                       {tag}
                     </button>
@@ -536,9 +531,8 @@ export default function BlogPage() {
                         <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center mr-4">
                           <span className="text-primary-600 font-bold">{category.name[0]}</span>
                         </div>
-                        <span className={`font-medium ${
-                          selectedCategory === category.slug ? 'text-primary-600' : 'text-gray-700'
-                        }`}>
+                        <span className={`font-medium ${selectedCategory === category.slug ? 'text-primary-600' : 'text-gray-700'
+                          }`}>
                           {category.name}
                         </span>
                       </div>

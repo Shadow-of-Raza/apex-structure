@@ -52,27 +52,27 @@ export default function Testimonials() {
             Real feedback from our satisfied clients across various projects
           </p>
         </div>
-        
+
         <div className="max-w-4xl mx-auto relative">
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl p-8 md:p-12">
             <Quote className="w-12 h-12 text-primary-200 mb-6" />
-            
+
             <div className="mb-8">
               <p className="text-xl text-gray-700 italic mb-6">
                 "{testimonials[currentSlide].content}"
               </p>
-              
+
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
-                  <Star 
-                    key={i} 
-                    size={20} 
-                    className="fill-yellow-400 text-yellow-400 mr-1" 
+                  <Star
+                    key={i}
+                    size={20}
+                    className="fill-yellow-400 text-yellow-400 mr-1"
                   />
                 ))}
               </div>
             </div>
-            
+
             <div className="flex items-center">
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white font-bold text-xl mr-4">
                 {testimonials[currentSlide].name.split(' ').map(n => n[0]).join('')}
@@ -83,7 +83,7 @@ export default function Testimonials() {
               </div>
             </div>
           </div>
-          
+
           {/* Navigation buttons */}
           <button
             onClick={prevSlide}
@@ -92,7 +92,7 @@ export default function Testimonials() {
           >
             <ChevronLeft size={24} className="text-gray-700" />
           </button>
-          
+
           <button
             onClick={nextSlide}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
@@ -100,7 +100,7 @@ export default function Testimonials() {
           >
             <ChevronRight size={24} className="text-gray-700" />
           </button>
-          
+
           {/* Dots indicator */}
           <div className="flex justify-center mt-8 space-x-3">
             {testimonials.map((_, index) => (

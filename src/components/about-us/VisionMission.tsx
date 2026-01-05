@@ -1,116 +1,122 @@
-import { Eye, Target, Heart, Star } from 'lucide-react'
-import Container from '@/components/common/Layout/Container'
-import Section from '@/components/common/Layout/Section'
+// src/components/about-us/VisionMission.tsx
+'use client'
+
+import { CheckCircle2 } from 'lucide-react'
+import { VISION_MISSION } from '@/lib/constants/about-us'
+import { getAboutUsIcon } from '@/lib/utils/about-us'
 
 export default function VisionMission() {
+  const data = VISION_MISSION
+
+  const themeConfig = {
+    blue: {
+      card: 'bg-blue-50/50 border-blue-100 b-glow-blue',
+      iconBg: 'bg-blue-600',
+      iconGlow: 'shadow-[0_0_30px_-5px_rgba(37,99,235,0.4)]',
+      accent: 'text-blue-700',
+      check: 'text-blue-500',
+      outline: 'text-blue-100',
+      number: '01'
+    },
+    green: {
+      card: 'bg-green-50/50 border-green-100 b-glow-green',
+      iconBg: 'bg-green-600',
+      iconGlow: 'shadow-[0_0_30px_-5px_rgba(22,163,74,0.4)]',
+      accent: 'text-green-700',
+      check: 'text-green-500',
+      outline: 'text-green-100',
+      number: '02'
+    },
+    purple: {
+      card: 'bg-purple-50/50 border-purple-100 b-glow-purple',
+      iconBg: 'bg-purple-600',
+      iconGlow: 'shadow-[0_0_30px_-5px_rgba(147,51,234,0.4)]',
+      accent: 'text-purple-700',
+      check: 'text-purple-500',
+      outline: 'text-purple-100',
+      number: '03'
+    }
+  }
+
+  const sections = [
+    { ...data.vision, ...themeConfig.blue },
+    { ...data.mission, ...themeConfig.green },
+    { ...data.values, ...themeConfig.purple }
+  ]
+
   return (
-    <Section background="gray" id="vision-mission">
-      <Container>
-        <div className="text-center mb-12">
-          <span className="text-primary-600 font-semibold">OUR PHILOSOPHY</span>
-          <h2 className="text-4xl font-bold mt-2 mb-6">Vision, Mission & Values</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            The guiding principles that drive every decision and project at Apex Structure
+    <div id="vision-mission" className="relative py-12 overflow-hidden">
+      {/* Background Architectural Grid */}
+      <div className="absolute inset-0 -z-10 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+      </div>
+
+      <div className="container mx-auto px-4 relative">
+        <div className="flex flex-col lg:flex-row items-end justify-between mb-10 gap-8">
+          <div className="max-w-2xl">
+            <h2 className="text-4xl md:text-6xl font-black text-black-200 leading-[1.1]">
+              {data.title}
+            </h2>
+          </div>
+          <p className="max-w-md text-gray-500 text-lg font-medium leading-relaxed">
+            {data.description}
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Vision Card */}
-          <div className="group bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Eye className="w-8 h-8 text-blue-600" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4 text-blue-700">Our Vision</h3>
-            <p className="text-gray-700 mb-6">
-              To be the most trusted and innovative real estate development company, 
-              creating sustainable spaces that enhance lives and communities across 
-              the nation.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-blue-500 mr-2" />
-                <span className="text-sm">Industry leadership in innovation</span>
-              </div>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-blue-500 mr-2" />
-                <span className="text-sm">Nationwide presence by 2030</span>
-              </div>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-blue-500 mr-2" />
-                <span className="text-sm">Zero-carbon projects by 2025</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* Mission Card */}
-          <div className="group bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Target className="w-8 h-8 text-green-600" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4 text-green-700">Our Mission</h3>
-            <p className="text-gray-700 mb-6">
-              To deliver exceptional construction projects through innovative design, 
-              superior quality, timely execution, and unwavering commitment to client 
-              satisfaction and environmental sustainability.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm">Excellence in execution</span>
-              </div>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm">Client-centric approach</span>
-              </div>
-              <div className="flex items-center">
-                <Star className="w-4 h-4 text-green-500 mr-2" />
-                <span className="text-sm">Sustainable practices</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* Values Card */}
-          <div className="group bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Heart className="w-8 h-8 text-purple-600" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4 text-purple-700">Our Values</h3>
-            <p className="text-gray-700 mb-6">
-              Integrity, innovation, quality, teamwork, and social responsibility form 
-              the foundation of everything we do at Apex Structure.
-            </p>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                  <span className="text-purple-600 font-bold">I</span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {sections.map((item) => {
+            const Icon = getAboutUsIcon(item.iconName)
+            return (
+              <div
+                key={item.id}
+                className={`group relative flex flex-col p-10 rounded-2xl border backdrop-blur-sm transition-all duration-700 hover:-translate-y-3 hover:shadow-2xl ${item.card}`}
+              >
+                {/* Decorative Number */}
+                <span className={`absolute top-10 right-10 text-8xl font-black opacity-10 transition-all duration-700 group-hover:scale-125 group-hover:opacity-20 ${item.outline}`}>
+                  {item.number}
+                </span>
+
+                {/* Icon Circle */}
+                <div className={`relative w-24 h-24 rounded-3xl ${item.iconBg} ${item.iconGlow} flex items-center justify-center mb-10 transition-transform duration-700 group-hover:rotate-[10deg]`}>
+                  <Icon className="w-12 h-12 text-white" />
+                  {/* Internal Glow Effect */}
+                  <div className="absolute inset-0 rounded-3xl bg-white/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
-                <div>
-                  <div className="font-medium">Integrity</div>
-                  <div className="text-sm text-gray-600">Honest and ethical in all dealings</div>
+
+                {/* Content */}
+                <div className="flex-grow">
+                  <h3 className={`text-3xl font-black mb-6 uppercase tracking-tight ${item.accent}`}>
+                    {item.title}
+                  </h3>
+                  <p className="text-black-400 font-medium text-lg leading-relaxed mb-10 opacity-80 group-hover:opacity-100 transition-opacity">
+                    {item.description}
+                  </p>
+                </div>
+
+                {/* Pillar Points */}
+                <div className="space-y-5 pt-8 border-t border-black/5">
+                  {item.highlights.map((point, idx) => (
+                    <div key={idx} className="flex gap-4 items-start group/point">
+                      <div className={`mt-1.5 w-5 h-5 rounded-full flex items-center justify-center bg-white shadow-sm border border-platinum transition-colors duration-300 group-hover/point:border-current ${item.check}`}>
+                        <CheckCircle2 className="w-3 h-3" />
+                      </div>
+                      <span className="text-gray-600 font-bold text-sm leading-tight transition-colors duration-300 group-hover/point:text-black-200">
+                        {point}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-start">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                  <span className="text-purple-600 font-bold">Q</span>
-                </div>
-                <div>
-                  <div className="font-medium">Quality</div>
-                  <div className="text-sm text-gray-600">Uncompromising standards</div>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                  <span className="text-purple-600 font-bold">I</span>
-                </div>
-                <div>
-                  <div className="font-medium">Innovation</div>
-                  <div className="text-sm text-gray-600">Continuous improvement</div>
-                </div>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </div>
-      </Container>
-    </Section>
+      </div>
+
+      <style jsx>{`
+        .b-glow-blue:hover { border-color: rgba(37, 99, 235, 0.2); }
+        .b-glow-green:hover { border-color: rgba(22, 163, 74, 0.2); }
+        .b-glow-purple:hover { border-color: rgba(147, 51, 234, 0.2); }
+      `}</style>
+    </div>
   )
 }

@@ -2,7 +2,6 @@
 import HeroSection from '@/components/homepage/HeroSection'
 import FeaturedProjects from '@/components/homepage/FeaturedProjects'
 import ServicesPreview from '@/components/homepage/ServicesPreview'
-import StatsCounter from '@/components/homepage/StatsCounter'
 import Testimonials from '@/components/homepage/Testimonials'
 import CTA from '@/components/homepage/CTA'
 import BlogPreview from '@/components/homepage/BlogPreview'
@@ -53,7 +52,7 @@ export default function HomePage() {
       <HeroSection />
       <FeaturedProjects />
       <ServicesPreview />
-      <StatsCounter />
+      {/* <StatsCounter /> */}
       <Testimonials />
       <BlogPreview />
       <CTA />

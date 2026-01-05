@@ -2,132 +2,120 @@
 'use client'
 
 import { useState } from 'react'
-import { Calendar, Users, Zap, Shield, Maximize2, ExternalLink } from 'lucide-react'
+import Image from 'next/image'
+import { Plus, Maximize2, Hash, PenTool as Tool, Calendar } from 'lucide-react'
 import { Equipment } from '@/lib/types/equipment'
-import ImageCarousel from '@/components/common/UI/ImageCarousel'
-import Link from 'next/link'
 
 interface EquipmentCardProps {
   equipment: Equipment
+  onViewImage: (images: string[]) => void
 }
 
-export default function EquipmentCard({ equipment }: EquipmentCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+export default function EquipmentCard({ equipment, onViewImage }: EquipmentCardProps) {
+  const [isFlipped, setIsFlipped] = useState(false)
 
   return (
-    <div className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-      {/* Image Carousel */}
-      <div className="relative">
-        <ImageCarousel 
-          images={equipment.images} 
-          alt={equipment.name}
-          className="h-48"
-        />
-        
-        {/* Status Badge */}
-        <div className="absolute top-4 left-4 z-20">
-          <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-            equipment.status === 'Available' 
-              ? 'bg-green-100 text-green-800' 
-              : equipment.status === 'In Use'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
-          }`}>
-            {equipment.status}
-          </span>
-        </div>
-        
-        {/* Category Badge */}
-        <div className="absolute top-4 right-4 z-20">
-          <span className="px-3 py-1 bg-black/70 backdrop-blur-sm text-white rounded-full text-sm font-medium">
-            {equipment.category}
-          </span>
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-3">
-          <div>
-            <h3 className="text-xl font-bold group-hover:text-primary-600 transition-colors">
-              {equipment.name}
-            </h3>
-            <p className="text-gray-600 text-sm">{equipment.model}</p>
+    <div
+      className="relative h-[450px] w-full perspective-1000 cursor-pointer group"
+      onClick={() => setIsFlipped(!isFlipped)}
+    >
+      <div
+        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''
+          }`}
+      >
+        {/* Front Side */}
+        <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-lg border border-platinum bg-white">
+          <div className="relative h-full w-full">
+            <Image
+              src={equipment.images[0]}
+              alt={equipment.name}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+
+            {/* Overlay Name */}
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black-200/90 via-black-200/40 to-transparent p-6 pt-12">
+              <span className="text-secondary-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-1 block">
+                {equipment.brand}
+              </span>
+              <h3 className="text-white text-xl font-black uppercase leading-tight">
+                {equipment.name}
+              </h3>
+            </div>
+
+            {/* Flip Indicator */}
+            <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+              <Plus size={20} className="transform group-hover:rotate-45 transition-transform duration-500" />
+            </div>
           </div>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition"
-            aria-label={isExpanded ? 'Show less' : 'Show more'}
-          >
-            <Maximize2 size={20} className="text-gray-500" />
-          </button>
         </div>
-        
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="flex items-center">
-            <Calendar size={16} className="text-gray-400 mr-2" />
+
+        {/* Back Side */}
+        <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl shadow-2xl border border-primary-500/20 bg-black-200 p-8 flex flex-col justify-between overflow-hidden">
+          {/* Decorative Corner */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary-600/10 rounded-bl-[100px] -mr-8 -mt-8" />
+
+          <div className="relative z-10 space-y-6">
             <div>
-              <div className="text-sm text-gray-500">Year</div>
-              <div className="font-semibold">{equipment.year}</div>
+              <span className="text-primary-500 text-xs font-black uppercase tracking-widest mb-1 block">
+                Technical Specifications
+              </span>
+              <h3 className="text-white text-2xl font-black uppercase italic leading-none">
+                {equipment.name}
+              </h3>
             </div>
-          </div>
-          <div className="flex items-center">
-            <Zap size={16} className="text-gray-400 mr-2" />
-            <div>
-              <div className="text-sm text-gray-500">Capacity</div>
-              <div className="font-semibold">{equipment.capacity} {equipment.unit}</div>
-            </div>
-          </div>
-        </div>
-        
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-          {equipment.description}
-        </p>
-        
-        {equipment.count && (
-          <div className="mb-3">
-            <span className="inline-flex items-center px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">
-              <Users size={12} className="mr-1" />
-              {equipment.count} units available
-            </span>
-          </div>
-        )}
-        
-        {isExpanded && (
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <h4 className="font-semibold mb-2 text-gray-700">Specifications:</h4>
-            <ul className="space-y-1 mb-4">
-              {equipment.specifications.slice(0, 3).map((spec, index) => (
-                <li key={index} className="flex items-start">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary-500 mt-2 mr-2 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">{spec}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center text-sm text-gray-500">
-                <Shield size={14} className="mr-1" />
-                <span>Safety Level: {equipment.safetyRating}/5</span>
+
+            <div className="space-y-4">
+              <div className="flex items-center gap-4 text-gray-300">
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-primary-500">
+                  <Tool size={16} />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-tighter text-gray-500">Brand / Model</p>
+                  <p className="text-sm font-bold text-white">{equipment.brand}</p>
+                </div>
               </div>
-              <div className="flex items-center text-sm text-gray-500">
-                <Users size={14} className="mr-1" />
-                <span>Operators: {equipment.operatorCount}</span>
+
+              <div className="flex items-center gap-4 text-gray-300">
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-primary-500">
+                  <Hash size={16} />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-tighter text-gray-500">Availability</p>
+                  <p className="text-sm font-bold text-white">{equipment.count} Units</p>
+                </div>
               </div>
+
+              {equipment.year && (
+                <div className="flex items-center gap-4 text-gray-300">
+                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-primary-500">
+                    <Calendar size={16} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-tighter text-gray-500">Manufactured</p>
+                    <p className="text-sm font-bold text-white">{equipment.year}</p>
+                  </div>
+                </div>
+              )}
             </div>
+
+            <p className="text-gray-400 text-xs leading-relaxed line-clamp-4 italic border-l-2 border-primary-600 pl-4">
+              "{equipment.description}"
+            </p>
           </div>
-        )}
-        
-        <div className="mt-6 flex justify-between items-center">
-          <Link
-            href={`/equipment/${equipment.id}`}
-            className="text-primary-600 hover:text-primary-700 font-semibold text-sm flex items-center"
-          >
-            View Details
-            <ExternalLink size={14} className="ml-1" />
-          </Link>
-          <button className="px-4 py-2 bg-primary-50 text-primary-700 hover:bg-primary-100 rounded-lg font-medium text-sm transition">
-            Request Quote
-          </button>
+
+          <div className="relative z-10 flex gap-3">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onViewImage(equipment.images);
+              }}
+              className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2"
+            >
+              <Maximize2 size={14} />
+              View Gallery
+            </button>
+          </div>
         </div>
       </div>
     </div>

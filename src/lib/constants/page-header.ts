@@ -82,23 +82,6 @@ export const EQUIPMENT_IMAGES: PageHeaderImage[] = [
   }
 ];
 
-export const OURBUSINESS_IMAGES: PageHeaderImage[] = [
-  {
-    id: '1',
-    url: 'https://images.pexels.com/photos/792034/pexels-photo-792034.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    alt: 'Modern construction equipment',
-    title: 'Advanced Machinery',
-    description: 'State-of-the-art technology'
-  },
-  {
-    id: '2',
-    url: 'https://images.pexels.com/photos/162553/keys-workshop-mechanical-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=1920',
-    alt: 'Precision tools',
-    title: 'Quality Tools',
-    description: 'Precision in every detail'
-  }
-];
-
 export const CLIENTELE_IMAGES: PageHeaderImage[] = [
   {
     id: '1',
@@ -178,8 +161,6 @@ export function getPageHeaderImages(page: string): PageHeaderImage[] {
       return PROJECTS_IMAGES;
     case 'equipment':
       return EQUIPMENT_IMAGES;
-    case 'our-business':
-      return OURBUSINESS_IMAGES;
     case 'clientele':
       return CLIENTELE_IMAGES;
     case 'career':

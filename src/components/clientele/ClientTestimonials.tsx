@@ -98,11 +98,10 @@ export default function ClientTestimonials() {
               setSelectedCategory(category.id)
               setCurrentIndex(0)
             }}
-            className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-              selectedCategory === category.id
+            className={`px-4 py-2 rounded-lg transition-all duration-300 ${selectedCategory === category.id
                 ? 'bg-primary-600 text-white shadow-lg'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+              }`}
           >
             {category.name}
           </button>
@@ -114,25 +113,25 @@ export default function ClientTestimonials() {
         <div className="relative">
           <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl p-8 md:p-12">
             <Quote className="w-12 h-12 text-primary-200 mb-6" />
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Testimonial Content */}
               <div className="lg:col-span-2">
                 <p className="text-xl text-gray-700 italic mb-6">
                   "{currentTestimonial.content}"
                 </p>
-                
+
                 <div className="flex items-center mb-6">
                   {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      size={20} 
-                      className="fill-yellow-400 text-yellow-400 mr-1" 
+                    <Star
+                      key={i}
+                      size={20}
+                      className="fill-yellow-400 text-yellow-400 mr-1"
                     />
                   ))}
                   <span className="ml-2 text-gray-600">Perfect 5/5</span>
                 </div>
-                
+
                 <div className="flex items-center">
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-xl font-bold mr-4">
                     {currentTestimonial.image}
@@ -147,7 +146,7 @@ export default function ClientTestimonials() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Project Details */}
               <div className="bg-primary-50 rounded-xl p-6">
                 <h5 className="font-bold text-lg mb-4 text-primary-700">Project Details</h5>
@@ -172,7 +171,7 @@ export default function ClientTestimonials() {
               </div>
             </div>
           </div>
-          
+
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
@@ -181,7 +180,7 @@ export default function ClientTestimonials() {
           >
             <ChevronLeft size={24} className="text-gray-700" />
           </button>
-          
+
           <button
             onClick={nextSlide}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white p-3 rounded-full shadow-lg hover:shadow-xl transition-shadow"
@@ -198,9 +197,8 @@ export default function ClientTestimonials() {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentIndex ? 'bg-primary-600 w-8' : 'bg-gray-300'
-            }`}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-primary-600 w-8' : 'bg-gray-300'
+              }`}
             aria-label={`Go to testimonial ${index + 1}`}
           />
         ))}

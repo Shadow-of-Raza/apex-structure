@@ -1,112 +1,82 @@
 // src/components/about-us/CompanyProfile.tsx
 'use client'
 
-import { useState } from 'react'
-import { Building2, CheckCircle, Award, Clock, Users, MapPin } from 'lucide-react'
-import Container from '@/components/common/Layout/Container'
-import Section from '@/components/common/Layout/Section'
+import { COMPANY_PROFILE } from '@/lib/constants/about-us'
+import { getAboutUsIcon, calculateYearsOfExperience } from '@/lib/utils/about-us'
+import { getTotalProjectsCount } from '@/lib/utils/projects'
 import Image from 'next/image'
 
-const milestones = [
-  { year: '2005', title: 'Company Founded', description: 'Started with a vision to transform real estate' },
-  { year: '2010', title: 'First Major Project', description: 'Completed landmark commercial complex' },
-  { year: '2015', title: 'National Expansion', description: 'Expanded operations to 10+ cities' },
-  { year: '2020', title: 'Sustainability Focus', description: 'Integrated green building practices' },
-  { year: '2023', title: '500+ Projects', description: 'Milestone of successful completions' },
-]
-
 export default function CompanyProfile() {
-  const [activeMilestone, setActiveMilestone] = useState(2)
+  const data = COMPANY_PROFILE
+  const yearsOfExperience = calculateYearsOfExperience(data.establishedOn)
+  const completedProjects = getTotalProjectsCount()
+
+  const dynamicStats = [
+    { iconName: 'Building2', value: `${completedProjects}+`, label: 'Total Projects' },
+    { iconName: 'Clock', value: `${yearsOfExperience}+`, label: 'Years Experience' },
+    { iconName: 'Users', value: data.totalTeamMembers, label: 'Team Members' },
+  ]
 
   return (
-    <Section id="company-profile">
-      <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Text */}
+    <div id="company-profile" className="container mx-auto px-4 pt-20">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Left Column - Content */}
+        <div className="space-y-6">
           <div>
-            <span className="text-primary-600 font-semibold">COMPANY PROFILE</span>
-            <h2 className="text-4xl font-bold mt-2 mb-6">Our Journey of Excellence</h2>
-            
-            <p className="text-gray-600 mb-6 text-lg">
-              Founded in 2005, <span className="font-semibold text-primary-700">Apex Structure</span> has grown 
-              from a local construction firm to one of the most trusted real estate development companies 
-              in the region. Our journey is marked by innovation, quality, and unwavering commitment to 
-              client satisfaction.
-            </p>
-            
-            <p className="text-gray-600 mb-8">
-              With over 500 successful projects across residential, commercial, and industrial sectors, 
-              we have consistently delivered spaces that inspire, function, and endure. Our team of 
-              200+ professionals brings together expertise in architecture, engineering, project 
-              management, and sustainable design.
-            </p>
-            
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-4 bg-primary-50 rounded-lg">
-                <Building2 className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary-700">500+</div>
-                <div className="text-sm text-gray-600">Projects</div>
-              </div>
-              <div className="text-center p-4 bg-primary-50 rounded-lg">
-                <Clock className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary-700">18+</div>
-                <div className="text-sm text-gray-600">Years Experience</div>
-              </div>
-              <div className="text-center p-4 bg-primary-50 rounded-lg">
-                <Users className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-primary-700">200+</div>
-                <div className="text-sm text-gray-600">Team Members</div>
-              </div>
+            <div className="flex items-center gap-3 text-primary-600 font-bold uppercase tracking-[0.2em] text-sm mb-6">
+              <span className="w-12 h-px bg-primary-600"></span>
+              {data.badge}
             </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-black-200 leading-tight">
+              {data.title}
+            </h2>
           </div>
-          
-          {/* Right Column - Timeline/Milestones */}
-          <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 shadow-lg">
-            <h3 className="text-2xl font-bold mb-8 text-center">Our Milestones</h3>
-            
-            <div className="relative">
-              {/* Vertical line */}
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-primary-200"></div>
-              
-              {milestones.map((milestone, index) => (
-                <div 
-                  key={index}
-                  className={`relative flex items-start mb-8 cursor-pointer transition-all duration-300 ${
-                    activeMilestone === index ? 'scale-105' : ''
-                  }`}
-                  onMouseEnter={() => setActiveMilestone(index)}
-                >
-                  {/* Year Circle */}
-                  <div className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg ${
-                    activeMilestone === index 
-                      ? 'bg-primary-600 text-white shadow-lg' 
-                      : 'bg-white text-primary-600 border-2 border-primary-200'
-                  }`}>
-                    {milestone.year}
-                  </div>
-                  
-                  {/* Content */}
-                  <div className={`ml-6 p-4 rounded-lg transition-all duration-300 ${
-                    activeMilestone === index 
-                      ? 'bg-primary-50 border-l-4 border-primary-500' 
-                      : 'bg-white border border-gray-200'
-                  }`}>
-                    <h4 className={`font-bold text-lg mb-1 ${
-                      activeMilestone === index ? 'text-primary-700' : 'text-gray-800'
-                    }`}>
-                      {milestone.title}
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      {milestone.description}
-                    </p>
-                  </div>
+
+          <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
+            <p className="font-medium text-black-400">
+              {data.descriptionPrimary}
+            </p>
+            <p>
+              {data.descriptionSecondary}
+            </p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
+            {dynamicStats.map((stat, idx) => {
+              const Icon = getAboutUsIcon(stat.iconName)
+              return (
+                <div key={idx} className="p-6 bg-platinum-800 rounded-2xl border border-white transition-all duration-300 hover:shadow-md hover:border-primary-200 group">
+                  <Icon className="w-8 h-8 text-secondary-500 mb-4 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="text-3xl font-bold text-black-200">{stat.value}</div>
+                  <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">{stat.label}</div>
                 </div>
-              ))}
-            </div>
+              )
+            })}
           </div>
         </div>
-      </Container>
-    </Section>
+
+        {/* Right Column - Image */}
+        <div className="relative group">
+          <div className="absolute -inset-4 bg-primary-500/10 rounded-2xl blur-2xl group-hover:bg-primary-500/20 transition-colors duration-500"></div>
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-platinum">
+            <Image
+              src={data.image}
+              alt="Company Profile"
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Visual Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black-100/40 via-transparent to-transparent"></div>
+
+            {/* Establishing Year Badge */}
+            {/* <div className="absolute bottom-8 left-8 bg-transparent backdrop-blur-md rounded-2xl p-4 shadow-xl border border-platinum">
+              <div className="text-secondary-500 font-black text-xl leading-none">ESTABLISHED ON</div>
+              <div className="text-white font-bold text-md">{data.establishedOn}</div>
+            </div> */}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

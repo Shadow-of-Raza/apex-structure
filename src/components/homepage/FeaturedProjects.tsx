@@ -12,15 +12,15 @@ export default function FeaturedProjects() {
   // Get ONLY featured projects (isFeatured = true)
   const featuredProjects = getOnlyFeaturedProjects()
   const totalProjects = getTotalProjectsCount()
-  
+
   // Embla Carousel setup
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
     skipSnaps: false,
     duration: 20
   })
-  
+
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
@@ -35,15 +35,15 @@ export default function FeaturedProjects() {
 
   useEffect(() => {
     if (!emblaApi) return
-    
+
     // Initialize
     onSelect()
     setScrollSnaps(emblaApi.scrollSnapList())
-    
+
     // Event listeners
     emblaApi.on('select', onSelect)
     emblaApi.on('reInit', onSelect)
-    
+
     return () => {
       emblaApi.off('select', onSelect)
       emblaApi.off('reInit', onSelect)
@@ -53,14 +53,14 @@ export default function FeaturedProjects() {
   // Auto-scroll effect
   useEffect(() => {
     if (!emblaApi || scrollSnaps.length <= 1) return
-    
+
     const interval = setInterval(() => {
       if (emblaApi) {
         const nextIndex = (emblaApi.selectedScrollSnap() + 1) % scrollSnaps.length
         scrollTo(nextIndex)
       }
     }, 5000)
-    
+
     return () => {
       clearInterval(interval)
     }
@@ -84,9 +84,9 @@ export default function FeaturedProjects() {
               Explore our handpicked featured projects that redefine urban living and commercial spaces
             </p>
           </div>
-          
+
           {/* View All Projects Link */}
-          <Link 
+          <Link
             href="/projects"
             className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold whitespace-nowrap group"
           >
@@ -104,10 +104,9 @@ export default function FeaturedProjects() {
                 <div key={project.id} className="flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-4">
                   <div className="h-full">
                     {/* Using the SAME grid view card from ProjectCard */}
-                    <ProjectCard 
-                      project={project} 
-                      viewMode="grid"  // Changed from "featured" to "grid"
-                      compact={true}
+                    <ProjectCard
+                      project={project}
+                      viewMode="grid"
                       showFeatures={true}
                       showHighlights={false}
                       showDates={true}
@@ -122,15 +121,15 @@ export default function FeaturedProjects() {
           {/* Navigation Buttons - Only show if there are multiple featured projects */}
           {featuredProjects.length > 1 && (
             <>
-              <button 
+              <button
                 onClick={scrollPrev}
                 className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
                 aria-label="Previous project"
               >
                 <ChevronLeft size={20} className="text-gray-700" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={scrollNext}
                 className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
                 aria-label="Next project"
@@ -148,11 +147,10 @@ export default function FeaturedProjects() {
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex 
-                    ? 'bg-primary-600 w-6' 
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${index === selectedIndex
+                    ? 'bg-primary-600 w-6'
                     : 'bg-gray-300 hover:bg-gray-400'
-                }`}
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-current={index === selectedIndex}
               />

@@ -4,26 +4,25 @@ import { Project } from '@/lib/types'
 import Link from 'next/link'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
 import { cleanImageUrl } from '@/lib/utils/images'
-import { 
+import {
   getFormattedLocation,
-  getStatusConfig,
-  getProjectTypeColor
+  getStatusConfig
 } from '@/lib/utils/projects'
+import { servicesData } from '@/lib/constants/services'
+import { getServiceIcon } from '@/lib/utils/services'
 
 interface ProjectCardProps {
   project: Project
   viewMode?: 'grid' | 'list' | 'featured'
-  compact?: boolean
   showFeatures?: boolean
   showHighlights?: boolean
   showDates?: boolean
   showClient?: boolean
 }
 
-export default function ProjectCard({ 
-  project, 
+export default function ProjectCard({
+  project,
   viewMode = 'grid',
-  compact = false,
   showFeatures = true,
   showHighlights = true,
   showDates = true,
@@ -31,13 +30,14 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   // Get status configuration
   const statusConfig = getStatusConfig(project.status) || {
-    color: 'bg-gray-100 text-gray-800',
     name: project.status.charAt(0).toUpperCase() + project.status.slice(1)
   }
 
-  // Get type color
-  const typeColorClass = getProjectTypeColor(project.type)
-  
+  // Get type theme - REPLACED WITH STATIC CLASSES
+  // const typeTheme = getProjectTypeTheme(project.type)
+  const service = servicesData.find(s => s.name === project.type)
+  const TypeIcon = getServiceIcon(service?.icon || 'Building2')
+
   // Format location
   const formattedLocation = getFormattedLocation(project)
 
@@ -76,10 +76,10 @@ export default function ProjectCard({
             fallbackText={project.title}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          
-          <div className="absolute top-4 left-4">
-            <span className={`px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-sm ${statusConfig.color}`}>
-              {getStatusIcon()}
+
+          <div className="absolute top-4 left-4 z-10 transition-transform duration-300">
+            <span className="px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-md bg-white/90 text-gray-800 border border-white/20 shadow-md">
+              <span className="text-secondary-600">{getStatusIcon()}</span>
               <span className="capitalize">{statusConfig.name}</span>
             </span>
           </div>
@@ -88,7 +88,8 @@ export default function ProjectCard({
         {/* Content */}
         <div className="p-6">
           <div className="flex items-center justify-between mb-3">
-            <span className={`px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium`}>
+            <span className={`px-3 py-1.5 rounded-full text-sm font-semibold capitalize backdrop-blur-md shadow-md bg-white/90 text-gray-800 border border-white/20 flex items-center gap-2`}>
+              <span className="text-secondary-600"><TypeIcon size={14} /></span>
               {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
             </span>
             {showDates && (
@@ -118,7 +119,7 @@ export default function ProjectCard({
             <span className="text-sm font-medium text-gray-700">
               {project.area} sq.ft.
             </span>
-            <Link 
+            <Link
               href={`/projects/${project.slug}`}
               className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold text-sm group"
             >
@@ -148,8 +149,8 @@ export default function ProjectCard({
               fallbackText={project.title}
             />
             <div className="absolute top-4 left-4">
-              <span className={`px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-sm ${statusConfig.color}`}>
-                {getStatusIcon()}
+              <span className="px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-md bg-white/90 text-gray-800 border border-white/20 shadow-md">
+                <span className="text-secondary-600">{getStatusIcon()}</span>
                 <span className="capitalize">{statusConfig.name}</span>
               </span>
             </div>
@@ -158,14 +159,15 @@ export default function ProjectCard({
           {/* Content Section */}
           <div className="md:w-3/5 p-6 md:p-8">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className={`px-3 py-1.5 rounded-full text-sm font-medium ${typeColorClass}`}>
+              <span className={`px-3 py-1.5 rounded-full text-sm font-semibold capitalize backdrop-blur-md shadow-md bg-white/90 text-gray-800 border border-white/20 flex items-center gap-2`}>
+                <span className="text-secondary-600"><TypeIcon size={14} /></span>
                 {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
               </span>
               <span className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
                 {project.area} sq.ft.
               </span>
               <span className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-                {project.budget}
+                {project.client}
               </span>
             </div>
 
@@ -244,7 +246,7 @@ export default function ProjectCard({
               <div className="text-sm text-gray-500">
                 Client: {project.client}
               </div>
-              <Link 
+              <Link
                 href={`/projects/${project.slug}`}
                 className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold group"
               >
@@ -273,22 +275,24 @@ export default function ProjectCard({
           fallbackText={project.title}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
-        <div className="absolute top-4 left-4">
-          <span className={`px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-sm ${statusConfig.color}`}>
-            {getStatusIcon()}
+
+        <div className="absolute top-4 left-4 z-10">
+          <span className="px-3 py-1.5 rounded-full text-sm font-semibold flex items-center gap-2 backdrop-blur-md bg-white/90 text-gray-800 border border-white/20 shadow-md">
+            <span className="text-secondary-600">{getStatusIcon()}</span>
             <span className="capitalize">{statusConfig.name}</span>
           </span>
         </div>
-        <div className="absolute top-4 right-4">
-          <span className={`px-3 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm ${typeColorClass}`}>
-            {project.type.charAt(0).toUpperCase() + project.type.slice(1)}
+
+        <div className="absolute top-4 right-4 z-10 transition-transform duration-300">
+          <span className={`px-3 py-1.5 rounded-full text-sm font-semibold capitalize backdrop-blur-md shadow-md bg-white/90 text-gray-800 border border-white/20 flex items-center gap-2`}>
+            <span className="text-secondary-600"><TypeIcon size={14} /></span>
+            <span className="capitalize">{project.type}</span>
           </span>
         </div>
-        
+
         {/* Hover overlay with quick view */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-          <Link 
+          <Link
             href={`/projects/${project.slug}`}
             className="px-6 py-3 bg-white text-primary-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors shadow-lg"
           >
@@ -338,11 +342,11 @@ export default function ProjectCard({
         )}
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-sm font-bold text-gray-900">{project.budget}</span>
-            <span className="text-xs text-gray-500">Budget</span>
+          <div className="flex items-center space-x-1">
+            <span className="text-sm text-gray-500">Client |</span>
+            <span className="text-sm font-bold text-gray-900">{project.client}</span>
           </div>
-          <Link 
+          <Link
             href={`/projects/${project.slug}`}
             className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold text-sm group"
           >

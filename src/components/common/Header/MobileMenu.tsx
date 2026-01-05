@@ -3,7 +3,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ChevronDown, Building2, MessageSquare, Target, Users, Heart, Pen } from 'lucide-react'
+import { ChevronDown, Building2, MessageSquare, Target, Users, Heart, Pen, Trophy } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 
 interface MobileMenuProps {
@@ -25,41 +25,46 @@ const mobileNavItems = [
 ]
 
 const aboutDropdownItems = [
-  { 
-    name: 'About Us', 
+  {
+    name: 'About Us',
     href: '/about-us',
     icon: <Pen size={16} />
   },
-  { 
-    name: 'Company Profile', 
+  {
+    name: 'Company Profile',
     href: '/about-us#company-profile',
     icon: <Building2 size={16} />
   },
-  { 
-    name: 'Director\'s Message', 
+  {
+    name: 'Director\'s Message',
     href: '/about-us#directors-message',
     icon: <MessageSquare size={16} />
   },
-  { 
-    name: 'Mentor\'s Message', 
+  {
+    name: 'Mentor\'s Message',
     href: '/about-us#mentors-message',
     icon: <MessageSquare size={16} />
   },
-  { 
-    name: 'Vision & Mission', 
+  {
+    name: 'Vision & Mission',
     href: '/about-us#vision-mission',
     icon: <Target size={16} />
   },
-  { 
-    name: 'Our Team', 
+  {
+    name: 'Our Team',
     href: '/about-us#our-team',
     icon: <Users size={16} />
   },
-  { 
-    name: 'CSR Activity', 
-    href: '/about-us#csr',
-    icon: <Heart size={16} />
-  },
+  // { 
+  //   name: 'CSR Activity', 
+  //   href: '/about-us#csr',
+  //   icon: <Heart size={16} />
+  // },
+  {
+    name: 'Awards & Certifications',
+    href: '/about-us#awards-certifications',
+    icon: <Trophy size={16} />
+  }
 ]
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
@@ -75,31 +80,30 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="container mx-5 px-4 py-4">
         <div className="flex flex-col space-y-0 font-sans">
           {mobileNavItems.map((item) => {
-            const isActive = 
+            const isActive =
               pathname === item.href ||
               (item.href === '/services' && pathname?.startsWith('/services')) ||
               (item.href === '/projects' && pathname?.startsWith('/projects')) ||
               (item.href === '/about-us' && pathname?.startsWith('/about-us'))
-            
+
             return (
               <div key={item.name}>
                 {item.hasDropdown ? (
                   <div>
                     <button
+                      suppressHydrationWarning
                       onClick={() => setIsAboutOpen(!isAboutOpen)}
-                      className={`flex items-center justify-between w-full font-medium py-3 border-b border-platinum-700 transition-colors duration-200 ${
-                        isActive ? 'text-primary-700 font-semibold' : 'text-black-400 hover:text-primary-700'
-                      }`}
+                      className={`flex items-center justify-between w-full font-medium py-3 border-b border-platinum-700 transition-colors duration-200 ${isActive ? 'text-primary-700 font-semibold' : 'text-black-400 hover:text-primary-700'
+                        }`}
                     >
                       <span>{item.name}</span>
-                      <ChevronDown 
-                        size={16} 
-                        className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''} ${
-                          isActive ? 'text-primary-700' : 'text-black-400'
-                        }`} 
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${isAboutOpen ? 'rotate-180' : ''} ${isActive ? 'text-primary-700' : 'text-black-400'
+                          }`}
                       />
                     </button>
-                    
+
                     {isAboutOpen && (
                       <div className="pl-4 bg-platinum-900 mb-2">
                         {aboutDropdownItems.map((dropdownItem) => {
@@ -112,20 +116,17 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                 onClose()
                                 setIsAboutOpen(false)
                               }}
-                              className={`flex items-center space-x-3 py-3 font-medium border-b border-platinum-700 last:border-b-0 transition-colors duration-200 ${
-                                isDropdownItemActive 
-                                  ? 'text-primary-700' 
+                              className={`flex items-center space-x-3 py-3 font-medium border-b border-platinum-700 last:border-b-0 transition-colors duration-200 ${isDropdownItemActive
+                                  ? 'text-primary-700'
                                   : 'text-black-400 hover:text-primary-700'
-                              }`}
+                                }`}
                             >
-                              <div className={`${
-                                isDropdownItemActive ? 'text-secondary-500' : 'text-secondary-500'
-                              }`}>
+                              <div className={`${isDropdownItemActive ? 'text-secondary-500' : 'text-secondary-500'
+                                }`}>
                                 {dropdownItem.icon}
                               </div>
-                              <span className={`text-sm ${
-                                isDropdownItemActive ? 'font-semibold' : 'font-medium'
-                              }`}>
+                              <span className={`text-sm ${isDropdownItemActive ? 'font-semibold' : 'font-medium'
+                                }`}>
                                 {dropdownItem.name}
                               </span>
                             </Link>
@@ -138,9 +139,8 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className={`font-medium py-3 border-b border-platinum-700 block transition-colors duration-200 ${
-                      isActive ? 'text-primary-700 font-semibold' : 'text-black-400 hover:text-primary-700'
-                    }`}
+                    className={`font-medium py-3 border-b border-platinum-700 block transition-colors duration-200 ${isActive ? 'text-primary-700 font-semibold' : 'text-black-400 hover:text-primary-700'
+                      }`}
                   >
                     {item.name}
                   </Link>
@@ -148,7 +148,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               </div>
             )
           })}
-          
+
           <Link
             href="/contact-us"
             onClick={onClose}

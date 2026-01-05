@@ -1,212 +1,113 @@
 // src/components/about-us/OurTeam.tsx
 'use client'
 
-import { useState } from 'react'
-import { Linkedin, Mail, Phone, Building2, Home, Warehouse, Wrench } from 'lucide-react'
-import Container from '@/components/common/Layout/Container'
-import Section from '@/components/common/Layout/Section'
+import { Linkedin, ArrowRight } from 'lucide-react'
+import { TEAM_MEMBERS } from '@/lib/constants/about-us'
 import Image from 'next/image'
 
-const teamMembers = [
-  {
-    id: 1,
-    name: 'Rajesh Kumar',
-    role: 'Founder & Managing Director',
-    department: 'Leadership',
-    experience: '25+ years',
-    specialization: 'Strategic Planning',
-    bio: 'Visionary leader with expertise in large-scale project management',
-    linkedin: '#',
-    email: 'rajesh@apexstructure.com',
-  },
-  {
-    id: 2,
-    name: 'Priya Sharma',
-    role: 'Chief Operations Officer',
-    department: 'Operations',
-    experience: '18+ years',
-    specialization: 'Project Execution',
-    bio: 'Ensures seamless project delivery across all sites',
-    linkedin: '#',
-    email: 'priya@apexstructure.com',
-  },
-  {
-    id: 3,
-    name: 'Amit Patel',
-    role: 'Head of Construction',
-    department: 'Construction',
-    experience: '20+ years',
-    specialization: 'Quality Control',
-    bio: 'Expert in construction methodologies and quality assurance',
-    linkedin: '#',
-    email: 'amit@apexstructure.com',
-  },
-  {
-    id: 4,
-    name: 'Sonia Verma',
-    role: 'Chief Architect',
-    department: 'Design',
-    experience: '15+ years',
-    specialization: 'Sustainable Design',
-    bio: 'Award-winning architect focused on eco-friendly designs',
-    linkedin: '#',
-    email: 'sonia@apexstructure.com',
-  },
-  {
-    id: 5,
-    name: 'Rahul Mehta',
-    role: 'Finance Director',
-    department: 'Finance',
-    experience: '22+ years',
-    specialization: 'Investment Strategy',
-    bio: 'Manages financial planning and investment portfolios',
-    linkedin: '#',
-    email: 'rahul@apexstructure.com',
-  },
-  {
-    id: 6,
-    name: 'Neha Gupta',
-    role: 'Head of Business Development',
-    department: 'Business',
-    experience: '12+ years',
-    specialization: 'Client Relations',
-    bio: 'Builds strategic partnerships and client relationships',
-    linkedin: '#',
-    email: 'neha@apexstructure.com',
-  },
-]
-
-const departments = [
-  { id: 'all', name: 'All Team', icon: <Building2 size={20} />, count: 50 },
-  { id: 'leadership', name: 'Leadership', icon: <Building2 size={20} />, count: 8 },
-  { id: 'construction', name: 'Construction', icon: <Home size={20} />, count: 25 },
-  { id: 'design', name: 'Design', icon: <Wrench size={20} />, count: 12 },
-  { id: 'operations', name: 'Operations', icon: <Warehouse size={20} />, count: 5 },
-]
-
 export default function OurTeam() {
-  const [activeDept, setActiveDept] = useState('all')
-  const [selectedMember, setSelectedMember] = useState<number | null>(null)
-
-  const filteredMembers = activeDept === 'all' 
-    ? teamMembers 
-    : teamMembers.filter(member => 
-        member.department.toLowerCase() === activeDept.toLowerCase()
-      )
+  const team = TEAM_MEMBERS
 
   return (
-    <Section id="our-team">
-      <Container>
-        <div className="text-center mb-12">
-          <span className="text-primary-600 font-semibold">MEET OUR TEAM</span>
-          <h2 className="text-4xl font-bold mt-2 mb-6">Expert Professionals Driving Excellence</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Our diverse team of 200+ professionals brings together decades of experience 
-            across architecture, engineering, project management, and construction.
-          </p>
+    <div id="our-team" className="relative py-12 overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-platinum-800/30 -skew-x-12 translate-x-1/2 -z-10"></div>
+
+      <div className="container mx-auto px-4 relative">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-10 gap-x-12 gap-y-8">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 text-primary-600 font-bold uppercase tracking-[0.2em] text-sm mb-6">
+              <span className="w-12 h-px bg-primary-600"></span>
+              Expertise Behind Apex
+            </div>
+            <h2 className="text-5xl md:text-7xl font-black text-black-200 leading-[0.95]">
+              Leadership <span className="text-secondary-500">&</span> Excellence
+            </h2>
+          </div>
+          <div className="max-w-xl">
+            <p className="text-gray-500 text-xl leading-relaxed">
+              A collective of visionaries, engineers, and strategists dedicated to
+              redefining the architectural landscape through precision and innovation.
+            </p>
+          </div>
         </div>
-        
-        {/* Department Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {departments.map((dept) => (
-            <button
-              key={dept.id}
-              onClick={() => setActiveDept(dept.id)}
-              className={`flex items-center px-6 py-3 rounded-full transition-all duration-300 ${
-                activeDept === dept.id
-                  ? 'bg-primary-600 text-white shadow-lg'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <span className="mr-2">{dept.icon}</span>
-              <span className="font-medium">{dept.name}</span>
-              <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
-                activeDept === dept.id
-                  ? 'bg-white/30'
-                  : 'bg-gray-200'
-              }`}>
-                {dept.count}+
-              </span>
-            </button>
-          ))}
-        </div>
-        
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {filteredMembers.map((member) => (
-            <div 
-              key={member.id}
-              className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              onMouseEnter={() => setSelectedMember(member.id)}
-              onMouseLeave={() => setSelectedMember(null)}
-            >
-              <div className="p-6">
-                {/* Avatar */}
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center text-white text-3xl font-bold">
-                  {member.name.split(' ').map(n => n[0]).join('')}
-                </div>
-                
-                {/* Info */}
-                <div className="text-center mb-4">
-                  <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                  <p className="text-primary-600 font-semibold mb-2">{member.role}</p>
-                  <div className="inline-block px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm font-medium mb-3">
-                    {member.department}
+
+        {/*Main Team*/ }
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+          {team.map((member, idx) => (
+            <div key={member.id} className="group relative">
+              {/* Image Aspect Box */}
+              <div className="relative aspect-[1] rounded-2xl overflow-hidden mb-[-4rem] shadow-2xl transition-transform duration-700 group-hover:-translate-y-4">
+                <Image
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  className="object-cover transition-transform duration-1000 grayscale group-hover:grayscale-0"
+                />
+
+                {/* Gradient Overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black-200/60 via-transparent to-transparent opacity-60"></div>
+              </div>
+
+              {/* Info Card - Floating */}
+              <div className="relative z-10 mx-6 p-8 bg-white rounded-2xl shadow-2xl border border-platinum transition-all duration-500 group-hover:shadow-primary-500/10 group-hover:border-primary-100">
+                <div className="flex justify-between items-start mb-1">
+                  <div>
+                    <h3 className="text-2xl font-black text-black-200 mb-1 leading-none group-hover:text-primary-700 transition-colors">
+                      {member.name}
+                    </h3>
+                    <p className="text-secondary-500 font-bold text-[8px] uppercase tracking-widest">
+                      {member.role}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {member.experience} Experience | {member.specialization}
-                  </p>
-                  <p className="text-gray-700 text-sm">
-                    {member.bio}
-                  </p>
+                  {member.socialLinks?.linkedin && (
+                    <a
+                      href={member.socialLinks.linkedin}
+                      className="w-10 h-10 rounded-xl bg-platinum-800 flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition-all duration-300"
+                    >
+                      <Linkedin size={18} />
+                    </a>
+                  )}
                 </div>
-                
-                {/* Contact Links */}
-                <div className={`flex justify-center space-x-4 transition-all duration-300 ${
-                  selectedMember === member.id ? 'opacity-100' : 'opacity-0'
-                }`}>
-                  <a 
-                    href={member.linkedin}
-                    className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition"
-                    aria-label={`Connect with ${member.name} on LinkedIn`}
-                  >
-                    <Linkedin size={18} />
-                  </a>
-                  <a 
-                    href={`mailto:${member.email}`}
-                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-600 hover:text-white transition"
-                    aria-label={`Email ${member.name}`}
-                  >
-                    <Mail size={18} />
-                  </a>
-                </div>
+
+                <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 italic">
+                  &quot;{member.bio}&quot;
+                </p>
               </div>
             </div>
           ))}
         </div>
-        
-        {/* Team Stats */}
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-2xl p-8 text-white">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">200+</div>
-              <div className="text-primary-200">Team Members</div>
+
+        {/* Recruitment CTA - Redesigned */}
+        <div className="mt-12 relative">
+          <div className="absolute inset-0 bg-primary-900 rounded-2xl -rotate-1 scale-[1.02]"></div>
+          <div className="relative bg-black-200 rounded-2xl p-12 md:p-20 overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-12 border border-white/5 shadow-2xl">
+            {/* Background Texture */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+              style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">15+</div>
-              <div className="text-primary-200">National Awards</div>
+
+            <div className="max-w-2xl text-center lg:text-left">
+              <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                Architect Your Future <br />
+                <span className="text-secondary-500">With Apex Structure</span>
+              </h3>
+              <p className="text-gray-400 text-lg font-medium leading-relaxed mb-0">
+                Join a dynamic environment where innovation meets legacy. We are
+                continuously seeking visionary talent to help shape the world's skylines.
+              </p>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">98%</div>
-              <div className="text-primary-200">Client Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold mb-2">10+</div>
-              <div className="text-primary-200">Expert Departments</div>
-            </div>
+
+            <a
+              href="/career"
+              className="group flex items-center gap-4 px-10 py-5 bg-white text-black-200 font-black rounded-2xl transition-all duration-500 hover:bg-secondary-500 hover:text-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] hover:shadow-secondary-500/30"
+            >
+              EXPLORE OPPORTUNITIES
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+            </a>
           </div>
         </div>
-      </Container>
-    </Section>
+      </div>
+    </div>
   )
 }

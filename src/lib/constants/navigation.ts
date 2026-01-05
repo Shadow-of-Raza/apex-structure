@@ -4,7 +4,6 @@ export const mainNav = [
   { name: 'About Us', href: '/about-us', current: false },
   { name: 'Projects', href: '/projects', current: false },
   { name: 'Services', href: '/services', current: false },
-  { name: 'Our Business', href: '/our-business', current: false },
   { name: 'Equipment', href: '/equipment', current: false },
   { name: 'Clientele', href: '/clientele', current: false },
   { name: 'Blogs', href: '/blogs', current: false },

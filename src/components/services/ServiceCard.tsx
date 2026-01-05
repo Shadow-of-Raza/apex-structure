@@ -1,353 +1,241 @@
 // src/components/services/ServiceCard.tsx
 'use client'
 
-import { useState } from 'react'
-import { Building2, Home, Warehouse, Wrench, ClipboardCheck, Users, Shield, Target, Clock, Award, ChevronRight, CheckCircle } from 'lucide-react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
+import { ChevronRight, ChevronLeft, Award, Sparkles, ArrowRight, LucideIcon } from 'lucide-react'
 import Link from 'next/link'
+import useEmblaCarousel from 'embla-carousel-react'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
-
-const services = [
-  {
-    id: 'commercial',
-    icon: <Building2 className="w-8 h-8" />,
-    title: 'Commercial Construction',
-    description: 'Complete construction solutions for office complexes, shopping malls, retail spaces, and commercial buildings.',
-    features: [
-      'Office Buildings & Corporate Parks',
-      'Shopping Malls & Retail Centers',
-      'Hotels & Hospitality Projects',
-      'Educational Institutions',
-      'Healthcare Facilities'
-    ],
-    highlights: [
-      'LEED & IGBC Certified Projects',
-      'Modern Architectural Designs',
-      'Smart Building Solutions',
-      'Energy Efficient Systems'
-    ],
-    image: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=commercial',
-    color: 'from-blue-500 to-blue-700'
-  },
-  {
-    id: 'residential',
-    icon: <Home className="w-8 h-8" />,
-    title: 'Residential Projects',
-    description: 'Premium residential developments including apartments, villas, townships, and gated communities.',
-    features: [
-      'Luxury Apartments & Condominiums',
-      'Villas & Independent Houses',
-      'Integrated Townships',
-      'Gated Communities',
-      'Affordable Housing'
-    ],
-    highlights: [
-      'Modern Amenities & Facilities',
-      'Sustainable Living Spaces',
-      'Smart Home Automation',
-      'Community-Centric Design'
-    ],
-    image: 'https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=residential',
-    color: 'from-green-500 to-green-700'
-  },
-  {
-    id: 'industrial',
-    icon: <Warehouse className="w-8 h-8" />,
-    title: 'Industrial Construction',
-    description: 'Specialized construction services for factories, warehouses, industrial parks, and manufacturing units.',
-    features: [
-      'Manufacturing Plants',
-      'Warehouses & Storage Facilities',
-      'Industrial Parks',
-      'Logistics Centers',
-      'Special Economic Zones'
-    ],
-    highlights: [
-      'Heavy-Duty Construction',
-      'Material Handling Systems',
-      'Utility Infrastructure',
-      'Safety Compliance'
-    ],
-    image: 'https://images.pexels.com/photos/159306/construction-site-build-construction-work-159306.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=industrial',
-    color: 'from-orange-500 to-orange-700'
-  },
-  {
-    id: 'renovation',
-    icon: <Wrench className="w-8 h-8" />,
-    title: 'Renovation & Interior',
-    description: 'Complete renovation, remodeling, and interior design services for residential and commercial spaces.',
-    features: [
-      'Home Renovation & Remodeling',
-      'Commercial Space Refurbishment',
-      'Interior Design & Decoration',
-      'Structural Repairs',
-      'Retrofit & Upgradation'
-    ],
-    highlights: [
-      'Custom Design Solutions',
-      'Premium Material Selection',
-      'Timely Project Completion',
-      'Minimal Disruption'
-    ],
-    image: 'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=renovation',
-    color: 'from-purple-500 to-purple-700'
-  },
-  {
-    id: 'management',
-    icon: <ClipboardCheck className="w-8 h-8" />,
-    title: 'Project Management',
-    description: 'End-to-end project management services ensuring quality, timeline, and budget adherence.',
-    features: [
-      'Project Planning & Scheduling',
-      'Cost Estimation & Control',
-      'Quality Assurance',
-      'Contract Management',
-      'Risk Assessment'
-    ],
-    highlights: [
-      'Professional PM Team',
-      'Advanced Project Tools',
-      'Regular Progress Reports',
-      'Stakeholder Coordination'
-    ],
-    image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=management',
-    color: 'from-indigo-500 to-indigo-700'
-  },
-  {
-    id: 'consultation',
-    icon: <Users className="w-8 h-8" />,
-    title: 'Consultation Services',
-    description: 'Expert consultation for real estate investment, project feasibility, and development strategies.',
-    features: [
-      'Feasibility Studies',
-      'Site Selection & Evaluation',
-      'Investment Advisory',
-      'Regulatory Compliance',
-      'Market Research'
-    ],
-    highlights: [
-      'Industry Expertise',
-      'Data-Driven Insights',
-      'Customized Solutions',
-      'Risk Mitigation'
-    ],
-    image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-    link: '/projects?type=consultation',
-    color: 'from-teal-500 to-teal-700'
-  }
-]
+import { getAllServices, SERVICE_ICON_MAP, getServiceStats } from '@/lib/utils/services'
+import { Building2 } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 export default function ServiceCard() {
-  const [activeService, setActiveService] = useState('commercial')
+  const services = useMemo(() => getAllServices(), [])
+  // Initialize with first service ID
+  const [activeServiceId, setActiveServiceId] = useState<number>(services[0]?.id)
 
-  const activeServiceData = services.find(service => service.id === activeService)
+  // Handle URL params
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    const idParam = searchParams.get('id')
+    if (idParam) {
+      // Find service by name (slug) from URL
+      const service = services.find(s => s.name === idParam)
+      if (service) {
+        setActiveServiceId(service.id)
+      }
+    }
+  }, [searchParams, services])
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    containScroll: 'trimSnaps',
+    dragFree: true
+  })
+
+  const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
+  const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
+
+  const activeService = useMemo(() =>
+    services.find(s => s.id === activeServiceId) || services[0],
+    [services, activeServiceId])
+
+  const serviceStats = useMemo(() => getServiceStats(), [])
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return
+    setPrevBtnEnabled(emblaApi.canScrollPrev())
+    setNextBtnEnabled(emblaApi.canScrollNext())
+  }, [emblaApi])
+
+  useEffect(() => {
+    if (!emblaApi) return
+    onSelect()
+    emblaApi.on('select', onSelect)
+    emblaApi.on('reInit', onSelect)
+  }, [emblaApi, onSelect])
+
+  if (!activeService) return null
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 md:p-8 shadow-xl border border-gray-100">
-      {/* Service Tabs - Horizontal Scroll for Mobile */}
-      <div className="mb-8">
-        <div className="flex overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
-          <div className="flex space-x-3 min-w-max">
-            {services.map(service => (
+    <div className="container mx-auto px-4 md:px-0">
+      <div className="bg-white rounded-2xl p-6 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 relative overflow-hidden group/main">
+        {/* Background Accent */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-50 rounded-full blur-3xl opacity-50 pointer-events-none group-hover/main:scale-110 transition-transform duration-1000"></div>
+
+        {/* Service Selection Carousel */}
+        <div className="mb-8 relative z-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4 text-secondary-600 font-bold uppercase tracking-widest text-sm">
+              <span className="h-px w-8 bg-secondary-600"></span>
+              Select a Service
+            </div>
+
+            <div className="flex gap-2">
               <button
-                key={service.id}
-                onClick={() => setActiveService(service.id)}
-                className={`flex items-center px-5 py-3 rounded-xl transition-all duration-300 whitespace-nowrap ${
-                  activeService === service.id
-                    ? 'bg-primary-600 text-white shadow-lg transform scale-105'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow border border-gray-200'
-                }`}
+                onClick={scrollPrev}
+                disabled={!prevBtnEnabled}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${prevBtnEnabled
+                  ? 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary-300 shadow-sm'
+                  : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                  }`}
+                aria-label="Previous services"
               >
-                <span className="mr-3">{service.icon}</span>
-                <span className="font-semibold">{service.title}</span>
-                {activeService === service.id && (
-                  <ChevronRight className="ml-2 w-4 h-4" />
-                )}
+                <ChevronLeft size={20} />
               </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Active Service Details */}
-      {activeServiceData && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Image & Overview */}
-          <div className="space-y-6">
-            {/* Main Image with Fallback */}
-            <div className="rounded-2xl overflow-hidden shadow-lg group relative h-64">
-              <ImageWithFallback
-                src={activeServiceData.image}
-                alt={activeServiceData.title}
-                fallbackText={activeServiceData.title}
-                aspectRatio="landscape"
-                fill={true}
-                className="group-hover:scale-105 transition-transform duration-500"
-                priority={true}
-                width={800}
-                height={450}
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4 text-white">
-                <div className="flex items-center">
-                  <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
-                    Featured Service
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Service Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white rounded-xl p-4 shadow border border-gray-100 text-center">
-                <div className="text-2xl font-bold text-primary-600 mb-1">500+</div>
-                <div className="text-xs text-gray-600">Projects</div>
-              </div>
-              <div className="bg-white rounded-xl p-4 shadow border border-gray-100 text-center">
-                <div className="text-2xl font-bold text-primary-600 mb-1">98%</div>
-                <div className="text-xs text-gray-600">Satisfaction</div>
-              </div>
-              <div className="bg-white rounded-xl p-4 shadow border border-gray-100 text-center">
-                <div className="text-2xl font-bold text-primary-600 mb-1">18+</div>
-                <div className="text-xs text-gray-600">Years Exp</div>
-              </div>
-            </div>
-
-            {/* Quick Overview */}
-            <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl p-6 border border-primary-200">
-              <h3 className="text-lg font-bold text-primary-800 mb-3 flex items-center">
-                <Shield className="w-5 h-5 mr-2" />
-                Service Guarantee
-              </h3>
-              <div className="space-y-2">
-                <div className="flex items-center text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span>Timely project delivery</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span>Quality assured workmanship</span>
-                </div>
-                <div className="flex items-center text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                  <span>Transparent pricing</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column - Features & Highlights */}
-          <div className="space-y-8">
-            {/* Service Description */}
-            <div>
-              <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                {activeServiceData.title}
-              </h3>
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                {activeServiceData.description}
-              </p>
-            </div>
-
-            {/* Key Features */}
-            <div>
-              <h3 className="text-xl font-bold mb-4 flex items-center text-gray-800">
-                <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center mr-3">
-                  {activeServiceData.icon}
-                </div>
-                Key Features
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {activeServiceData.features.map((feature, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white rounded-lg p-4 border border-gray-200 hover:border-primary-300 transition-colors group"
-                  >
-                    <div className="flex items-start">
-                      <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
-                      </div>
-                      <span className="text-gray-700 group-hover:text-gray-900">{feature}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Service Highlights */}
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 text-white">
-              <h3 className="text-xl font-bold mb-4 flex items-center">
-                <Award className="w-6 h-6 text-secondary-500 mr-3" />
-                Service Highlights
-              </h3>
-              <div className="space-y-4">
-                {activeServiceData.highlights.map((highlight, index) => (
-                  <div key={index} className="flex items-start bg-white/10 rounded-lg p-4 backdrop-blur-sm">
-                    <div className="w-8 h-8 bg-secondary-500/20 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
-                      <span className="text-secondary-400 font-bold">{index + 1}</span>
-                    </div>
-                    <span className="text-white/90">{highlight}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="text-center">
-              <Link
-                href={activeServiceData.link}
-                className="inline-flex items-center justify-center bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+              <button
+                onClick={scrollNext}
+                disabled={!nextBtnEnabled}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${nextBtnEnabled
+                  ? 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary-300 shadow-sm'
+                  : 'bg-gray-50 text-gray-300 cursor-not-allowed'
+                  }`}
+                aria-label="Next services"
               >
-                View Related Projects
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </Link>
-              <p className="text-sm text-gray-600 mt-3">
-                Explore our portfolio of {activeServiceData.title.toLowerCase()} projects
-              </p>
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-4">
+              {services.map(service => {
+                const ServiceIcon = SERVICE_ICON_MAP[service.icon] || Building2
+                const isActive = activeServiceId === service.id
+
+                return (
+                  <div key={service.id} className="flex-[0_0_auto] min-w-[200px] md:min-w-[240px]">
+                    <button
+                      onClick={() => setActiveServiceId(service.id)}
+                      className={`flex items-center mx-1 px-5 py-2 rounded-2xl transition-all duration-300 ${isActive
+                        ? 'bg-primary-600 text-white shadow-xl scale-[1.02] border border-transparent'
+                        : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                        }`}
+                    >
+                      <div className={`mr-4 p-2 rounded-xl transition-all duration-500 ${isActive ? 'bg-white/20' : 'bg-white group-hover:bg-primary-50'
+                        }`}>
+                        <ServiceIcon size={16} className={isActive ? 'text-white' : 'text-secondary-600'} />
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm mr-3 capitalize">{service.title}</span>
+                      </div>
+                    </button>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
-      )}
 
-      {/* All Services Grid */}
-      <div className="mt-12 pt-8 border-t border-gray-200">
-        <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">All Our Services</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map(service => (
-            <div
-              key={service.id}
-              className={`bg-white rounded-xl p-5 shadow border border-gray-200 hover:shadow-xl hover:border-primary-300 transition-all duration-300 cursor-pointer group ${
-                activeService === service.id ? 'ring-2 ring-primary-500' : ''
-              }`}
-              onClick={() => setActiveService(service.id)}
-            >
-              <div className="flex items-start mb-4">
-                <div className={`p-3 rounded-xl ${activeService === service.id ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-600'} group-hover:bg-primary-50 group-hover:text-primary-500 transition-colors`}>
-                  {service.icon}
+        {/* Active Service Showcase - Modern Asymmetrical Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch relative z-10">
+          {/* Left Side: Visuals and Quick Facts */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl group flex-grow min-h-[400px]">
+              <ImageWithFallback
+                src={activeService.image || ''}
+                alt={activeService.title}
+                fallbackText={activeService.title}
+                fill={true}
+                className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                priority={true}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent"></div>
+
+              <div className="absolute bottom-8 left-8 right-8">
+                <div className="inline-flex items-center px-4 py-1.5 rounded-full bg-primary-600 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-4 shadow-lg">
+                  <Sparkles size={12} className="mr-2" />
+                  Premium Solution
                 </div>
-                <div className="ml-4 flex-1">
-                  <h4 className="text-lg font-bold text-gray-900 group-hover:text-primary-700 transition-colors">
-                    {service.title}
-                  </h4>
-                  <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                    {service.description}
-                  </p>
-                </div>
+                <h3 className="text-3xl font-black text-white mb-3 tracking-tight">{activeService.title}</h3>
+                <div className={`w-16 h-1.5 rounded-full mb-4 bg-white/50`}></div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-primary-600 font-medium text-sm">
-                  Learn More
-                </span>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  activeService === service.id ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-400'
-                }`}>
-                  <ChevronRight className="w-4 h-4" />
+            </div>
+
+            {/* Performance Stats Overlay */}
+            <div className="grid grid-cols-2 gap-4">
+              {serviceStats.slice(0, 2).map((stat, i) => (
+                <div key={i} className={`rounded-2xl p-6 border ${i === 0 ? 'bg-gray-900 border-gray-800 text-white' : 'bg-primary-50 border-primary-100'
+                  }`}>
+                  <div className={`text-3xl font-black mb-1 ${i === 0 ? 'text-white' : 'text-primary-700'
+                    }`}>{stat.value}</div>
+                  <div className={`text-[10px] font-bold uppercase tracking-widest ${i === 0 ? 'text-gray-400' : 'text-primary-600/60'
+                    }`}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Side: Detailed Content */}
+          <div className="lg:col-span-7 flex flex-col justify-between py-2">
+            <div>
+              <div className="inline-block px-4 py-1.5 rounded-full bg-gray-100 text-gray-800 text-xs font-black uppercase tracking-widest mb-6">
+                Service Overview
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-8 leading-[1.1] tracking-tight">
+                Excellence in <span className="text-gray-900">{activeService.title}</span>
+              </h2>
+
+              <p className="text-gray-600 text-xl leading-relaxed mb-12 font-medium">
+                {activeService.description}
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+                {/* Capabilities */}
+                <div>
+                  <h4 className="text-lg font-black text-gray-900 mb-6 flex items-center">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center mr-3 bg-primary-50">
+                      <div className="w-2 h-2 rounded-full bg-primary-600"></div>
+                    </div>
+                    Core Capabilities
+                  </h4>
+                  <ul className="space-y-4">
+                    {activeService.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start group/li cursor-default">
+                        <div className="mr-3 mt-1.5 w-1.5 h-1.5 rounded-full bg-primary-200 group-hover/li:bg-primary-600 transition-colors"></div>
+                        <span className="text-gray-600 font-bold group-hover/li:text-gray-900 transition-colors">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Benefits */}
+                <div>
+                  <h4 className="text-lg font-black text-gray-900 mb-6 flex items-center">
+                    <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                      <Award size={16} className="text-yellow-600" />
+                    </div>
+                    Value Proposition
+                  </h4>
+                  <div className="space-y-3">
+                    {activeService.benefits.map((benefit, idx) => (
+                      <div key={idx} className="h-12 flex items-center px-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-primary-200 hover:bg-white transition-all duration-300">
+                        <span className="text-gray-800 font-bold text-sm tracking-tight">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+
+            <div className="flex">
+              <Link
+                href={`/projects?type=${activeService.name}`}
+                className="group relative inline-flex items-center justify-center px-10 py-5 bg-gray-900 text-white rounded-2xl font-black text-lg transition-all overflow-hidden hover:shadow-2xl hover:shadow-primary-200 hover:-translate-y-1 active:translate-y-0"
+              >
+                <div className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-strong bg-primary-600"></div>
+                <span className="relative z-10 flex items-center">
+                  Explore {activeService.title} Projects
+                  <ArrowRight size={22} className="ml-3 group-hover:translate-x-2 transition-transform duration-500" />
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
