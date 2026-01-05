@@ -52,9 +52,8 @@ export default function HomePage() {
       <HeroSection />
       <FeaturedProjects />
       <ServicesPreview />
-      {/* <StatsCounter /> */}
-      <Testimonials />
-      <BlogPreview />
+      {/* <Testimonials /> */}
+      {/* <BlogPreview /> */}
       <CTA />
     </>
   )

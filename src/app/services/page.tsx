@@ -9,12 +9,6 @@ import { getCompletedProjectsCount, getTotalProjectsCount } from '@/lib/utils/pr
 import { COMPANY_PROFILE } from '@/lib/constants/about-us'
 import { calculateYearsOfExperience } from '@/lib/utils/about-us'
 
-export const metadata = {
-  title: 'Our Services - Apex Structure',
-  description: 'Comprehensive construction and real estate development services including residential, commercial, industrial projects, renovation, and project management.',
-  keywords: 'construction services, real estate development, building contractors, project management, renovation services',
-}
-
 export default function ServicesPage() {
   const data = COMPANY_PROFILE;
   const serviceExperience = calculateYearsOfExperience(data.establishedOn);
