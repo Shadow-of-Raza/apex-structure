@@ -4,6 +4,7 @@ import ServicesPreview from '@/components/homepage/ServicesPreview'
 import CTA from '@/components/homepage/CTA'
 import OurEdge from '@/components/homepage/OurEdge'
 import PrimeClient from '@/components/homepage/PrimeClient'
+import BlogPreview from '@/components/homepage/BlogPreview'
 
 import SeoHead from '@/components/common/SEO/SeoHead'
 import type { Metadata } from 'next'
@@ -53,6 +54,7 @@ export default function HomePage() {
       <ServicesPreview />
       <OurEdge />
       <PrimeClient />
+      <BlogPreview />
       <CTA />
     </>
   )

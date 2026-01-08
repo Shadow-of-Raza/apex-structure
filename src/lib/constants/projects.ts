@@ -22,6 +22,13 @@ export const NAVIGATION_LINKS = {
   }
 } as const
 
+export const PROJECT_STATUSES = [
+  { id: 'ongoing', name: 'Ongoing' },
+  { id: 'completed', name: 'Completed' },
+  { id: 'upcoming', name: 'Upcoming' },
+  { id: 'planning', name: 'Planning' }
+] as const
+
 // Status configuration for UI
 export const STATUS_CONFIG = {
   all: {

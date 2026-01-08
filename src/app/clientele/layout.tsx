@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import SeoHead from '@/components/common/SEO/SeoHead'
-import { siteConfig } from '@/lib/constants/site-config'
 
 export const metadata: Metadata = {
   title: 'Our Clientele - Apex Structure',

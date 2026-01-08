@@ -42,13 +42,6 @@ export function getProjectCategoriesWithCounts(): ProjectCategory[] {
     .filter(cat => cat.projectCount > 0)
 }
 
-export function getProjectStatusesWithCounts(): ProjectStatus[] {
-  return PROJECT_STATUSES.map(status => ({
-    ...status,
-    count: projectsData.filter(project => project.status === status.id).length
-  }))
-}
-
 // Location helper functions
 export function getFormattedAddress(project: Project): string {
   return `${project.address.street}, ${project.address.city}, ${project.address.state} ${project.address.zipCode}`
