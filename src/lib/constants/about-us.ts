@@ -1,64 +1,6 @@
 // src/lib/constants/about-us.ts
 import { CompanyProfileData, LeaderMessage, VisionMissionData, TeamMember, CSRActivity, CertificationAndAchievement } from '../types/about-us';
 
-export const CERTIFICATIONS_ACHIEVEMENTS: CertificationAndAchievement[] = [
-    {
-        id: 1,
-        title: 'ISO 9001:2015 ',
-        authority: 'International Organization for Standardization',
-        description: 'Certified for Quality Management Systems in construction and real estate development.',
-        image: 'https://images.pexels.com/photos/6120397/pexels-photo-6120397.jpeg',
-        year: '2022',
-        isFeatured: true,
-    },
-    {
-        id: 2,
-        title: 'Green Building Certification',
-        authority: 'IGBC',
-        description: 'Recognized for commitment to sustainable and eco-friendly construction practices.',
-        image: 'https://images.pexels.com/photos/4544714/pexels-photo-4544714.jpeg',
-        year: '2023',
-        isFeatured: true,
-    },
-    {
-        id: 3,
-        title: 'Best Residential Builder',
-        authority: 'National Real Estate Awards',
-        description: 'Awarded for excellence in residential project delivery and customer satisfaction.',
-        image: 'https://images.pexels.com/photos/7005031/pexels-photo-7005031.jpeg',
-        year: '2021',
-        isFeatured: true,
-    },
-    {
-        id: 4,
-        title: 'Iconic Commercial Project',
-        authority: 'City Architecture Forum',
-        description: 'Recognized for the innovative design and construction of Apex Business Park.',
-        image: 'https://images.pexels.com/photos/5420902/pexels-photo-5420902.jpeg',
-        year: '2023',
-        isFeatured: true,
-    },
-    {
-        id: 5,
-        title: 'Safety Excellence Award',
-        authority: 'Construction Safety Board',
-        description: 'Recognized for maintaining over 1 million safe man-hours across all project sites.',
-        image: 'https://images.pexels.com/photos/4544720/pexels-photo-4544720.jpeg',
-        year: '2024',
-        isFeatured: true,
-    },
-    {
-        id: 6,
-        title: 'Excellence in Structural Engineering',
-        authority: 'Structural Engineers Association',
-        description: 'Awarded for the complex engineering solutions implemented in Apex Grand Tower.',
-        image: 'https://images.pexels.com/photos/7005501/pexels-photo-7005501.jpeg',
-        year: '2022',
-        isFeatured: false,
-    },
-];
-
-
 export const COMPANY_PROFILE: CompanyProfileData = {
     badge: 'COMPANY PROFILE',
     name: 'Apex Structure Private Limited',
@@ -95,7 +37,7 @@ export const MENTORS_MESSAGE: LeaderMessage = {
     name: 'Raghav Agrawal',
     role: 'Industry Veteran & Strategic Advisor',
     profile: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-    experience: '40',
+    experience: '20',
     projectsLed: '100',
     messageTitle: 'Wisdom from Our Advisory Board',
     content: [
@@ -243,5 +185,63 @@ export const CSR_ACTIVITIES: CSRActivity[] = [
         description: 'Promoting education through scholarships and infrastructure support',
         image: 'https://images.pexels.com/photos/1595385/pexels-photo-1595385.jpeg',
         category: 'Education',
+    },
+];
+
+
+export const CERTIFICATIONS_ACHIEVEMENTS: CertificationAndAchievement[] = [
+    {
+        id: 1,
+        title: 'ISO 9001:2015 ',
+        authority: 'International Organization for Standardization',
+        description: 'Certified for Quality Management Systems in construction and real estate development.',
+        image: 'https://images.pexels.com/photos/6120397/pexels-photo-6120397.jpeg',
+        year: '2022',
+        isFeatured: true,
+    },
+    {
+        id: 2,
+        title: 'Green Building Certification',
+        authority: 'IGBC',
+        description: 'Recognized for commitment to sustainable and eco-friendly construction practices.',
+        image: 'https://images.pexels.com/photos/4544714/pexels-photo-4544714.jpeg',
+        year: '2023',
+        isFeatured: true,
+    },
+    {
+        id: 3,
+        title: 'Best Residential Builder',
+        authority: 'National Real Estate Awards',
+        description: 'Awarded for excellence in residential project delivery and customer satisfaction.',
+        image: 'https://images.pexels.com/photos/7005031/pexels-photo-7005031.jpeg',
+        year: '2021',
+        isFeatured: true,
+    },
+    {
+        id: 4,
+        title: 'Iconic Commercial Project',
+        authority: 'City Architecture Forum',
+        description: 'Recognized for the innovative design and construction of Apex Business Park.',
+        image: 'https://images.pexels.com/photos/5420902/pexels-photo-5420902.jpeg',
+        year: '2023',
+        isFeatured: true,
+    },
+    {
+        id: 5,
+        title: 'Safety Excellence Award',
+        authority: 'Construction Safety Board',
+        description: 'Recognized for maintaining over 1 million safe man-hours across all project sites.',
+        image: 'https://images.pexels.com/photos/4544720/pexels-photo-4544720.jpeg',
+        year: '2024',
+        isFeatured: true,
+    },
+    {
+        id: 6,
+        title: 'Excellence in Structural Engineering',
+        authority: 'Structural Engineers Association',
+        description: 'Awarded for the complex engineering solutions implemented in Apex Grand Tower.',
+        image: 'https://images.pexels.com/photos/7005501/pexels-photo-7005501.jpeg',
+        year: '2022',
+        isFeatured: false,
     },
 ];

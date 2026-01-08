@@ -10,41 +10,6 @@ import {
 } from 'lucide-react'
 import React from 'react'
 
-// Static status definitions (without counts)
-export const PROJECT_STATUSES: Omit<ProjectStatus, 'count'>[] = [
-  {
-    id: 'ongoing',
-    name: 'Ongoing Projects',
-    color: 'bg-amber-100 text-amber-800 border-amber-200'
-  },
-  {
-    id: 'completed',
-    name: 'Completed Projects',
-    color: 'bg-emerald-100 text-emerald-800 border-emerald-200'
-  },
-  {
-    id: 'upcoming',
-    name: 'Upcoming Projects',
-    color: 'bg-violet-100 text-violet-800 border-violet-200'
-  },
-  {
-    id: 'planning',
-    name: 'Planning Phase',
-    color: 'bg-indigo-100 text-indigo-800 border-indigo-200'
-  },
-]
-
-// Gallery configuration
-export const GALLERY_CONFIG = {
-  imagesPerPage: 8,
-  autoRotateInterval: 5000, // 5 seconds
-  thumbnailColumns: {
-    sm: 2,
-    md: 3,
-    lg: 4
-  }
-}
-
 // Navigation constants
 export const NAVIGATION_LINKS = {
   backToProjects: {
@@ -806,7 +771,7 @@ export const projectsData: Project[] = [
     id: '12',
     slug: 'urban-harmony-complex',
     title: 'Urban Harmony Complex',
-    description: 'Integrated mixed-use development combining retail, office, and residential spaces',
+    description: 'Comprehensive facility management services for business districts',
     fullDescription: 'Urban Harmony Complex is a pioneering mixed-use development that seamlessly integrates commercial, residential, and recreational spaces. The 25-acre complex features retail outlets, office towers, residential apartments, hotels, and entertainment zones connected by pedestrian-friendly walkways and green spaces. The development promotes live-work-play lifestyle with smart urban planning and sustainable design principles.',
     type: 'mixed-use',
     status: 'ongoing',

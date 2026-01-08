@@ -1,7 +1,5 @@
-// src/components/equipment/EquipmentCard.tsx
 'use client'
 
-import { useState } from 'react'
 import Image from 'next/image'
 import { Plus, Maximize2, Hash, PenTool as Tool, Calendar } from 'lucide-react'
 import { Equipment } from '@/lib/types/equipment'

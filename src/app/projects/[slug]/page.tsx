@@ -1,8 +1,5 @@
 // src/app/projects/[slug]/page.tsx
 import { notFound } from 'next/navigation'
-import Container from '@/components/common/Layout/Container'
-import Section from '@/components/common/Layout/Section'
-import PageHeader from '@/components/common/Layout/PageHeader'
 import ProjectDetails from '@/components/projects/ProjectDetails'
 import { projectsData } from '@/lib/constants/projects'
 import type { Metadata } from 'next'
@@ -52,21 +49,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   if (!project) {
     notFound()
-  }
-
-  const getBreadcrumbs = () => {
-    const base = [
-      { name: 'Home', href: '/' },
-      { name: 'Projects', href: '/projects' },
-    ]
-    
-    if (project.status === 'ongoing') {
-      return [...base, { name: 'Current Projects', href: '/projects#current' }]
-    } else if (project.status === 'completed') {
-      return [...base, { name: 'Completed Projects', href: '/projects#completed' }]
-    }
-    
-    return base
   }
 
   return (

@@ -1,8 +1,7 @@
-// src/components/about-us/CertificationsAchievements.tsx
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Trophy, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import useEmblaCarousel from 'embla-carousel-react'
@@ -24,8 +23,6 @@ export default function CertificationsAchievements() {
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
     const scrollTo = useCallback((index: number) => emblaApi && emblaApi.scrollTo(index), [emblaApi])
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return
@@ -70,7 +67,7 @@ export default function CertificationsAchievements() {
         <section id="awards-certifications" className="bg-pearl-50 py-10 overflow-hidden">
             <div className="container mx-auto px-4">
                 {/* Header with View All Link */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-10">
                     <div className="max-w-3xl">
                         <div className="flex items-center gap-3 text-primary-600 font-bold uppercase tracking-[0.2em] text-sm mb-6">
                             <span className="w-12 h-px bg-primary-600"></span>
@@ -149,13 +146,6 @@ export default function CertificationsAchievements() {
 
                     {/* Custom Navigation */}
                     <div className="flex justify-center items-center mt-12 gap-6">
-                        <button
-                            onClick={scrollPrev}
-                            className="w-12 h-12 rounded-full border border-platinum flex items-center justify-center text-gray-400 hover:text-primary-600 hover:border-primary-600 transition-all group"
-                        >
-                            <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
-                        </button>
-
                         {/* Dots */}
                         <div className="flex items-center gap-2">
                             {scrollSnaps.map((_, index) => (
@@ -169,13 +159,6 @@ export default function CertificationsAchievements() {
                                 />
                             ))}
                         </div>
-
-                        <button
-                            onClick={scrollNext}
-                            className="w-12 h-12 rounded-full border border-platinum flex items-center justify-center text-gray-400 hover:text-primary-600 hover:border-primary-600 transition-all group"
-                        >
-                            <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
-                        </button>
                     </div>
                 </div>
             </div>

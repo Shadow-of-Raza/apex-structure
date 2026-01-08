@@ -70,14 +70,16 @@ export default function DirectorsMessage() {
           </div>
 
           {/* Featured Quote */}
-          <blockquote className="text-xl font-medium leading-relaxed mb-6 relative z-10 text-black-300 italic">
-            &quot;{data.quote}&quot;
-          </blockquote>
+          <div className="pt-8 border-t border-platinum">
+            <blockquote className="text-xl font-medium text-black-300 italic mb-4">
+              &quot;{data.quote}&quot;
+            </blockquote>
           <div className="flex items-center gap-4">
             <div className="h-px w-10 bg-secondary-500"></div>
             <div className="text-secondary-500 font-bold tracking-widest uppercase text-xs">
               {data.signatureRole}
             </div>
+          </div>
           </div>
         </div>
       </div>

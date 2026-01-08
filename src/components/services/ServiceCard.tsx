@@ -1,13 +1,11 @@
-// src/components/services/ServiceCard.tsx
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { ChevronRight, ChevronLeft, Award, Sparkles, ArrowRight, LucideIcon } from 'lucide-react'
+import { Award, Sparkles, ArrowRight, Building2 } from 'lucide-react'
 import Link from 'next/link'
 import useEmblaCarousel from 'embla-carousel-react'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
 import { getAllServices, SERVICE_ICON_MAP, getServiceStats } from '@/lib/utils/services'
-import { Building2 } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 
 export default function ServiceCard() {
@@ -63,6 +61,15 @@ export default function ServiceCard() {
 
   return (
     <div className="container mx-auto px-4 md:px-0">
+      <div className="text-center my-10">
+        <h2 className="text-4xl md:text-5xl font-black my-2 text-gray-900 leading-tight">
+          Comprehensive <span className="text-primary-600">Construction</span> Solutions
+        </h2>
+        <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+          From concept to completion, we provide end-to-end construction and development
+          services tailored to meet your specific requirements and exceed expectations.
+        </p>
+      </div>
       <div className="bg-white rounded-2xl p-6 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 relative overflow-hidden group/main">
         {/* Background Accent */}
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-50 rounded-full blur-3xl opacity-50 pointer-events-none group-hover/main:scale-110 transition-transform duration-1000"></div>
@@ -75,30 +82,6 @@ export default function ServiceCard() {
               Select a Service
             </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={scrollPrev}
-                disabled={!prevBtnEnabled}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${prevBtnEnabled
-                  ? 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary-300 shadow-sm'
-                  : 'bg-gray-50 text-gray-300 cursor-not-allowed'
-                  }`}
-                aria-label="Previous services"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                onClick={scrollNext}
-                disabled={!nextBtnEnabled}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${nextBtnEnabled
-                  ? 'bg-white border border-gray-200 text-gray-900 hover:bg-gray-50 hover:border-primary-300 shadow-sm'
-                  : 'bg-gray-50 text-gray-300 cursor-not-allowed'
-                  }`}
-                aria-label="Next services"
-              >
-                <ChevronRight size={20} />
-              </button>
-            </div>
           </div>
 
           <div className="overflow-hidden" ref={emblaRef}>

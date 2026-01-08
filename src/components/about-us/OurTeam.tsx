@@ -81,12 +81,7 @@ export default function OurTeam() {
         {/* Recruitment CTA - Redesigned */}
         <div className="mt-12 relative">
           <div className="absolute inset-0 bg-primary-900 rounded-2xl -rotate-1 scale-[1.02]"></div>
-          <div className="relative bg-black-200 rounded-2xl p-12 md:p-20 overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-12 border border-white/5 shadow-2xl">
-            {/* Background Texture */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-              style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}>
-            </div>
-
+          <div className="relative bg-darkbg rounded-2xl p-12 md:p-20 overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-12 border border-white/5 shadow-2xl">
             <div className="max-w-2xl text-center lg:text-left">
               <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
                 Architect Your Future <br />

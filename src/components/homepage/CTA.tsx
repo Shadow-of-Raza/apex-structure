@@ -1,6 +1,5 @@
-// src/components/homepage/CTA.tsx
-import { Phone, Mail, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
+import { Phone, Mail, MessageSquare } from 'lucide-react'
 
 export default function CTA() {
   return (

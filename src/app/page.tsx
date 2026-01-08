@@ -1,10 +1,9 @@
-// src/app/page.tsx
 import HeroSection from '@/components/homepage/HeroSection'
 import FeaturedProjects from '@/components/homepage/FeaturedProjects'
 import ServicesPreview from '@/components/homepage/ServicesPreview'
-import Testimonials from '@/components/homepage/Testimonials'
 import CTA from '@/components/homepage/CTA'
-import BlogPreview from '@/components/homepage/BlogPreview'
+import OurEdge from '@/components/homepage/OurEdge'
+import PrimeClient from '@/components/homepage/PrimeClient'
 
 import SeoHead from '@/components/common/SEO/SeoHead'
 import type { Metadata } from 'next'
@@ -52,8 +51,8 @@ export default function HomePage() {
       <HeroSection />
       <FeaturedProjects />
       <ServicesPreview />
-      {/* <Testimonials /> */}
-      {/* <BlogPreview /> */}
+      <OurEdge />
+      <PrimeClient />
       <CTA />
     </>
   )

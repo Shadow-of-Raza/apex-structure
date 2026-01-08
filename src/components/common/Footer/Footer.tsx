@@ -67,15 +67,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/our-business" 
-                  className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
-                >
-                  Our Buisness
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-secondary-500 transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </li>
-              <li>
-                <Link 
                   href="/equipments" 
                   className="relative text-black-400 font-medium hover:text-primary-600 transition-colors duration-300 inline-block group font-sans"
                 >

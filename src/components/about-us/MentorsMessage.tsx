@@ -11,8 +11,8 @@ export default function MentorsMessage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
         {/* Text Column */}
         <div className="lg:col-span-7 space-y-8 order-2 lg:order-1">
-          <div className="flex items-center gap-4 text-secondary-600 font-bold uppercase tracking-widest text-sm">
-            <span className="h-px w-8 bg-secondary-600"></span>
+          <div className="flex items-center gap-4 text-primary-600 font-bold uppercase tracking-widest text-sm">
+            <span className="h-px w-8 bg-primary-600"></span>
             {data.badge}
           </div>
 
@@ -33,12 +33,12 @@ export default function MentorsMessage() {
             <blockquote className="text-xl font-medium text-black-300 italic mb-4">
               &quot;{data.quote}&quot;
             </blockquote>
-            <div className="flex items-center gap-4">
-              <div className="h-px w-10 bg-primary-600"></div>
-              <div className="text-primary-600 font-bold tracking-widest uppercase text-xs">
-                {data.signatureRole}
-              </div>
+          <div className="flex items-center gap-4">
+            <div className="h-px w-10 bg-secondary-500"></div>
+            <div className="text-secondary-500 font-bold tracking-widest uppercase text-xs">
+              {data.signatureRole}
             </div>
+          </div>
           </div>
         </div>
 

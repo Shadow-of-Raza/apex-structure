@@ -6,11 +6,19 @@ import { Plus, X } from 'lucide-react'
 import { CLIENTS } from '@/lib/constants/client'
 import { Client } from '@/lib/types/client'
 
-export default function ClientLogo() {
+export default function PrimeClient() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Handle modal animation state
+  // Filter prime clients
+  const primeClients = CLIENTS.filter(client => client.isPrime)
+
+  // Staggered circular rows with starting indices: 1, 7, 13, 19
+  const rotateArr = (arr: Client[], start: number) => [...arr.slice(start - 1), ...arr.slice(0, start - 1)]
+
+  const row1 = rotateArr(CLIENTS, 1)
+  const row2 = rotateArr(CLIENTS, 1).reverse()
+
   useEffect(() => {
     if (selectedClient) {
       setIsModalOpen(true)
@@ -24,17 +32,8 @@ export default function ClientLogo() {
     }
   }, [selectedClient])
 
-  // Staggered circular rows with starting indices: 1, 7, 13, 19
-  const rotateArr = (arr: Client[], start: number) => [...arr.slice(start - 1), ...arr.slice(0, start - 1)]
-
-  const row1 = rotateArr(CLIENTS, 1)
-  const row2 = rotateArr(CLIENTS, 1).reverse()
-  const row3 = rotateArr(CLIENTS, 13)
-  const row4 = rotateArr(CLIENTS, 13).reverse()
-
   const MarqueeRow = ({ clients, speed, reverse = false }: { clients: Client[], speed: string, reverse?: boolean }) => (
     <div className="container mx-auto px-4 relative flex overflow-x-hidden group w-full">
-      {/* <div className="relative flex overflow-x-hidden group w-full"> */}
       <div className={`py-2 whitespace-nowrap flex gap-4 px-4 ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`} style={{ animationDuration: speed }}>
         {clients.map((client, index) => (
           <div
@@ -73,7 +72,6 @@ export default function ClientLogo() {
     </div>
   )
 
-
   return (
     <section className="py-10 bg-white overflow-hidden">
       <div className="text-center mb-6">
@@ -88,8 +86,6 @@ export default function ClientLogo() {
       <div className="flex flex-col gap-0">
         <MarqueeRow clients={row1} speed="120s" />
         <MarqueeRow clients={row2} speed="120s" reverse />
-        <MarqueeRow clients={row3} speed="120s" />
-        <MarqueeRow clients={row4} speed="120s" reverse />
       </div>
 
       {/* Detail Modal */}
@@ -153,7 +149,6 @@ export default function ClientLogo() {
         </div>
       </div>
 
-
       <style jsx>{`
         .animate-marquee {
           animation: marquee linear infinite;
@@ -174,8 +169,6 @@ export default function ClientLogo() {
           100% { transform: translateX(0); }
         }
       `}</style>
-
     </section>
   )
 }
-

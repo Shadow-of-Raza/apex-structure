@@ -1,12 +1,11 @@
 export interface HeroContent {
-  id: string;
+  id: number;
   title: string;
   description: string;
   button1: {
     text: string;
     href: string;
   };
-
   stats: {
     label: string;
     value: string;
@@ -15,7 +14,16 @@ export interface HeroContent {
 }
 
 export interface HeroImage {
-  id: string;
+  id: number;
   imageUrl: string;
   alt: string;
+}
+
+export interface ServiceState {
+  id: number;
+  icon: string;
+  count: string;
+  label: string;
+  desc: string;
+  color: string;
 }

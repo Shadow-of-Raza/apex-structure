@@ -1,17 +1,14 @@
-// src/components/homepage/FeaturedProjects.tsx
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
-import Link from 'next/link'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
-import { getOnlyFeaturedProjects, getTotalProjectsCount } from '@/lib/utils/projects'
+import { getOnlyFeaturedProjects } from '@/lib/utils/projects'
 import ProjectCard from '@/components/projects/ProjectCard'
 
 export default function FeaturedProjects() {
   // Get ONLY featured projects (isFeatured = true)
   const featuredProjects = getOnlyFeaturedProjects()
-  const totalProjects = getTotalProjectsCount()
 
   // Embla Carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -73,28 +70,15 @@ export default function FeaturedProjects() {
 
   return (
     <section className="py-8 bg-white">
-      <div className="container mx-auto px-4">
-        {/* Header with View All Link */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Our <span className="text-primary-600">Featured</span> Projects
+      <div className="container mx-auto px-4 z-10">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl md:text-5xl font-black mb-4 text-gray-900 leading-tight">
+                Our <span className="text-primary-600">Featured</span> Projects
             </h2>
-            <p className="text-gray-600 mt-1 max-w-2xl">
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
               Explore our handpicked featured projects that redefine urban living and commercial spaces
             </p>
           </div>
-
-          {/* View All Projects Link */}
-          <Link
-            href="/projects"
-            className="inline-flex items-center text-primary-600 hover:text-primary-700 font-semibold whitespace-nowrap group"
-          >
-            View All {totalProjects} Projects
-            <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-          </Link>
-        </div>
-
         {/* Carousel Container */}
         <div className="relative">
           {/* Carousel */}
@@ -117,27 +101,6 @@ export default function FeaturedProjects() {
               ))}
             </div>
           </div>
-
-          {/* Navigation Buttons - Only show if there are multiple featured projects */}
-          {featuredProjects.length > 1 && (
-            <>
-              <button
-                onClick={scrollPrev}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
-                aria-label="Previous project"
-              >
-                <ChevronLeft size={20} className="text-gray-700" />
-              </button>
-
-              <button
-                onClick={scrollNext}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
-                aria-label="Next project"
-              >
-                <ChevronRight size={20} className="text-gray-700" />
-              </button>
-            </>
-          )}
         </div>
 
         {/* Dots Indicator - Only show if there are multiple featured projects */}

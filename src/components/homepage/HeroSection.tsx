@@ -1,10 +1,9 @@
-// src/components/homepage/HeroSection.tsx
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import Link from 'next/link'
-import { heroContent, heroImages, heroConfig, heroIcons } from '@/lib/constants/hero'
+import { heroContent, heroImages, heroConfig, heroIcons } from '@/lib/constants/home'
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -15,7 +14,6 @@ export default function HeroSection() {
   const slideIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const totalSlides = heroImages.length
-  const currentImage = heroImages[currentSlide]
 
   // Progress bar animation
   useEffect(() => {
@@ -85,18 +83,6 @@ export default function HeroSection() {
 
     setTimeout(() => {
       setCurrentSlide((prev) => (prev + 1) % totalSlides)
-      setIsTransitioning(false)
-    }, 300)
-  }
-
-  const prevSlide = () => {
-    if (isTransitioning) return
-
-    setIsTransitioning(true)
-    setProgress(0)
-
-    setTimeout(() => {
-      setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)
       setIsTransitioning(false)
     }, 300)
   }

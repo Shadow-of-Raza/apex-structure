@@ -8,9 +8,9 @@ export default function CertificationGrid() {
     return (
         <div className="container mx-auto px-4 py-10">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-20 max-w-3xl mx-auto space-y-4">
+                <div className="text-center mb-10 max-w-3xl mx-auto space-y-4">
                     <h2 className="text-4xl md:text-5xl font-extrabold text-black-200">
-                        Our Hall of Fame
+                        Our <span className="text-secondary-500">Hall</span> of Fame
                     </h2>
                     <p className="text-gray-600 text-lg">
                         Celebrating the milestones, recognitions, and certifications that define our journey of excellence in the construction industry.

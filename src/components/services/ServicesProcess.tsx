@@ -1,4 +1,3 @@
-// src/components/services/ServicesProcess.tsx
 import { Search, ClipboardCheck, Users, Building2, CheckCircle } from 'lucide-react'
 
 const processSteps = [

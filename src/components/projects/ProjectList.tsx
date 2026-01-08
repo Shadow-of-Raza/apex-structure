@@ -19,8 +19,6 @@ import ProjectCard from './ProjectCard'
 import Link from 'next/link'
 import {
   getProjectCategoriesWithCounts,
-  getProjectStatusesWithCounts,
-  getUniqueCities,
   getFormattedLocation
 } from '@/lib/utils/projects'
 import { PROJECT_LIST_STATUS_CONFIG } from '@/lib/constants/projects'

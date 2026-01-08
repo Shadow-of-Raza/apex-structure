@@ -1,8 +1,7 @@
-// src/components/homepage/ServicesPreview.tsx
 import Link from 'next/link'
 import { servicesData } from '@/lib/constants/services'
 import { getServiceIcon } from '@/lib/utils/services'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 export default function ServicesPreview() {
 
@@ -15,15 +14,12 @@ export default function ServicesPreview() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-bold uppercase tracking-widest mb-4">
-            <Sparkles size={14} className="mr-2" />
-            Our Expertise
-          </div>
           <h2 className="text-4xl md:text-5xl font-black mb-4 text-gray-900 leading-tight">
-            Comprehensive <span className="text-gray-900">Construction</span> Solutions
+            Comprehensive <span className="text-primary-600">Construction</span> Solutions
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-            From concept to completion, we deliver world-class infrastructure with precision, innovation, and sustainability at the core.
+            From concept to completion, we provide end-to-end construction and development
+            services tailored to meet your specific requirements and exceed expectations.
           </p>
         </div>
 

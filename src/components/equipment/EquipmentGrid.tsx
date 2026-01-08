@@ -1,4 +1,3 @@
-// src/components/equipment/EquipmentGrid.tsx
 'use client'
 
 import { useState } from 'react'

@@ -12,9 +12,8 @@ export default function AwardsCertificationsPage() {
                 showOverlay={true}
                 overlayOpacity={0.7}
             />
-            <main className="py-12">
-                <CertificationGrid />
-            </main>
+            
+            <CertificationGrid />
         </>
     )
 }

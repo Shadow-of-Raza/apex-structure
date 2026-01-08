@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import {
   MapPin, Calendar, Building2, Award, CheckCircle,
-  ArrowLeft, Share2, Download, Maximize2, ChevronLeft,
-  ChevronRight, Navigation, Phone, Globe, ImageIcon,
+  ArrowLeft, Share2, Maximize2, ChevronLeft,
+  ChevronRight, Globe,
   TrendingUp, Clock
 } from 'lucide-react'
 import { Project } from '@/lib/types'
@@ -26,7 +26,6 @@ import { getServiceIcon } from '@/lib/utils/services'
 
 // Import constants
 import {
-  GALLERY_CONFIG,
   NAVIGATION_LINKS
 } from '@/lib/constants/projects'
 
@@ -44,7 +43,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   const statusConfig = getStatusConfig(project.status)
   const formattedAddress = getFormattedAddress(project)
   const similarProjects = getSimilarProjects(project, 2)
-  // const typeTheme = getProjectTypeTheme(project.type)
   const service = servicesData.find(s => s.name === project.type)
   const TypeIcon = getServiceIcon(service?.icon || 'Building2')
 
@@ -58,16 +56,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     return [mainImage, ...galleryImages].filter(Boolean)
   }, [project])
 
-  // Pagination
-  const imagesPerPage = GALLERY_CONFIG.imagesPerPage
-  const totalPages = Math.ceil(processedImages.length / imagesPerPage)
-
-  const currentPageImages = useMemo(() => {
-    const startIndex = currentPage * imagesPerPage
-    const endIndex = startIndex + imagesPerPage
-    return processedImages.slice(startIndex, endIndex)
-  }, [processedImages, currentPage, imagesPerPage])
-
   // Helper functions
   const formatDate = (dateString: string | Date) => {
     const date = new Date(dateString)
@@ -75,23 +63,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     const month = date.toLocaleString('en-US', { month: 'short' })
     const year = date.getFullYear()
     return `${day} ${month} ${year}`
-  }
-
-  const handleThumbnailClick = (index: number) => {
-    const globalIndex = (currentPage * imagesPerPage) + index
-    setActiveImage(globalIndex)
-  }
-
-  const nextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(prev => prev + 1)
-    }
-  }
-
-  const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(prev => prev - 1)
-    }
   }
 
   const handleShareClick = async () => {
@@ -104,19 +75,8 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
     }
   }
 
-  // Auto-rotate images
-  useEffect(() => {
-    if (processedImages.length <= 1) return
-
-    const interval = setInterval(() => {
-      setActiveImage(prev => (prev + 1) % processedImages.length)
-    }, GALLERY_CONFIG.autoRotateInterval)
-
-    return () => clearInterval(interval)
-  }, [processedImages.length])
-
   return (
-    <div className="container mx-auto px-4 py-20">
+    <div className="container mx-auto px-4 py-10">
       {/* Image Modal */}
       <ImageModal
         isOpen={isModalOpen}
@@ -253,10 +213,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
                 <div className="text-2xl font-bold text-white">{project.area} sq.ft.</div>
                 <div className="text-sm text-white/80">Built-up Area</div>
               </div>
-              {/* <div className="text-center">
-                <div className="text-2xl font-bold text-white">{project.budget}</div>
-                <div className="text-sm text-white/80">Project Budget</div>
-              </div> */}
             </div>
           </div>
         </div>
@@ -343,35 +299,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
         {/* Right Column - Sidebar (1/3 width) */}
         <div className="space-y-8">
 
-          {/* Quick Actions Card */}
-          {/* <div className="bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl p-6 text-white">
-            <h3 className="text-xl font-bold mb-6 flex items-center">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center mr-3">
-                <Download size={20} />
-              </div>
-              Quick Actions
-            </h3>
-            
-            <div className="space-y-3">
-              <button className="w-full flex items-center p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                <Calendar size={18} className="mr-3" />
-                <span>Schedule Site Visit</span>
-              </button>
-              
-              <button className="w-full flex items-center p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                <Phone size={18} className="mr-3" />
-                <span>Contact Project Manager</span>
-              </button>
-              
-              <Link 
-                href="/contact-us"
-                className="block w-full mt-4 bg-white text-primary-700 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold text-center transition"
-              >
-                Get Free Consultation
-              </Link>
-            </div>
-          </div> */}
-
           {/* Amenities & Facilities */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h3 className="text-xl font-bold mb-6 flex items-center">
@@ -413,33 +340,6 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
               ))}
             </div>
           </div>
-
-          {/* Location Card */}
-          {/* <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-6 flex items-center">
-              <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
-                <MapPin className="w-5 h-5 text-red-600" />
-              </div>
-              Project Location
-            </h3>
-            
-            <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="text-gray-700">{formattedAddress}</p>
-              </div>
-              
-              <div className="flex space-x-3">
-                <button className="flex-1 flex items-center justify-center p-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium transition-colors">
-                  <Navigation size={18} className="mr-2" />
-                  View on Map
-                </button>
-                <button className="flex-1 flex items-center justify-center p-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium transition-colors">
-                  <MapPin size={18} className="mr-2" />
-                  Get Directions
-                </button>
-              </div>
-            </div>
-          </div> */}
 
           {/* Similar Projects */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
