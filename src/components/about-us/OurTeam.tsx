@@ -1,12 +1,29 @@
 // src/components/about-us/OurTeam.tsx
 'use client'
 
-import { Linkedin, ArrowRight } from 'lucide-react'
-import { TEAM_MEMBERS } from '@/lib/constants/about-us'
+import { Linkedin, ArrowRight, Twitter, Instagram, Youtube, Loader2 } from 'lucide-react'
+import { getTeamMembers } from '@/lib/utils/about-us'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 export default function OurTeam() {
-  const team = TEAM_MEMBERS
+  const [team, setTeam] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getTeamMembers().then(data => {
+      setTeam(data)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+      </div>
+    )
+  }
 
   return (
     <div id="our-team" className="relative py-12 overflow-hidden">
@@ -32,14 +49,14 @@ export default function OurTeam() {
           </div>
         </div>
 
-        {/*Main Team*/ }
+        {/*Main Team*/}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
           {team.map((member, idx) => (
             <div key={member.id} className="group relative">
               {/* Image Aspect Box */}
               <div className="relative aspect-[1] rounded-2xl overflow-hidden mb-[-4rem] shadow-2xl transition-transform duration-700 group-hover:-translate-y-4">
                 <Image
-                  src={member.image}
+                  src={member.image_url || 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg'}
                   alt={member.name}
                   fill
                   className="object-cover transition-transform duration-1000 grayscale group-hover:grayscale-0"
@@ -60,16 +77,17 @@ export default function OurTeam() {
                       {member.role}
                     </p>
                   </div>
-                  {member.socialLinks?.linkedin && (
+                  {member.linkedin_url && (
                     <a
-                      href={member.socialLinks.linkedin}
+                      href={member.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-10 h-10 rounded-xl bg-platinum-800 flex items-center justify-center text-gray-400 hover:bg-primary-600 hover:text-white transition-all duration-300"
                     >
                       <Linkedin size={18} />
                     </a>
                   )}
                 </div>
-
                 <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 italic">
                   &quot;{member.bio}&quot;
                 </p>

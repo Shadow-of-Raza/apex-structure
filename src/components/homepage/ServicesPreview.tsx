@@ -1,11 +1,38 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { servicesData } from '@/lib/constants/services'
-import { getServiceIcon } from '@/lib/utils/services'
-import { ArrowRight } from 'lucide-react'
+import { getAllServices, getServiceIcon } from '@/lib/utils/services'
+import { ArrowRight, Loader2 } from 'lucide-react'
+import { Service } from '@/lib/types/service'
 
 export default function ServicesPreview() {
+  const [services, setServices] = useState<Service[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const displayServices = servicesData.slice(0, 6)
+  useEffect(() => {
+    async function loadServices() {
+      try {
+        const data = await getAllServices()
+        setServices(data.slice(0, 6))
+      } catch (error) {
+        console.error('Error loading services preview:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadServices()
+  }, [])
+
+  if (isLoading) {
+    return (
+      <section className="py-20 bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
+      </section>
+    )
+  }
+
+  if (services.length === 0) return null
 
   return (
     <section className="py-8 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
@@ -24,8 +51,8 @@ export default function ServicesPreview() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-          {displayServices.map((service, index) => {
-            const Icon = getServiceIcon(service.icon)
+          {services.map((service) => {
+            const Icon = getServiceIcon(service.icon_name)
 
             return (
               <div
@@ -45,7 +72,7 @@ export default function ServicesPreview() {
                 </h3>
 
                 <p className="text-gray-500 mb-8 leading-relaxed flex-grow">
-                  {service.shortDescription || service.description}
+                  {service.short_description || service.description}
                 </p>
 
                 <Link

@@ -1,7 +1,7 @@
 // src/app/projects/[slug]/page.tsx
 import { notFound } from 'next/navigation'
 import ProjectDetails from '@/components/projects/ProjectDetails'
-import { projectsData } from '@/lib/constants/projects'
+import { getProjectBySlug, getAllProjectSlugs } from '@/lib/utils/projects'
 import type { Metadata } from 'next'
 
 interface ProjectPageProps {
@@ -12,8 +12,8 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params
-  const project = projectsData.find(p => p.slug === slug)
-  
+  const project = await getProjectBySlug(slug)
+
   if (!project) {
     return {
       title: 'Project Not Found',
@@ -38,14 +38,15 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 }
 
 export async function generateStaticParams() {
-  return projectsData.map(project => ({
-    slug: project.slug,
+  const slugs = await getAllProjectSlugs()
+  return slugs.map(slug => ({
+    slug: slug,
   }))
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params
-  const project = projectsData.find(p => p.slug === slug)
+  const project = await getProjectBySlug(slug)
 
   if (!project) {
     notFound()

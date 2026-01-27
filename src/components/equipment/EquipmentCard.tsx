@@ -25,12 +25,18 @@ export default function EquipmentCard({ equipment, isFlipped, onToggleFlip, onVi
         {/* Front Side */}
         <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-lg border border-platinum bg-white">
           <div className="relative h-full w-full">
-            <Image
-              src={equipment.images[0]}
-              alt={equipment.name}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-            />
+            {equipment.images && equipment.images.length > 0 ? (
+              <Image
+                src={equipment.images[0]}
+                alt={equipment.name}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-100 flex items-center justify-center p-8">
+                <Tool size={48} className="text-gray-300" />
+              </div>
+            )}
 
             {/* Overlay Name */}
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black-200/90 via-black-200/40 to-transparent p-6 pt-12">

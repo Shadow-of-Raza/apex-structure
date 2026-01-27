@@ -1,20 +1,47 @@
 // src/components/about-us/CompanyProfile.tsx
 'use client'
 
-import { COMPANY_PROFILE } from '@/lib/constants/about-us'
-import { getAboutUsIcon, calculateYearsOfExperience } from '@/lib/utils/about-us'
+import { useState, useEffect } from 'react'
+import { getAboutUsIcon, calculateYearsOfExperience, getCompanyProfile } from '@/lib/utils/about-us'
 import { getTotalProjectsCount } from '@/lib/utils/projects'
+import { CompanyProfileData } from '@/lib/types/about-us'
 import Image from 'next/image'
 
 export default function CompanyProfile() {
-  const data = COMPANY_PROFILE
-  const yearsOfExperience = calculateYearsOfExperience(data.establishedOn)
-  const completedProjects = getTotalProjectsCount()
+  const [data, setData] = useState<CompanyProfileData | null>(null)
+  const [completedProjects, setCompletedProjects] = useState<number>(0)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [profile, count] = await Promise.all([
+          getCompanyProfile(),
+          getTotalProjectsCount()
+        ])
+
+        if (profile) {
+          setData(profile)
+        }
+        setCompletedProjects(count)
+      } catch (error) {
+        console.error('Error loading company profile:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadData()
+  }, [])
+
+  if (isLoading) return null; // Or a skeleton
+  if (!data) return null;
+
+  const yearsOfExperience = calculateYearsOfExperience(data.established_year || 2000)
 
   const dynamicStats = [
     { iconName: 'Building2', value: `${completedProjects}+`, label: 'Total Projects' },
     { iconName: 'Clock', value: `${yearsOfExperience}+`, label: 'Years Experience' },
-    { iconName: 'Users', value: data.totalTeamMembers, label: 'Team Members' },
+    { iconName: 'Users', value: data.team_size_label, label: 'Team Members' },
   ]
 
   return (
@@ -34,10 +61,10 @@ export default function CompanyProfile() {
 
           <div className="space-y-6 text-gray-600 text-lg leading-relaxed">
             <p className="font-medium text-black-400">
-              {data.descriptionPrimary}
+              {data.description_primary}
             </p>
             <p>
-              {data.descriptionSecondary}
+              {data.description_secondary}
             </p>
           </div>
 
@@ -61,7 +88,7 @@ export default function CompanyProfile() {
           <div className="absolute -inset-4 bg-primary-500/10 rounded-2xl blur-2xl group-hover:bg-primary-500/20 transition-colors duration-500"></div>
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-platinum">
             <Image
-              src={data.image}
+              src={data.image_url}
               alt="Company Profile"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"

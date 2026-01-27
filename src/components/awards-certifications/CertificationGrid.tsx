@@ -1,9 +1,35 @@
-// src/components/awards-certifications/CertificationGrid.tsx
-import { CERTIFICATIONS_ACHIEVEMENTS } from '@/lib/constants/about-us'
+'use client'
+
+import { useState, useEffect } from 'react'
+import { getCertifications } from '@/lib/utils/about-us'
+import { CertificationAndAchievement } from '@/lib/types/about-us'
 import Image from 'next/image'
+import { Loader2 } from 'lucide-react'
 
 export default function CertificationGrid() {
-    const items = CERTIFICATIONS_ACHIEVEMENTS
+    const [items, setItems] = useState<CertificationAndAchievement[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchCerts = async () => {
+            setLoading(true)
+            const data = await getCertifications(true)
+            setItems(data)
+            setLoading(false)
+        }
+        fetchCerts()
+    }, [])
+
+    if (loading) {
+        return (
+            <div className="flex h-[400px] items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+                    <p className="text-xs font-bold uppercase tracking-widest text-primary-600/50">Loading Credentials...</p>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="container mx-auto px-4 py-10">
@@ -25,7 +51,7 @@ export default function CertificationGrid() {
                         >
                             {/* Background Image */}
                             <Image
-                                src={item.image}
+                                src={item.image_url}
                                 alt={item.title}
                                 fill
                                 className="object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -38,12 +64,12 @@ export default function CertificationGrid() {
                             <div className="absolute inset-0 p-12 flex flex-col justify-end space-y-5 translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
                                 {/* Authority & Year */}
                                 <div className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                    {item.year && (
+                                    {item.certificate_year && (
                                         <span className="bg-primary-600 text-white text-xs font-black px-4 py-1 rounded-full">
-                                            {item.year}
+                                            {item.certificate_year}
                                         </span>
                                     )}
-                                    <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full px-2">
+                                    <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full">
                                         {item.authority}
                                     </span>
                                 </div>

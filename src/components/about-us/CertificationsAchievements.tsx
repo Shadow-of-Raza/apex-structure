@@ -1,15 +1,16 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Loader2, Award } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import useEmblaCarousel from 'embla-carousel-react'
-import { CERTIFICATIONS_ACHIEVEMENTS } from '@/lib/constants/about-us'
+import { getCertifications } from '@/lib/utils/about-us'
+import { CertificationAndAchievement } from '@/lib/types/about-us'
 
 export default function CertificationsAchievements() {
-    // Only display featured items in this sub-section
-    const featuredItems = CERTIFICATIONS_ACHIEVEMENTS.filter(item => item.isFeatured)
+    const [featuredItems, setFeaturedItems] = useState<CertificationAndAchievement[]>([])
+    const [loading, setLoading] = useState(true)
 
     // Embla Carousel setup
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -28,6 +29,16 @@ export default function CertificationsAchievements() {
         if (!emblaApi) return
         setSelectedIndex(emblaApi.selectedScrollSnap())
     }, [emblaApi])
+
+    useEffect(() => {
+        const fetchCerts = async () => {
+            setLoading(true)
+            const allCerts = await getCertifications(true)
+            setFeaturedItems(allCerts.filter(item => item.is_featured))
+            setLoading(false)
+        }
+        fetchCerts()
+    }, [])
 
     useEffect(() => {
         if (!emblaApi) return
@@ -60,6 +71,17 @@ export default function CertificationsAchievements() {
 
         return () => clearInterval(interval)
     }, [emblaApi])
+
+    if (loading) {
+        return (
+            <div className="flex h-[400px] items-center justify-center bg-pearl-50">
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+                    <p className="text-xs font-bold uppercase tracking-widest text-primary-600/50">Loading Excellence...</p>
+                </div>
+            </div>
+        )
+    }
 
     if (featuredItems.length === 0) return null
 
@@ -100,7 +122,7 @@ export default function CertificationsAchievements() {
                                     <div className="group relative h-[600px] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
                                         {/* Background Image */}
                                         <Image
-                                            src={item.image}
+                                            src={item.image_url}
                                             alt={item.title}
                                             fill
                                             className="object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -113,12 +135,12 @@ export default function CertificationsAchievements() {
                                         <div className="absolute inset-0 p-10 flex flex-col justify-end space-y-4 translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
                                             {/* Authority & Year */}
                                             <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                                                {item.year && (
-                                                    <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full px-2">
-                                                        {item.year}
+                                                {item.certificate_year && (
+                                                    <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full">
+                                                        {item.certificate_year}
                                                     </span>
                                                 )}
-                                                <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full px-2">
+                                                <span className="bg-primary-600 text-white text-[12px] px-3 py-1 rounded-full">
                                                     {item.authority}
                                                 </span>
                                             </div>

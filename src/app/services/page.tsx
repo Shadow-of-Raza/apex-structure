@@ -1,7 +1,6 @@
 // src/app/services/page.tsx
 import PageHeader from '@/components/common/Layout/PageHeader'
 import ServiceCard from '@/components/services/ServiceCard'
-import ServicesProcess from '@/components/services/ServicesProcess'
 import SeoHead from '@/components/common/SEO/SeoHead'
 import { SERVICES_IMAGES } from '@/lib/constants/page-header'
 import OurEdge from '@/components/homepage/OurEdge'
@@ -23,14 +22,11 @@ export default function ServicesPage() {
         overlayOpacity={0.7}
       />
 
-      {/* Services Main Interface */}
+      {/* Services Main Interface (Includes Selection & Details) */}
       <ServiceCard />
 
       {/* Why Choose Us - Enhanced */}
       <OurEdge />
-
-      {/* Our Process Section */}
-      <ServicesProcess />
 
     </>
   )

@@ -1,24 +1,49 @@
 'use client'
 
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { Award, Sparkles, ArrowRight, Building2 } from 'lucide-react'
+import { Award, Sparkles, ArrowRight, Building2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import useEmblaCarousel from 'embla-carousel-react'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
-import { getAllServices, SERVICE_ICON_MAP, getServiceStats } from '@/lib/utils/services'
+import { getAllServices, getServiceIcon, getServiceStats } from '@/lib/utils/services'
 import { useSearchParams } from 'next/navigation'
+import { Service } from '@/lib/types/service'
+import ServiceFAQs from './ServiceFAQs'
 
 export default function ServiceCard() {
-  const services = useMemo(() => getAllServices(), [])
-  // Initialize with first service ID
-  const [activeServiceId, setActiveServiceId] = useState<number>(services[0]?.id)
+  const [services, setServices] = useState<Service[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [activeServiceId, setActiveServiceId] = useState<number | null>(null)
+  const [serviceStats, setServiceStats] = useState<any[]>([])
+
+  // Load Services
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [data, stats] = await Promise.all([
+          getAllServices(),
+          getServiceStats()
+        ])
+        setServices(data)
+        setServiceStats(stats)
+
+        if (data.length > 0) {
+          setActiveServiceId(data[0].id)
+        }
+      } catch (error) {
+        console.error('Error loading service data:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadData()
+  }, [])
 
   // Handle URL params
   const searchParams = useSearchParams()
   useEffect(() => {
     const idParam = searchParams.get('id')
-    if (idParam) {
-      // Find service by name (slug) from URL
+    if (idParam && services.length > 0) {
       const service = services.find(s => s.name === idParam)
       if (service) {
         setActiveServiceId(service.id)
@@ -39,11 +64,6 @@ export default function ServiceCard() {
     services.find(s => s.id === activeServiceId) || services[0],
     [services, activeServiceId])
 
-  const serviceStats = useMemo(() => getServiceStats(), [])
-
-  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
-
   const onSelect = useCallback(() => {
     if (!emblaApi) return
     setPrevBtnEnabled(emblaApi.canScrollPrev())
@@ -56,6 +76,23 @@ export default function ServiceCard() {
     emblaApi.on('select', onSelect)
     emblaApi.on('reInit', onSelect)
   }, [emblaApi, onSelect])
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-20 flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
+        <p className="text-muted-foreground font-medium">Loading our expertise...</p>
+      </div>
+    )
+  }
+
+  if (services.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center">
+        <p className="text-gray-500">No services available at the moment.</p>
+      </div>
+    )
+  }
 
   if (!activeService) return null
 
@@ -81,20 +118,19 @@ export default function ServiceCard() {
               <span className="h-px w-8 bg-secondary-600"></span>
               Select a Service
             </div>
-
           </div>
 
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex gap-4">
               {services.map(service => {
-                const ServiceIcon = SERVICE_ICON_MAP[service.icon] || Building2
+                const ServiceIcon = getServiceIcon(service.icon_name)
                 const isActive = activeServiceId === service.id
 
                 return (
                   <div key={service.id} className="flex-[0_0_auto] min-w-[200px] md:min-w-[240px]">
                     <button
                       onClick={() => setActiveServiceId(service.id)}
-                      className={`flex items-center mx-1 px-5 py-2 rounded-2xl transition-all duration-300 ${isActive
+                      className={`flex items-center mx-1 px-5 py-2 rounded-2xl transition-all duration-300 w-full text-left ${isActive
                         ? 'bg-primary-600 text-white shadow-xl scale-[1.02] border border-transparent'
                         : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300'
                         }`}
@@ -103,8 +139,8 @@ export default function ServiceCard() {
                         }`}>
                         <ServiceIcon size={16} className={isActive ? 'text-white' : 'text-secondary-600'} />
                       </div>
-                      <div>
-                        <span className="font-bold text-sm mr-3 capitalize">{service.title}</span>
+                      <div className="truncate">
+                        <span className="font-bold text-sm mr-3 capitalize block truncate">{service.title}</span>
                       </div>
                     </button>
                   </div>
@@ -120,7 +156,7 @@ export default function ServiceCard() {
           <div className="lg:col-span-5 flex flex-col gap-8">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl group flex-grow min-h-[400px]">
               <ImageWithFallback
-                src={activeService.image || ''}
+                src={activeService.image_url || ''}
                 alt={activeService.title}
                 fallbackText={activeService.title}
                 fill={true}
@@ -178,10 +214,10 @@ export default function ServiceCard() {
                     Core Capabilities
                   </h4>
                   <ul className="space-y-4">
-                    {activeService.features.map((feature, idx) => (
+                    {activeService.features?.map((featureObj, idx) => (
                       <li key={idx} className="flex items-start group/li cursor-default">
                         <div className="mr-3 mt-1.5 w-1.5 h-1.5 rounded-full bg-primary-200 group-hover/li:bg-primary-600 transition-colors"></div>
-                        <span className="text-gray-600 font-bold group-hover/li:text-gray-900 transition-colors">{feature}</span>
+                        <span className="text-gray-600 font-bold group-hover/li:text-gray-900 transition-colors">{featureObj.feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -196,9 +232,9 @@ export default function ServiceCard() {
                     Value Proposition
                   </h4>
                   <div className="space-y-3">
-                    {activeService.benefits.map((benefit, idx) => (
+                    {activeService.benefits?.map((benefitObj, idx) => (
                       <div key={idx} className="h-12 flex items-center px-4 bg-gray-50 rounded-xl border border-gray-100 hover:border-primary-200 hover:bg-white transition-all duration-300">
-                        <span className="text-gray-800 font-bold text-sm tracking-tight">{benefit}</span>
+                        <span className="text-gray-800 font-bold text-sm tracking-tight">{benefitObj.benefit}</span>
                       </div>
                     ))}
                   </div>
@@ -221,6 +257,16 @@ export default function ServiceCard() {
           </div>
         </div>
       </div>
+
+      {/* Dynamic FAQs Section */}
+      {activeService && activeService.faqs && activeService.faqs.length > 0 && (
+        <div className="mt-10">
+          <ServiceFAQs
+            faqs={activeService.faqs}
+            serviceTitle={activeService.title}
+          />
+        </div>
+      )}
     </div>
   )
 }

@@ -11,6 +11,7 @@ import Link from 'next/link'
 import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
 import Notification from '@/components/common/UI/Notification'
 import { formatBlogDate } from '@/lib/utils/blog'
+import 'react-quill-new/dist/quill.snow.css'
 
 interface BlogDetailProps {
     post: BlogPost
@@ -107,7 +108,7 @@ export default function BlogDetail({ post }: BlogDetailProps) {
 
                                 <div className="flex items-center gap-2 text-white font-bold text-sm">
                                     <Calendar size={18} className="text-secondary-500" />
-                                    {formatBlogDate(post.publishedAt)}
+                                    {formatBlogDate(post.createdAt)}
                                 </div>
                             </div>
                         </div>
@@ -139,6 +140,7 @@ export default function BlogDetail({ post }: BlogDetailProps) {
                         )}
 
                         <div
+                            className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600 hover:prose-a:text-primary-700 prose-img:rounded-xl prose-img:shadow-lg"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                         />
                     </div>

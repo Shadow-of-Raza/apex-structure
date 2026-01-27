@@ -3,22 +3,17 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Plus, X } from 'lucide-react'
-import { CLIENTS } from '@/lib/constants/client'
 import { Client } from '@/lib/types/client'
 
-export default function PrimeClient() {
+export default function PrimeClient({ initialClients = [] }: { initialClients?: Client[] }) {
+  const [clients, setClients] = useState<Client[]>(initialClients)
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Filter prime clients
-  const primeClients = CLIENTS.filter(client => client.isPrime)
+  const primeClients = clients.filter(client => client.isPrime)
 
-  // Staggered circular rows with starting indices: 1, 7, 13, 19
-  const rotateArr = (arr: Client[], start: number) => [...arr.slice(start - 1), ...arr.slice(0, start - 1)]
-
-  const row1 = rotateArr(CLIENTS, 1)
-  const row2 = rotateArr(CLIENTS, 1).reverse()
-
+  // Handle modal animation state
   useEffect(() => {
     if (selectedClient) {
       setIsModalOpen(true)
@@ -31,6 +26,12 @@ export default function PrimeClient() {
       document.body.style.overflow = 'unset'
     }
   }, [selectedClient])
+
+  // Staggered circular rows with starting indices: 1, 7, 13, 19
+  const rotateArr = (arr: Client[], start: number) => [...arr.slice(start - 1), ...arr.slice(0, start - 1)]
+
+  const row1 = rotateArr(primeClients, 1)
+  const row2 = rotateArr(primeClients, 1).reverse()
 
   const MarqueeRow = ({ clients, speed, reverse = false }: { clients: Client[], speed: string, reverse?: boolean }) => (
     <div className="container mx-auto px-4 relative flex overflow-x-hidden group w-full">
@@ -84,8 +85,8 @@ export default function PrimeClient() {
       </div>
 
       <div className="flex flex-col gap-0">
-        <MarqueeRow clients={row1} speed="120s" />
-        <MarqueeRow clients={row2} speed="120s" reverse />
+        {row1.length > 0 && <MarqueeRow clients={row1} speed="120s" />}
+        {row2.length > 0 && <MarqueeRow clients={row2} speed="120s" reverse />}
       </div>
 
       {/* Detail Modal */}

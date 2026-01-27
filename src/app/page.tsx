@@ -1,10 +1,10 @@
 import HeroSection from '@/components/homepage/HeroSection'
 import FeaturedProjects from '@/components/homepage/FeaturedProjects'
 import ServicesPreview from '@/components/homepage/ServicesPreview'
-import CTA from '@/components/homepage/CTA'
 import OurEdge from '@/components/homepage/OurEdge'
 import PrimeClient from '@/components/homepage/PrimeClient'
 import BlogPreview from '@/components/homepage/BlogPreview'
+import { getClients } from '@/lib/utils/client'
 
 import SeoHead from '@/components/common/SEO/SeoHead'
 import type { Metadata } from 'next'
@@ -27,10 +27,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const clients = await getClients()
   return (
     <>
-      <SeoHead 
+      <SeoHead
         title="Home"
         description="Apex Structure is a leading real estate development company delivering exceptional residential and commercial projects with innovation and quality."
         canonicalUrl="https://apex-structure.com"
@@ -48,14 +49,13 @@ export default function HomePage() {
           }
         }}
       />
-      
+
       <HeroSection />
       <FeaturedProjects />
       <ServicesPreview />
       <OurEdge />
-      <PrimeClient />
+      <PrimeClient initialClients={clients} />
       <BlogPreview />
-      <CTA />
     </>
   )
 }

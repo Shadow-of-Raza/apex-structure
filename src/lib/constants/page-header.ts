@@ -1,4 +1,4 @@
-import { PageHeaderImage, PageHeaderConfig } from '@/lib/types/page-header';
+import { PageHeaderImage, PageHeaderConfig, HeroImage } from '@/lib/types/page-header';
 
 // Configuration
 export const PAGE_HEADER_CONFIG: PageHeaderConfig = {
@@ -9,21 +9,21 @@ export const PAGE_HEADER_CONFIG: PageHeaderConfig = {
 // Page-specific image collections
 export const ABOUT_US_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Apex Structure team meeting',
     title: 'Our Team',
     description: 'Dedicated professionals working together'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/380768/pexels-photo-380768.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Company building exterior',
     title: 'Our Headquarters',
     description: 'Where innovation meets execution'
   },
   {
-    id: '3',
+    id: 3,
     url: 'https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Award ceremony',
     title: 'Industry Recognition',
@@ -33,14 +33,14 @@ export const ABOUT_US_IMAGES: PageHeaderImage[] = [
 
 export const SERVICES_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Construction planning',
     title: 'Consultation',
     description: 'Strategic planning and advice'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/1662159/pexels-photo-1662159.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Building design',
     title: 'Design Services',
@@ -50,14 +50,14 @@ export const SERVICES_IMAGES: PageHeaderImage[] = [
 
 export const PROJECTS_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/323775/pexels-photo-323775.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Completed residential project',
     title: 'Residential Projects',
     description: 'Beautiful homes, happy families'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/534229/pexels-photo-534229.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Commercial building',
     title: 'Commercial Projects',
@@ -67,14 +67,14 @@ export const PROJECTS_IMAGES: PageHeaderImage[] = [
 
 export const EQUIPMENT_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/792034/pexels-photo-792034.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Modern construction equipment',
     title: 'Advanced Machinery',
     description: 'State-of-the-art technology'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/162553/keys-workshop-mechanical-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Precision tools',
     title: 'Quality Tools',
@@ -84,14 +84,14 @@ export const EQUIPMENT_IMAGES: PageHeaderImage[] = [
 
 export const CLIENTELE_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Client meeting',
     title: 'Our Partners',
     description: 'Building lasting relationships'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Handshake with client',
     title: 'Trusted by Many',
@@ -101,14 +101,14 @@ export const CLIENTELE_IMAGES: PageHeaderImage[] = [
 
 export const CONTACT_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/1181622/pexels-photo-1181622.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Team collaboration',
     title: 'Join Our Team',
     description: 'Grow with industry leaders'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Handshake with client',
     title: 'Trusted by Many',
@@ -118,14 +118,14 @@ export const CONTACT_IMAGES: PageHeaderImage[] = [
 
 export const BLOG_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/792034/pexels-photo-792034.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Modern construction equipment',
     title: 'Advanced Machinery',
     description: 'State-of-the-art technology'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Precision tools',
     title: 'Quality Tools',
@@ -135,14 +135,14 @@ export const BLOG_IMAGES: PageHeaderImage[] = [
 
 export const CAREER_IMAGES: PageHeaderImage[] = [
   {
-    id: '1',
+    id: 1,
     url: 'https://images.pexels.com/photos/792034/pexels-photo-792034.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Modern construction equipment',
     title: 'Advanced Machinery',
     description: 'State-of-the-art technology'
   },
   {
-    id: '2',
+    id: 2,
     url: 'https://images.pexels.com/photos/162553/keys-workshop-mechanical-tools-162553.jpeg?auto=compress&cs=tinysrgb&w=1920',
     alt: 'Precision tools',
     title: 'Quality Tools',
@@ -175,3 +175,5 @@ export function getPageHeaderImages(page: string): PageHeaderImage[] {
       return [];
   }
 }
+
+export const heroImages: HeroImage[] = [];

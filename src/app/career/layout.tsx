@@ -1,3 +1,5 @@
+// src/app/career/layout.tsx
+import React from 'react'
 import type { Metadata } from 'next'
 import SeoHead from '@/components/common/SEO/SeoHead'
 

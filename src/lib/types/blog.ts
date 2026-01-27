@@ -9,17 +9,19 @@ export interface BlogPost {
   title: string
   slug: string
   excerpt: string
-  content: string // Main content as HTML/Markdown string
+  content: string
   authorName: string
   authorRole: string
   authorAvatar: string
-  categoryId: number // Reference to category
+  categoryId: number
   category: BlogCategory
   tags: string[]
   featuredImage: string
-  images?: string[] // Additional gallery images
-  publishedAt: string
+  images?: string[]
+  createdAt: string
   metaTitle?: string
   metaDescription?: string
   keywords?: string[]
+  isActive: boolean
+  isFeatured: boolean
 }

@@ -13,12 +13,6 @@ export interface HeroContent {
   }[];
 }
 
-export interface HeroImage {
-  id: number;
-  imageUrl: string;
-  alt: string;
-}
-
 export interface ServiceState {
   id: number;
   icon: string;

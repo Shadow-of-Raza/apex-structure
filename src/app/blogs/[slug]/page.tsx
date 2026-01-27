@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
-import { blogPosts } from '@/lib/constants/blog'
-import { getPostBySlug } from '@/lib/utils/blog'
+import { getActiveBlogPosts, getBlogPostBySlug } from '@/lib/utils/blog'
 import BlogDetail from '@/components/blogs/BlogDetail'
 
 interface PageProps {
@@ -9,14 +8,15 @@ interface PageProps {
 
 // Generate static params for SSG
 export async function generateStaticParams() {
-    return blogPosts.map((post) => ({
+    const { posts } = await getActiveBlogPosts({ limit: 100 })
+    return posts.map((post: any) => ({
         slug: post.slug,
     }))
 }
 
 export async function generateMetadata({ params }: PageProps) {
     const { slug } = await params
-    const post = getPostBySlug(blogPosts, slug)
+    const post = await getBlogPostBySlug(slug)
 
     if (!post) {
         return {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function BlogPostPage({ params }: PageProps) {
     const { slug } = await params
-    const post = getPostBySlug(blogPosts, slug)
+    const post = await getBlogPostBySlug(slug)
 
     if (!post) {
         notFound()

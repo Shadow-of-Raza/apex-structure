@@ -1,3 +1,4 @@
+// src/app/career/apply/[slug]/page.tsx
 'use client'
 
 import { useState } from 'react'

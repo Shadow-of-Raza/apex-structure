@@ -5,10 +5,25 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import useEmblaCarousel from 'embla-carousel-react'
 import { getOnlyFeaturedProjects } from '@/lib/utils/projects'
 import ProjectCard from '@/components/projects/ProjectCard'
+import { Project } from '@/lib/types'
 
 export default function FeaturedProjects() {
-  // Get ONLY featured projects (isFeatured = true)
-  const featuredProjects = getOnlyFeaturedProjects()
+  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadFeatured() {
+      try {
+        const data = await getOnlyFeaturedProjects()
+        setFeaturedProjects(data)
+      } catch (error) {
+        console.error('Error loading featured projects:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadFeatured()
+  }, [])
 
   // Embla Carousel setup
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -63,22 +78,22 @@ export default function FeaturedProjects() {
     }
   }, [emblaApi, scrollSnaps.length, scrollTo])
 
-  // Don't show the section if there are no featured projects
-  if (featuredProjects.length === 0) {
+  // Don't show the section if loading or there are no featured projects
+  if (loading || featuredProjects.length === 0) {
     return null
   }
 
   return (
     <section className="py-8 bg-white">
       <div className="container mx-auto px-4 z-10">
-          <div className="text-center mb-8">
-            <h2 className="text-4xl md:text-5xl font-black mb-4 text-gray-900 leading-tight">
-                Our <span className="text-primary-600">Featured</span> Projects
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
-              Explore our handpicked featured projects that redefine urban living and commercial spaces
-            </p>
-          </div>
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-black mb-4 text-gray-900 leading-tight">
+            Our <span className="text-primary-600">Featured</span> Projects
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
+            Explore our handpicked featured projects that redefine urban living and commercial spaces
+          </p>
+        </div>
         {/* Carousel Container */}
         <div className="relative">
           {/* Carousel */}
@@ -111,8 +126,8 @@ export default function FeaturedProjects() {
                 key={index}
                 onClick={() => scrollTo(index)}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${index === selectedIndex
-                    ? 'bg-primary-600 w-6'
-                    : 'bg-gray-300 hover:bg-gray-400'
+                  ? 'bg-primary-600 w-6'
+                  : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                 aria-label={`Go to slide ${index + 1}`}
                 aria-current={index === selectedIndex}

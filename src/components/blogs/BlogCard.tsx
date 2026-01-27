@@ -35,7 +35,7 @@ export default function BlogCard({ post, viewMode = 'grid' }: BlogCardProps) {
                         <div className="flex items-center gap-4 mb-4">
                             <div className="flex items-center text-gray-500 text-sm">
                                 <Calendar size={16} className="mr-2 text-primary-600" />
-                                {formatBlogDate(post.publishedAt)}
+                                {formatBlogDate(post.createdAt)}
                             </div>
                             <div className="flex items-center text-gray-500 text-sm">
                                 <Clock size={16} className="mr-2 text-primary-600" />
@@ -52,21 +52,21 @@ export default function BlogCard({ post, viewMode = 'grid' }: BlogCardProps) {
                         </p>
 
                         <div className="mt-auto flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 shadow-2xl">
-                            <ImageWithFallback
-                                src={post.authorAvatar}
-                                alt={post.authorName}
-                                fill
-                                className="object-cover"
-                                fallbackText={post.authorName}
-                            />
-                        </div>
-                        <div>
-                            <p className="text-gray-800 font-bold text-lg leading-none mb-1">{post.authorName}</p>
-                            <p className="text-gray-800/60 text-[10px] font-black uppercase tracking-widest">{post.authorRole}</p>
-                        </div>
-                    </div>
+                            <div className="flex items-center gap-4">
+                                <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gray-300 shadow-2xl">
+                                    <ImageWithFallback
+                                        src={post.authorAvatar}
+                                        alt={post.authorName}
+                                        fill
+                                        className="object-cover"
+                                        fallbackText={post.authorName}
+                                    />
+                                </div>
+                                <div>
+                                    <p className="text-gray-800 font-bold text-lg leading-none mb-1">{post.authorName}</p>
+                                    <p className="text-gray-800/60 text-[10px] font-black uppercase tracking-widest">{post.authorRole}</p>
+                                </div>
+                            </div>
 
                             <Link
                                 href={`/blogs/${post.slug}`}
@@ -107,7 +107,7 @@ export default function BlogCard({ post, viewMode = 'grid' }: BlogCardProps) {
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center text-gray-500 text-xs">
                         <Calendar size={14} className="mr-1.5 text-primary-600" />
-                        {formatBlogDate(post.publishedAt)}
+                        {formatBlogDate(post.createdAt)}
                     </div>
                     <div className="flex items-center text-gray-500 text-xs font-medium">
                         <Clock size={14} className="mr-1.5 text-primary-600" />

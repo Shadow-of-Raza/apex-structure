@@ -7,32 +7,36 @@ export interface Stat {
 }
 
 export interface CompanyProfileData {
+    id?: number;
     name: string;
     badge: string;
     title: string;
-    descriptionPrimary: string;
-    descriptionSecondary: string;
-    establishedOn: number;
-    totalTeamMembers: string;
-    image: string;
+    description_primary: string;
+    description_secondary: string;
+    established_year: number;
+    team_size_label: string;
+    image_url: string;
+    is_active?: number;
 }
 
 export interface LeaderMessage {
-    id: string;
+    id: number;
+    type: 'director' | 'mentor';
     badge: string;
     name: string;
     role: string;
-    profile: string;
-    experience: string;
-    projectsLed: string;
-    messageTitle: string;
-    content: string[];
+    profile_image: string;
+    experience_years: string;
+    projects_led: string;
+    message_title: string;
+    message_content: string[];
     quote: string;
-    signatureRole: string;
+    signature_role: string;
+    is_active?: number;
 }
 
 export interface ValueCard {
-    id: string;
+    id: number;
     title: string;
     description: string;
     iconName: string;
@@ -41,6 +45,7 @@ export interface ValueCard {
 }
 
 export interface VisionMissionData {
+    id?: number;
     title: string;
     description: string;
     vision: ValueCard;
@@ -53,16 +58,14 @@ export interface TeamMember {
     name: string;
     role: string;
     bio: string;
-    image: string;
-    initials: string;
-    socialLinks?: {
-        linkedin?: string;
-        twitter?: string;
-    };
+    image_url: string;
+    linkedin_url?: string;
+    display_order: number;
+    is_active: boolean;
 }
 
 export interface CSRActivity {
-    id: string;
+    id: number;
     title: string;
     description: string;
     image: string;
@@ -71,9 +74,11 @@ export interface CSRActivity {
 export interface CertificationAndAchievement {
     id: number;
     title: string;
-    authority: string; // Issuing authority or achievement context
+    authority: string;
     description: string;
-    image: string;
-    year?: string;
-    isFeatured: boolean;
+    image_url: string;
+    certificate_year?: string;
+    is_featured: boolean | number;
+    display_order: number;
+    is_active: boolean | number;
 }

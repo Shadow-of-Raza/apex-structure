@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     remotePatterns: [
       {
@@ -43,7 +42,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '**.amazonaws.com',
+        hostname: 'd3iyb22j0deki1.cloudfront.net',
+        port: '',
         pathname: '/**',
       },
       {

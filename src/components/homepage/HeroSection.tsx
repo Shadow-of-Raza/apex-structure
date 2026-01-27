@@ -3,9 +3,19 @@
 import { useState, useEffect, useRef } from 'react'
 import { ArrowRight, Pause, Play } from 'lucide-react'
 import Link from 'next/link'
-import { heroContent, heroImages, heroConfig, heroIcons } from '@/lib/constants/home'
+import { INITIAL_HERO_CONTENT, heroConfig, heroIcons } from '@/lib/constants/home'
+// import { heroImages } from '@/lib/constants/page-header'
+import { getHeroStats } from '@/lib/utils/projects'
+import { calculateYearsOfExperience, getCompanyProfile } from '@/lib/utils/about-us'
+
+import { getHeroContent } from '@/lib/utils/home'
+import { getHeroSlides } from '@/lib/utils/page-header'
+import { HeroContent } from '@/lib/types/home'
+import { HeroImage } from '@/lib/types/page-header'
 
 export default function HeroSection() {
+  const [content, setContent] = useState<HeroContent>(INITIAL_HERO_CONTENT) // Fallback to static
+  const [slides, setSlides] = useState<HeroImage[]>([])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -13,11 +23,43 @@ export default function HeroSection() {
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null)
   const slideIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
-  const totalSlides = heroImages.length
+  const [stats, setStats] = useState<any>(null)
+  const [heroExperience, setHeroExperience] = useState<number>(0)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        // Load dynamic hero content
+        const dynamicContent = await getHeroContent()
+        if (dynamicContent) {
+          setContent(dynamicContent)
+        }
+
+        // Load dynamic slides
+        const dynamicSlides = await getHeroSlides()
+        setSlides(dynamicSlides)
+
+        // Load stats
+        const heroStats = await getHeroStats()
+        setStats(heroStats)
+
+        const profile = await getCompanyProfile()
+        if (profile) {
+          const experience = calculateYearsOfExperience(profile.established_year)
+          setHeroExperience(experience)
+        }
+      } catch (error) {
+        console.error('Error loading hero data:', error)
+      }
+    }
+    loadData()
+  }, [])
+
+  const totalSlides = slides.length
 
   // Progress bar animation
   useEffect(() => {
-    if (!isAutoPlaying) {
+    if (!isAutoPlaying || totalSlides <= 1) {
       setProgress(0)
       if (progressIntervalRef.current) {
         clearInterval(progressIntervalRef.current)
@@ -45,11 +87,11 @@ export default function HeroSection() {
         clearInterval(progressIntervalRef.current)
       }
     }
-  }, [currentSlide, isAutoPlaying])
+  }, [currentSlide, isAutoPlaying, totalSlides])
 
   // Auto slide functionality with proper cleanup
   useEffect(() => {
-    if (!isAutoPlaying) {
+    if (!isAutoPlaying || totalSlides <= 1) {
       if (slideIntervalRef.current) {
         clearInterval(slideIntervalRef.current)
       }
@@ -73,10 +115,10 @@ export default function HeroSection() {
         clearInterval(slideIntervalRef.current)
       }
     }
-  }, [currentSlide, isAutoPlaying])
+  }, [currentSlide, isAutoPlaying, totalSlides])
 
   const nextSlide = () => {
-    if (isTransitioning) return
+    if (isTransitioning || totalSlides <= 1) return
 
     setIsTransitioning(true)
     setProgress(0)
@@ -112,12 +154,12 @@ export default function HeroSection() {
     <section className="relative text-white overflow-hidden h-[90vh] min-h-[700px]">
       {/* Background Images with Ken Burns Effect */}
       <div className="absolute inset-0">
-        {heroImages.map((image, index) => (
+        {slides.map((image, index) => (
           <div
             key={image.id}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide
-                ? 'opacity-100 z-10'
-                : 'opacity-0 z-0'
+              ? 'opacity-100 z-10'
+              : 'opacity-0 z-0'
               }`}
           >
             {/* Background Image with Ken Burns zoom effect */}
@@ -164,7 +206,7 @@ export default function HeroSection() {
           <div className="overflow-hidden">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
               <span className="block text-white ">
-                {heroContent.title}
+                {content.title}
               </span>
             </h1>
           </div>
@@ -172,26 +214,33 @@ export default function HeroSection() {
           {/* Description */}
           <div className="overflow-hidden">
             <p className="text-base font-normal mb-8 max-w-2xl">
-              {heroContent.description}
+              {content.description}
             </p>
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Link
-              href={heroContent.button1.href}
-              className="inline-flex items-center justify-center bg-primary-700 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              {heroContent.button1.text}
-              <ArrowRight className="ml-2" size={20} />
-            </Link>
-          </div>
+          {content.button1.text && content.button1.href && (
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <Link
+                href={content.button1.href}
+                className="inline-flex items-center justify-center bg-primary-700 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                {content.button1.text}
+                <ArrowRight className="ml-2" size={20} />
+              </Link>
+            </div>
+          )}
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {heroContent.stats.map((stat, index) => {
+            {stats && content.stats.map((stat, index) => {
               // Get the icon component dynamically
               const IconComponent = heroIcons[stat.icon as keyof typeof heroIcons];
+
+              let value = stat.value;
+              if (stat.icon === 'Building2') value = stats.formattedProjects;
+              if (stat.icon === 'MapPin') value = stats.formattedCities;
+              if (stat.icon === 'Clock') value = `${heroExperience}+`;
 
               return (
                 <div key={index} className="flex items-center group bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
@@ -203,7 +252,7 @@ export default function HeroSection() {
                     )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-lg text-white">{stat.value}</h3>
+                    <h3 className="font-bold text-lg text-white">{value}</h3>
                     <p className="text-gray-300 text-sm">{stat.label}</p>
                   </div>
                 </div>
@@ -215,13 +264,13 @@ export default function HeroSection() {
 
       {/* Slide Indicators (Dots) */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex space-x-3">
-        {heroImages.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
-                ? 'bg-secondary-500 w-8 shadow-lg'
-                : 'bg-white/50 hover:bg-white/80'
+              ? 'bg-secondary-500 w-8 shadow-lg'
+              : 'bg-white/50 hover:bg-white/80'
               }`}
             aria-label={`Go to slide ${index + 1}`}
           />

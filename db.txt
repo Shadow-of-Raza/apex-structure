@@ -1,0 +1,270 @@
+# MySQL Database Structure for Apex Structure Constant Data
+
+This document outlines the recommended MySQL table structure to store the constant data currently located in `src/lib/constants`.
+
+## 1. Blog Module
+Stores categories, posts, and their relationships.
+
+```sql
+CREATE TABLE blog_categories (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE blog_posts (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    excerpt TEXT,
+    content LONGTEXT,
+    author_name VARCHAR(255),
+    author_role VARCHAR(255),
+    author_avatar VARCHAR(255),
+    category_id INT,
+    featured_image VARCHAR(255),
+    published_at DATETIME,
+    meta_title VARCHAR(255),
+    meta_description TEXT,
+    FOREIGN KEY (category_id) REFERENCES blog_categories(id)
+);
+
+CREATE TABLE blog_tags (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE blog_post_tags (
+    post_id INT,
+    tag_id INT,
+    PRIMARY KEY (post_id, tag_id),
+    FOREIGN KEY (post_id) REFERENCES blog_posts(id),
+    FOREIGN KEY (tag_id) REFERENCES blog_tags(id)
+);
+
+CREATE TABLE blog_keywords (
+    post_id INT,
+    keyword VARCHAR(100),
+    PRIMARY KEY (post_id, keyword),
+    FOREIGN KEY (post_id) REFERENCES blog_posts(id)
+);
+```
+
+## 2. Clients Module
+Stores client information and logos.
+
+```sql
+CREATE TABLE clients (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    logo_image VARCHAR(255),
+    alt_text VARCHAR(255),
+    description TEXT,
+    is_prime BOOLEAN DEFAULT FALSE
+);
+```
+
+## 3. Projects Module
+Stores detailed project data including images and features.
+
+```sql
+CREATE TABLE projects (
+    id VARCHAR(50) PRIMARY KEY, -- Using VARCHAR as some IDs are strings
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    full_description LONGTEXT,
+    project_type ENUM('residential', 'commercial', 'industrial', 'mixed-use', 'management') NOT NULL,
+    status ENUM('ongoing', 'completed', 'upcoming', 'planning') NOT NULL,
+    start_date DATE,
+    completion_date DATE,
+    area VARCHAR(100),
+    budget VARCHAR(100),
+    client_name VARCHAR(255),
+    architect_name VARCHAR(255),
+    address_street VARCHAR(255),
+    address_city VARCHAR(100),
+    address_state VARCHAR(100),
+    address_zip VARCHAR(20),
+    is_featured BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE project_images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id VARCHAR(50),
+    image_url VARCHAR(255) NOT NULL,
+    is_main BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+
+CREATE TABLE project_features (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id VARCHAR(50),
+    feature VARCHAR(255) NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+
+CREATE TABLE project_highlights (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id VARCHAR(50),
+    highlight VARCHAR(255) NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+
+CREATE TABLE project_amenities (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id VARCHAR(50),
+    amenity VARCHAR(255) NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+
+CREATE TABLE project_sustainability_features (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    project_id VARCHAR(50),
+    feature VARCHAR(255) NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects(id)
+);
+```
+
+## 4. Services Module
+Stores core services offered by the company.
+
+```sql
+CREATE TABLE services (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) UNIQUE NOT NULL, -- internal name e.g., 'commercial'
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    short_description TEXT,
+    category_label VARCHAR(100),
+    icon_name VARCHAR(100),
+    image_url VARCHAR(255)
+);
+
+CREATE TABLE service_features (
+    service_id INT,
+    feature VARCHAR(255),
+    FOREIGN KEY (service_id) REFERENCES services(id)
+);
+
+CREATE TABLE service_benefits (
+    service_id INT,
+    benefit VARCHAR(255),
+    FOREIGN KEY (service_id) REFERENCES services(id)
+);
+
+CREATE TABLE service_steps (
+    service_id INT,
+    step_description VARCHAR(255),
+    step_order INT,
+    FOREIGN KEY (service_id) REFERENCES services(id)
+);
+
+CREATE TABLE service_faqs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    service_id INT,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    FOREIGN KEY (service_id) REFERENCES services(id)
+);
+```
+
+## 5. Career Module
+Stores job openings, departments, and testimonials.
+
+```sql
+CREATE TABLE departments (
+    id VARCHAR(50) PRIMARY KEY, -- e.g., 'engineering'
+    name VARCHAR(255) NOT NULL,
+    icon VARCHAR(10), -- Emoji or icon name
+    description TEXT,
+    openings_count INT DEFAULT 0
+);
+
+CREATE TABLE job_openings (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    department_id VARCHAR(50),
+    location VARCHAR(255),
+    job_type ENUM('Full-time', 'Part-time', 'Contract', 'Internship'),
+    experience VARCHAR(100),
+    salary VARCHAR(100),
+    description TEXT,
+    posted_date DATE,
+    deadline DATE,
+    is_urgent BOOLEAN DEFAULT FALSE,
+    is_remote BOOLEAN DEFAULT FALSE,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    FOREIGN KEY (department_id) REFERENCES departments(id)
+);
+
+CREATE TABLE job_items (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    job_id VARCHAR(50),
+    item_type ENUM('responsibility', 'requirement', 'benefit'),
+    content TEXT NOT NULL,
+    FOREIGN KEY (job_id) REFERENCES job_openings(id)
+);
+
+CREATE TABLE employee_testimonials (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(255),
+    department VARCHAR(255),
+    tenure VARCHAR(100),
+    avatar VARCHAR(255),
+    quote TEXT,
+    rating INT,
+    projects_count INT
+);
+
+CREATE TABLE company_wide_benefits (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    icon VARCHAR(10),
+    category ENUM('health', 'financial', 'work-life', 'development', 'other')
+);
+```
+
+## 6. Company Info & Achievements (About Us)
+Stores team members, CSR activities, and certifications.
+
+```sql
+CREATE TABLE team_members (
+    id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    role VARCHAR(255),
+    bio TEXT,
+    image_url VARCHAR(255),
+    initials VARCHAR(10),
+    linkedin_url VARCHAR(255)
+);
+
+CREATE TABLE csr_activities (
+    id VARCHAR(50) PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url VARCHAR(255),
+    category VARCHAR(100)
+);
+
+CREATE TABLE certifications (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    authority VARCHAR(255),
+    description TEXT,
+    image_url VARCHAR(255),
+    certificate_year VARCHAR(10),
+    is_featured BOOLEAN DEFAULT FALSE
+);
+```
+
+## Summary of Analysis
+The transition from TypeScript constants to a MySQL database will provide:
+1. **Dynamic Updates**: Content can be updated via a CMS or direct DB edits without code redeployment.
+2. **Relational Integrity**: Using Foreign Keys ensures that posts always belong to valid categories, etc.
+3. **Scalability**: Managing 100+ projects or posts is much more efficient in a database than in a single `.ts` file.
+4. **Search Capability**: SQL queries allow for complex filtering (e.g., finding all residential projects in Mumbai with a budget > 200 Cr).

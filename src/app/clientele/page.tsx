@@ -1,8 +1,10 @@
 import PageHeader from '@/components/common/Layout/PageHeader'
 import { CLIENTELE_IMAGES } from '@/lib/constants/page-header'
 import ClientLogo from '@/components/clientele/ClientLogo'
+import { getClients } from '@/lib/utils/client'
 
-export default function ClientelePage() {
+export default async function ClientelePage() {
+  const clients = await getClients()
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
@@ -13,7 +15,7 @@ export default function ClientelePage() {
         overlayOpacity={0.7}
       />
       {/* Partners Marquee Section */}
-      <ClientLogo />
+      <ClientLogo initialClients={clients} />
     </main>
   )
 }

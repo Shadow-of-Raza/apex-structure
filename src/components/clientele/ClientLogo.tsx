@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Plus, X } from 'lucide-react'
-import { CLIENTS } from '@/lib/constants/client'
 import { Client } from '@/lib/types/client'
 
-export default function ClientLogo() {
+export default function ClientLogo({ initialClients = [] }: { initialClients?: Client[] }) {
+  const [clients, setClients] = useState<Client[]>(initialClients)
   const [selectedClient, setSelectedClient] = useState<Client | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -27,10 +27,10 @@ export default function ClientLogo() {
   // Staggered circular rows with starting indices: 1, 7, 13, 19
   const rotateArr = (arr: Client[], start: number) => [...arr.slice(start - 1), ...arr.slice(0, start - 1)]
 
-  const row1 = rotateArr(CLIENTS, 1)
-  const row2 = rotateArr(CLIENTS, 1).reverse()
-  const row3 = rotateArr(CLIENTS, 13)
-  const row4 = rotateArr(CLIENTS, 13).reverse()
+  const row1 = rotateArr(clients, 1)
+  const row2 = rotateArr(clients, 1).reverse()
+  const row3 = rotateArr(clients, Math.ceil(clients.length / 2))
+  const row4 = rotateArr(clients, Math.ceil(clients.length / 2)).reverse()
 
   const MarqueeRow = ({ clients, speed, reverse = false }: { clients: Client[], speed: string, reverse?: boolean }) => (
     <div className="container mx-auto px-4 relative flex overflow-x-hidden group w-full">
@@ -86,10 +86,10 @@ export default function ClientLogo() {
       </div>
 
       <div className="flex flex-col gap-0">
-        <MarqueeRow clients={row1} speed="120s" />
-        <MarqueeRow clients={row2} speed="120s" reverse />
-        <MarqueeRow clients={row3} speed="120s" />
-        <MarqueeRow clients={row4} speed="120s" reverse />
+        {row1.length > 0 && <MarqueeRow clients={row1} speed="120s" />}
+        {row2.length > 0 && <MarqueeRow clients={row2} speed="120s" reverse />}
+        {row3.length > 0 && <MarqueeRow clients={row3} speed="120s" />}
+        {row4.length > 0 && <MarqueeRow clients={row4} speed="120s" reverse />}
       </div>
 
       {/* Detail Modal */}

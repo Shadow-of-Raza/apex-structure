@@ -14,16 +14,16 @@ import {
   List,
   Layers
 } from 'lucide-react'
-import { Project } from '@/lib/types'
+import { Project, ProjectCategory } from '@/lib/types'
+import { Service } from '@/lib/types/service'
 import ProjectCard from './ProjectCard'
 import Link from 'next/link'
 import {
-  getProjectCategoriesWithCounts,
-  getFormattedLocation
+  getFormattedLocation,
+  getProjectCategoriesWithCounts
 } from '@/lib/utils/projects'
 import { PROJECT_LIST_STATUS_CONFIG } from '@/lib/constants/projects'
-import { servicesData } from '@/lib/constants/services'
-import { getServiceIcon } from '@/lib/utils/services'
+import { getAllServices, getServiceIcon } from '@/lib/utils/services'
 import { useSearchParams, useRouter } from 'next/navigation'
 
 export interface ProjectListFilter {
@@ -81,9 +81,25 @@ export default function ProjectList({
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(defaultViewMode)
   const [isFilterExpanded, setIsFilterExpanded] = useState(false)
+  const [projectCategories, setProjectCategories] = useState<ProjectCategory[]>([])
+  const [services, setServices] = useState<Service[]>([])
 
   // Get dynamic data
-  const projectCategories = useMemo(() => getProjectCategoriesWithCounts(), [])
+  useEffect(() => {
+    async function loadDynamicData() {
+      try {
+        const [categories, serviceData] = await Promise.all([
+          getProjectCategoriesWithCounts(),
+          getAllServices()
+        ])
+        setProjectCategories(categories)
+        setServices(serviceData)
+      } catch (error) {
+        console.error('Error loading dynamic data:', error)
+      }
+    }
+    loadDynamicData()
+  }, [])
 
   // Configurations from constants
   const statusConfig = PROJECT_LIST_STATUS_CONFIG
@@ -410,14 +426,14 @@ export default function ProjectList({
                         <span className="font-bold text-sm mr-3">All Types</span>
                         <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${activeCategory === 'all' ? 'bg-white/20 text-white' : 'bg-gray-100 text-gray-500'
                           }`}>
-                          {projects.length}
+                          {services.length}
                         </span>
                       </button>
 
                       {/* Dynamic Categories */}
                       {projectCategories.filter(c => c.projectCount > 0).map((category) => {
                         const isActive = activeCategory === category.slug
-                        const service = servicesData.find(s => s.name === category.slug)
+                        const service = services.find(s => s.name === category.slug)
 
                         return (
                           <button
@@ -430,7 +446,7 @@ export default function ProjectList({
                           >
                             {service && (
                               <div className={`mr-2 ${isActive ? 'text-white' : 'text-secondary-600'}`}>
-                                {React.createElement(getServiceIcon(service.icon), { size: 18 })}
+                                {React.createElement(getServiceIcon(service.icon_name), { size: 18 })}
                               </div>
                             )}
                             <span className="font-bold text-sm mr-3 capitalize">{category.name}</span>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   MapPin, Calendar, Building2, Award, CheckCircle,
   ArrowLeft, Share2, Maximize2, ChevronLeft,
@@ -13,16 +13,14 @@ import ImageWithFallback from '@/components/common/UI/ImageWithFallback'
 import ImageModal from '@/app/gallery/components/ImageModal'
 import { cleanImageUrl, isDirectImageUrl, getImageAltText } from '@/lib/utils/images'
 import Notification from '@/components/common/UI/Notification'
-
-// Import utility functions
 import {
   getFormattedAddress,
   getFormattedLocation,
   getStatusConfig,
   getSimilarProjects
 } from '@/lib/utils/projects'
-import { servicesData } from '@/lib/constants/services'
-import { getServiceIcon } from '@/lib/utils/services'
+import { getServiceBySlug, getServiceIcon } from '@/lib/utils/services'
+import { Service } from '@/lib/types/service'
 
 // Import constants
 import {
@@ -42,9 +40,27 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
   // Get dynamic data
   const statusConfig = getStatusConfig(project.status)
   const formattedAddress = getFormattedAddress(project)
-  const similarProjects = getSimilarProjects(project, 2)
-  const service = servicesData.find(s => s.name === project.type)
-  const TypeIcon = getServiceIcon(service?.icon || 'Building2')
+
+  const [similarProjects, setSimilarProjects] = useState<Project[]>([])
+  const [service, setService] = useState<Service | undefined>(undefined)
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [similar, serviceData] = await Promise.all([
+          getSimilarProjects(project, 2),
+          getServiceBySlug(project.type)
+        ])
+        setSimilarProjects(similar)
+        setService(serviceData)
+      } catch (error) {
+        console.error('Error loading project detail data:', error)
+      }
+    }
+    loadData()
+  }, [project])
+
+  const TypeIcon = getServiceIcon(service?.icon_name || 'Building2')
 
   // Process images
   const processedImages = useMemo(() => {

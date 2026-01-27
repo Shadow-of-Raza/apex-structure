@@ -2,8 +2,11 @@
 import PageHeader from '@/components/common/Layout/PageHeader'
 import EquipmentGrid from '@/components/equipment/EquipmentGrid'
 import { EQUIPMENT_IMAGES } from '@/lib/constants/page-header'
+import { getAllEquipments } from '@/lib/utils/equipment'
 
-export default function EquipmentPage() {
+export default async function EquipmentPage() {
+  const equipments = await getAllEquipments()
+
   return (
     <>
       <PageHeader
@@ -13,9 +16,7 @@ export default function EquipmentPage() {
         overlayOpacity={0.7}
       />
 
-      {/* Equipment Showcase */}
-
-          <EquipmentGrid />
+      <EquipmentGrid equipments={equipments} />
     </>
   )
 }

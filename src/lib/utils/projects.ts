@@ -1,48 +1,155 @@
 // src/lib/utils/projects.ts
-import { Project, ProjectCategory, ProjectStatus, ProjectFilter } from '@/lib/types'
-import { projectsData, PROJECT_STATUSES } from '@/lib/constants/projects'
+import { Project, ProjectCategory } from '@/lib/types'
 import { STATUS_CONFIG } from '@/lib/constants/projects'
 import { servicesData } from '@/lib/constants/services'
 
-// Data access functions
-export function getProjectBySlug(slug: string): Project | undefined {
-  return projectsData.find(project => project.slug === slug)
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
+
+// Data access functions (Async)
+export async function getAllProjects(): Promise<Project[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) throw new Error('Failed to fetch projects')
+    const json = await response.json()
+    // Backend returns { success: true, data: [...], pagination: {...} }
+    return json.data || []
+  } catch (error) {
+    console.error('Error fetching projects:', error)
+    return []
+  }
 }
 
-export function getProjectById(id: string): Project | undefined {
-  return projectsData.find(project => project.id === id)
+export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+  try {
+    // Backend uses GET /api/projects/:slug (NOT /slug/:slug)
+    const response = await fetch(`${API_BASE_URL}/projects/${slug}`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) return undefined
+    const json = await response.json()
+    return json.data
+  } catch (error) {
+    console.error(`Error fetching project by slug ${slug}:`, error)
+    return undefined
+  }
 }
 
-export function getAllProjects(): Project[] {
-  return projectsData
+export async function getProjectById(id: number): Promise<Project | undefined> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/id/${id}`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) return undefined
+    const json = await response.json()
+    return json.data
+  } catch (error) {
+    console.error(`Error fetching project by id ${id}:`, error)
+    return undefined
+  }
 }
 
-export function getProjectsByStatus(status: Project['status']): Project[] {
-  return projectsData.filter(project => project.status === status)
+export async function getAllProjectSlugs(): Promise<string[]> {
+  const projects = await getAllProjects()
+  return projects.map(project => project.slug)
 }
 
-export function getProjectsByType(type: Project['type']): Project[] {
-  return projectsData.filter(project => project.type === type)
-}
+import { getAllServices } from './services'
 
-export function getAllProjectSlugs(): string[] {
-  return projectsData.map(project => project.slug)
-}
+// Stats & Metadata calculation functions
+export async function getProjectCategoriesWithCounts(): Promise<ProjectCategory[]> {
+  const [projects, services] = await Promise.all([
+    getAllProjects(),
+    getAllServices()
+  ])
 
-// Dynamic calculation functions
-export function getProjectCategoriesWithCounts(): ProjectCategory[] {
-  // Use servicesData as the source of truth for categories
-  return servicesData.map(service => ({
-    id: service.name, // Use name (slug) as the ID for category to match Project.type
-    name: service.categoryLabel || service.title,
+  return services.map(service => ({
+    id: service.name,
+    name: service.category_label || service.title,
     slug: service.name,
-    description: service.shortDescription || service.description,
-    projectCount: projectsData.filter(project => project.type === service.name).length
+    description: service.short_description || service.description,
+    projectCount: projects.filter(project => project.type === service.name).length
   }))
     .filter(cat => cat.projectCount > 0)
 }
 
-// Location helper functions
+export async function getUniqueCities(): Promise<string[]> {
+  const projects = await getAllProjects()
+  const cities = projects.map(project => project.address.city)
+  return [...new Set(cities)].sort()
+}
+
+export async function getCompletedProjectsCount(): Promise<number> {
+  const stats = await getHeroStats()
+  return stats.completedProjects || 0
+}
+
+export async function getTotalProjectsCount(): Promise<number> {
+  return getCompletedProjectsCount()
+}
+
+export async function getFeaturedProjectsCount(): Promise<number> {
+  const stats = await getHeroStats()
+  return stats.featuredProjects || 0
+}
+
+export async function getFeaturedProjects(count: number = 6): Promise<Project[]> {
+  const projects = await getAllProjects()
+  const featured = projects.filter(project => project.isFeatured)
+
+  if (featured.length >= count) {
+    return featured.slice(0, count)
+  }
+
+  const remainingCount = count - featured.length
+  const nonFeatured = projects
+    .filter(project => !project.isFeatured)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, remainingCount)
+
+  return [...featured, ...nonFeatured]
+}
+
+export async function getOnlyFeaturedProjects(): Promise<Project[]> {
+  const projects = await getAllProjects()
+  return projects.filter(project => project.isFeatured)
+}
+
+export async function getHeroStats() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/projects/stats`, {
+      cache: 'no-store'
+    })
+    if (!response.ok) throw new Error('Failed to fetch stats')
+    const json = await response.json()
+    return json.data || {
+      completedProjects: 0,
+      citiesCovered: 0,
+      featuredProjects: 0,
+      formattedProjects: '0+',
+      formattedCities: '0+ Cities'
+    }
+  } catch (error) {
+    console.error('Error fetching hero stats:', error)
+    return {
+      completedProjects: 0,
+      citiesCovered: 0,
+      featuredProjects: 0,
+      formattedProjects: '0+',
+      formattedCities: '0+ Cities'
+    }
+  }
+}
+
+export async function getSimilarProjects(project: Project, limit: number = 2): Promise<Project[]> {
+  const projects = await getAllProjects()
+  return projects
+    .filter(p => p.type === project.type && p.slug !== project.slug)
+    .slice(0, limit)
+}
+
+// Synchronous helpers
 export function getFormattedAddress(project: Project): string {
   return `${project.address.street}, ${project.address.city}, ${project.address.state} ${project.address.zipCode}`
 }
@@ -51,128 +158,6 @@ export function getFormattedLocation(project: Project): string {
   return `${project.address.city}, ${project.address.state}`
 }
 
-// Similar projects function
-export function getSimilarProjects(currentProject: Project, limit: number = 2): Project[] {
-  const similar = projectsData
-    .filter(p => p.type === currentProject.type && p.id !== currentProject.id)
-    .slice(0, limit)
-
-  if (similar.length < limit) {
-    const additional = projectsData
-      .filter(p => p.id !== currentProject.id && !similar.some(s => s.id === p.id))
-      .slice(0, limit - similar.length)
-    return [...similar, ...additional]
-  }
-
-  return similar
-}
-
-// Get unique locations (cities) from all projects
-export function getUniqueLocations(): string[] {
-  const cities = projectsData.map(project => project.address.city)
-  return [...new Set(cities)].sort()
-}
-
-// Export projectsData for convenience
-export { projectsData }
-
-// Add this function to get unique cities
-export function getUniqueCities(): string[] {
-  return getUniqueLocations() // Using existing function
-}
-
-// Get category config - REMOVED (using dynamic)
-export function getCategoryConfig(category: string) {
-  const service = servicesData.find(s => s.name === category)
-  return {
-    name: service?.categoryLabel || service?.title || category,
-    // Add other config if needed by legacy code, though we should be using service data directly
-  }
-}
-
-// Get status config
 export function getStatusConfig(status: string) {
   return STATUS_CONFIG[status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.all
-}
-
-// Get total projects count
-export function getTotalProjectsCount(): number {
-  return projectsData.length
-}
-
-// Get total cities count
-export function getTotalCitiesCount(): number {
-  const uniqueCities = new Set<string>()
-  projectsData.forEach(project => {
-    uniqueCities.add(project.address.city)
-  })
-  return uniqueCities.size
-}
-
-// Get completed projects count
-export function getCompletedProjectsCount(): number {
-  return projectsData.filter(project => project.status === 'completed').length
-}
-
-// Update getFeaturedProjects function to use isFeatured field
-export function getFeaturedProjects(count: number = 6): Project[] {
-  // Get all featured projects first
-  const featured = projectsData.filter(project => project.isFeatured)
-
-  // If we have enough featured projects, return them (limited by count)
-  if (featured.length >= count) {
-    return featured.slice(0, count)
-  }
-
-  // If not enough featured projects, add recent non-featured projects
-  const remainingCount = count - featured.length
-  const nonFeatured = projectsData
-    .filter(project => !project.isFeatured)
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, remainingCount)
-
-  return [...featured, ...nonFeatured]
-}
-
-// Add a new function to get only featured projects
-export function getOnlyFeaturedProjects(): Project[] {
-  return projectsData.filter(project => project.isFeatured)
-}
-
-// Add function to get featured projects count
-export function getFeaturedProjectsCount(): number {
-  return projectsData.filter(project => project.isFeatured).length
-}
-
-// Update getHeroStats to include featured projects count
-export function getHeroStats() {
-  return {
-    formattedProjects: `${getCompletedProjectsCount()}+ Projects`,
-    formattedCities: `${getTotalCitiesCount()}+ Cities`,
-    formattedFeatured: `${getFeaturedProjectsCount()} Featured Projects`
-  }
-}
-
-export function getFilteredProjects(filters: ProjectFilter): Project[] {
-  return projectsData.filter(project => {
-    if (filters.type?.length && !filters.type.includes(project.type)) return false
-    if (filters.status?.length && !filters.status.includes(project.status)) return false
-    if (filters.city?.length && !filters.city.includes(project.address.city)) return false
-
-    if (filters.minArea || filters.maxArea) {
-      const areaNumber = parseInt(project.area.replace(/,/g, ''))
-      if (filters.minArea && areaNumber < filters.minArea) return false
-      if (filters.maxArea && areaNumber > filters.maxArea) return false
-    }
-
-    return true
-  })
-}
-
-export function toggleFeaturedStatus(projectId: string): boolean {
-  const projectIndex = projectsData.findIndex(p => p.id === projectId)
-  if (projectIndex === -1) return false
-
-  projectsData[projectIndex].isFeatured = !projectsData[projectIndex].isFeatured
-  return projectsData[projectIndex].isFeatured
 }

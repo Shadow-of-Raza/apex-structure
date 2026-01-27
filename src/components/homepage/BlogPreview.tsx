@@ -2,12 +2,17 @@ import Link from 'next/link'
 import { ArrowRight, BookOpen } from 'lucide-react'
 import Container from '@/components/common/Layout/Container'
 import Section from '@/components/common/Layout/Section'
-import { getRecentPosts } from '@/lib/constants/blog'
+import { getFeaturedBlogPosts } from '@/lib/utils/blog'
+import { BlogPost } from '@/lib/types/blog'
 import BlogCard from '@/components/blogs/BlogCard'
 import Button from '@/components/common/UI/Button'
 
-export default function BlogPreview() {
-  const recentPosts = getRecentPosts(3)
+export default async function BlogPreview() {
+  const { posts: recentPosts } = await getFeaturedBlogPosts(3)
+
+  if (!recentPosts || recentPosts.length === 0) {
+    return null
+  }
 
   return (
     <section className="py-8 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
@@ -26,7 +31,7 @@ export default function BlogPreview() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12 mb-20">
-          {recentPosts.map((post, idx) => (
+          {recentPosts.map((post: BlogPost) => (
             <div key={post.id} className="h-full">
               <BlogCard post={post} />
             </div>

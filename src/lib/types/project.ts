@@ -1,6 +1,6 @@
 // src/lib/types/project.ts
 export interface Project {
-  id: string
+  id: number
   slug: string
   title: string
   description: string
@@ -43,7 +43,7 @@ export interface ProjectCategory {
 export interface ProjectFilter {
   type?: string[]
   status?: string[]
-  city?: string[] // city names
+  city?: string[]
   minArea?: number
   maxArea?: number
 }

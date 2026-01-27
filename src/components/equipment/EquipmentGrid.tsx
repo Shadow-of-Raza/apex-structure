@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { equipmentData } from '@/lib/constants/equipment'
+import { Equipment } from '@/lib/types/equipment'
 import EquipmentCard from './EquipmentCard'
 import ImageModal from '@/app/gallery/components/ImageModal'
 
-export default function EquipmentGrid() {
+interface EquipmentGridProps {
+  equipments: Equipment[]
+}
+
+export default function EquipmentGrid({ equipments }: EquipmentGridProps) {
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     images: string[];
@@ -51,7 +55,7 @@ export default function EquipmentGrid() {
 
         {/* 4-Column Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {equipmentData.map((item) => (
+          {equipments.map((item) => (
             <EquipmentCard
               key={item.id}
               equipment={item}
@@ -60,6 +64,12 @@ export default function EquipmentGrid() {
               onViewImage={openModal}
             />
           ))}
+
+          {equipments.length === 0 && (
+            <div className="col-span-full text-center py-20 grayscale opacity-50">
+              <p className="text-xl">No active equipment in the fleet...</p>
+            </div>
+          )}
         </div>
       </div>
 

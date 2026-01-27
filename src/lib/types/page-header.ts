@@ -1,5 +1,5 @@
 export interface PageHeaderImage {
-  id: string;
+  id: number;
   url: string;
   alt: string;
   title?: string;
@@ -16,4 +16,10 @@ export interface PageHeaderProps {
 export interface PageHeaderConfig {
   defaultTransitionInterval: number;
   defaultOverlayOpacity: number;
+}
+
+export interface HeroImage {
+  id: number;
+  imageUrl: string;
+  alt: string;
 }

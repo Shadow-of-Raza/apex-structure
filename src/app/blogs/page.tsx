@@ -1,9 +1,14 @@
-import { blogPosts, blogCategories } from '@/lib/constants/blog'
+import { getActiveBlogPosts, getBlogCategories } from '@/lib/utils/blog'
 import { BLOG_IMAGES } from '@/lib/constants/page-header'
 import PageHeader from '@/components/common/Layout/PageHeader'
 import BlogList from '@/components/blogs/BlogList'
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const [{ posts: blogPosts }, blogCategories] = await Promise.all([
+    getActiveBlogPosts({ limit: 50 }),
+    getBlogCategories()
+  ])
+
   return (
     <main className="bg-white">
       {/* Hero Section */}
